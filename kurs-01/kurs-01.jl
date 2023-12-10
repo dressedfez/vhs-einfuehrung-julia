@@ -40,6 +40,9 @@ md"""
 	Der Ausführungsmodus, die REPL, erscheit automatisch nach dem Starten von Julia.
 """
 
+# ╔═╡ 019dfc42-45ba-4bb0-8c29-9dc4f4dd9557
+load("./assets/REPL_Julia.png")
+
 # ╔═╡ 96ea7e65-4352-4c6a-a007-96e7b822b7f6
 md"## Paketmodus"
 
@@ -59,6 +62,18 @@ md"""
     installieren. 
 """
 
+# ╔═╡ 0ec4277c-7d78-42b6-a49f-3a2fd2f110ca
+md"""### Übung 1
+1. Lass Dir die Hilfe für den Packetmodus anzeigen?
+2. Welche Packet sind bereits in Deiner Umgebung installiert?
+"""
+
+# ╔═╡ 47c26d47-854e-485b-a6c0-8ee84efaa8c3
+md"""### Übung 2
+1. Installiere das Paket `Plots`
+2. Finde auf [Julia Packages](https://juliapackages.com/packages) ein Paket, dass Dich interessiert und installiere es.
+"""
+
 # ╔═╡ ebfd85c8-de3c-4fca-8509-fdcb3d9b0d7e
 md"## Hilfemodus"
 
@@ -66,6 +81,16 @@ md"## Hilfemodus"
 md"""
 !!! tip "Achtung"
 	In den Hilfemodus kommt man in dem man die Taste \"?\" drückt in der REPL.
+"""
+
+# ╔═╡ 0fde5abc-bb3c-409e-8408-cb9c1d913c0f
+load("./assets/Hilfemodus_Julia.png")
+
+# ╔═╡ 8753fe57-fee0-4aad-bc06-dd2796b977b1
+md"""### Übung 3
+1. Lass Dir die Hilfe für den Befehl `+` anzeigen.
+2. Lass Dir die Hilfe für einen Befehl Deiner Wahl anzeigen.
+3. Schaue Dir die Beschreibung ebenfalls auf [Julias Dokumentationseite](https://docs.julialang.org/) an.
 """
 
 # ╔═╡ a9442804-7198-4173-9121-ab19f1f04dcf
@@ -77,8 +102,188 @@ md"""
 	In den Shell-Modus kommt man in dem man die Taste \";\" drückt in der REPL.
 """
 
+# ╔═╡ 3a16cc2f-e1ce-4045-93a4-2ca2db156fbd
+load("./assets/Shellmodus_Julia.png")
+
+# ╔═╡ 2d082a81-e9e3-4246-b94f-d5da248d6625
+md"""
+!!! info 
+    In diesem Modus kann man mit dem Dateisystem mit den Befehlen, die das Betriebssystem zur Verfügung stellt, interagieren. 
+"""
+
 # ╔═╡ 13d379da-0b0d-4aa5-982d-29a80e7643e0
 md"## Umgang mit verschiedenen Umgebungen"
+
+# ╔═╡ 046cfa4a-2b43-4af3-b3af-c839b76040e4
+md"""
+### Hilfsfunktionen für dieses Notebook
+"""
+
+# ╔═╡ eb97a176-a3ca-497c-92fc-de8d99fe9553
+begin
+	hint(text) = Markdown.MD(Markdown.Admonition("hint", "Antwort", [text]))
+end
+
+# ╔═╡ 5f53228a-fd00-49e1-87c8-8676eb8d75c0
+hint(md"""
+1. Was macht der Befehl:
+
+```
+	status, st: summarize contents of and changes to environment` ?
+```
+
+2. Folgende Packete sind bereits installiert:
+```
+  (kurs-01) pkg> st
+  Status `~/private/vhs-einfuehrung-julia-2023/kurs-01/Project.toml`
+  [5789e2e9] FileIO v1.16.1
+  [916415d5] Images v0.26.0
+  [c3e4b0f8] Pluto v0.19.32
+  [7f904dfe] PlutoUI v0.7.54
+```
+""")
+
+# ╔═╡ 5b50cbdb-7da1-4582-845b-7d1bacf6ecc5
+hint(md"""
+1. `add Plots`
+2. z.B.: 
+		add DrWatson
+		siehe [Dr Watson](https://juliadynamics.github.io/DrWatson.jl/dev/)
+""")
+
+# ╔═╡ f48e2447-2170-4f52-a11b-9ad686a43d61
+hint(md"""
+1. Hilfe zu `+`-Operator
+	help?> +
+    search: +
+
+    +(x, y...)
+
+    Addition operator. x+y+z+... calls this function with all arguments, i.e.
+    +(x, y, z, ...).
+
+    Examples
+    ≡≡≡≡≡≡≡≡≡≡
+
+    julia> 1 + 20 + 4
+    25
+    etc
+2. Hilfe zu `reverse`-Funktion
+	help?> reverse
+     search: reverse reverse! reverseind bitreverse StridedVecOrMat StridedVector
+    
+    reverse(v [, start=firstindex(v) [, stop=lastindex(v) ]] )
+    
+    Return a copy of v reversed from start to stop. See also Iterators.reverse
+    for reverse-order iteration without making a copy, and in-place reverse!.
+    
+    Examples
+    ≡≡≡≡≡≡≡≡≡≡
+    
+    julia> A = Vector(1:5)
+    5-element Vector{Int64}:
+    1
+    2
+    3
+    4
+    5
+
+    julia> reverse(A)
+	5-element Vector{Int64}:
+    5
+    4
+    3
+    2
+    1
+	
+	julia> reverse(A, 1, 4)
+	5-element Vector{Int64}:
+    4
+    3
+    2
+    1
+    5
+
+    julia> reverse(A, 3, 5)
+    5-element Vector{Int64}:
+    1
+    2
+    5
+    4
+    3
+
+    ────────────────────────────────────────────────────────────────────────────
+
+    reverse(A; dims=:)
+
+    Reverse A along dimension dims, which can be an integer (a single
+    dimension), a tuple of integers (a tuple of dimensions) or : (reverse along
+    all the dimensions, the default). See also reverse! for in-place reversal.
+	
+    Examples
+    ≡≡≡≡≡≡≡≡≡≡
+	
+    julia> b = Int64[1 2; 3 4]
+    2×2 Matrix{Int64}:
+    1  2
+    3  4
+
+    julia> reverse(b, dims=2)
+    2×2 Matrix{Int64}:
+    2  1
+    4  3
+
+    julia> reverse(b)
+    2×2 Matrix{Int64}:
+    4  3
+    2  1
+ 
+    │ Julia 1.6
+    │
+    │  Prior to Julia 1.6, only single-integer dims are supported in
+    │  reverse.
+ 
+    ────────────────────────────────────────────────────────────────────────────
+ 
+    reverse(s::AbstractString) -> AbstractString
+
+    Reverses a string. Technically, this function reverses the codepoints in a
+    string and its main utility is for reversed-order string processing,
+    especially for reversed regular-expression searches. See also reverseind to
+    convert indices in s to indices in reverse(s) and vice-versa, and graphemes
+    from module Unicode to operate on user-visible "characters" (graphemes)
+    rather than codepoints. See also Iterators.reverse for reverse-order
+    iteration without making a copy. Custom string types must implement the
+    reverse function themselves and should typically return a string with the
+    same type and encoding. If they return a string with a different encoding,
+    they must also override reverseind for that string type to satisfy
+    s[reverseind(s,i)] == reverse(s)[i].
+
+	Examples
+	≡≡≡≡≡≡≡≡≡≡
+
+	julia> reverse("JuliaLang")
+	"gnaLailuJ"
+	
+	│ Note
+	│
+	│  The examples below may be rendered differently on different
+	│  systems. The comments indicate how they're supposed to be rendered
+	
+	Combining characters can lead to surprising results:
+
+	julia> reverse("ax̂e") # hat is above x in the input, above e in the output "êxa"
+	
+	julia> using Unicode
+	
+	julia> join(reverse(collect(graphemes("ax̂e")))) # reverses graphemes; hat is above    x in both in- and output "ex̂a"
+	
+	────────────────────────────────────────────────────────────────────────────
+	
+	reverse(o::Base.Ordering)
+
+	reverses ordering specified by o.
+""")
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1208,14 +1413,26 @@ version = "17.4.0+0"
 # ╟─306d1dc4-0cb3-433c-b83c-ce15a04bab23
 # ╟─60fd6fe4-be67-4eff-87d1-42c922004e72
 # ╟─7252ffad-7a07-4e23-b0b5-a21ec6692e8f
+# ╟─019dfc42-45ba-4bb0-8c29-9dc4f4dd9557
 # ╟─96ea7e65-4352-4c6a-a007-96e7b822b7f6
 # ╟─b4649e71-bfa2-4a90-ae5c-7e8a56d66a4d
 # ╟─0b42bc0f-5b3c-41f0-8713-5f8a39c6651b
 # ╟─5a3845a9-399f-42e3-97f7-5d9ffbb6fd29
+# ╟─0ec4277c-7d78-42b6-a49f-3a2fd2f110ca
+# ╟─5f53228a-fd00-49e1-87c8-8676eb8d75c0
+# ╟─47c26d47-854e-485b-a6c0-8ee84efaa8c3
+# ╟─5b50cbdb-7da1-4582-845b-7d1bacf6ecc5
 # ╟─ebfd85c8-de3c-4fca-8509-fdcb3d9b0d7e
 # ╟─e814be19-16bb-4611-baeb-52b279a1557b
+# ╟─0fde5abc-bb3c-409e-8408-cb9c1d913c0f
+# ╟─8753fe57-fee0-4aad-bc06-dd2796b977b1
+# ╟─f48e2447-2170-4f52-a11b-9ad686a43d61
 # ╟─a9442804-7198-4173-9121-ab19f1f04dcf
 # ╟─37d28eaa-d11c-4386-8abf-28640348d612
+# ╟─3a16cc2f-e1ce-4045-93a4-2ca2db156fbd
+# ╟─2d082a81-e9e3-4246-b94f-d5da248d6625
 # ╟─13d379da-0b0d-4aa5-982d-29a80e7643e0
+# ╟─046cfa4a-2b43-4af3-b3af-c839b76040e4
+# ╠═eb97a176-a3ca-497c-92fc-de8d99fe9553
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
