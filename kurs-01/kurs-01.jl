@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.32
+# v0.19.27
 
 using Markdown
 using InteractiveUtils
@@ -43,6 +43,17 @@ md"""
 # ╔═╡ 019dfc42-45ba-4bb0-8c29-9dc4f4dd9557
 load("./assets/REPL_Julia.png")
 
+# ╔═╡ 933b52af-1546-47a3-bbbf-0493714bcadc
+md"""
+### Übung 1
+1. Nutze Julia als Taschenrechner.
+2. Mit `ans` kann man auf das Ergebnis der letzten Rechnung zugreifen. Stelle eine Rechnung auf die dies ausnützt.
+3. Man kann auch einfach Variable benutzen, um sich das Ergbnis zu merken. Nutze dies aus.
+"""
+
+# ╔═╡ e3eadef9-61ff-4eec-8c6a-49a94d6071d4
+# `ans` geht nicht in Pluto
+
 # ╔═╡ 96ea7e65-4352-4c6a-a007-96e7b822b7f6
 md"## Paketmodus"
 
@@ -63,13 +74,13 @@ md"""
 """
 
 # ╔═╡ 0ec4277c-7d78-42b6-a49f-3a2fd2f110ca
-md"""### Übung 1
+md"""### Übung 2
 1. Lass Dir die Hilfe für den Packetmodus anzeigen?
 2. Welche Packet sind bereits in Deiner Umgebung installiert?
 """
 
 # ╔═╡ 47c26d47-854e-485b-a6c0-8ee84efaa8c3
-md"""### Übung 2
+md"""### Übung 3
 1. Installiere das Paket `Plots`
 2. Finde auf [Julia Packages](https://juliapackages.com/packages) ein Paket, dass Dich interessiert und installiere es.
 """
@@ -87,7 +98,7 @@ md"""
 load("./assets/Hilfemodus_Julia.png")
 
 # ╔═╡ 8753fe57-fee0-4aad-bc06-dd2796b977b1
-md"""### Übung 3
+md"""### Übung 4
 1. Lass Dir die Hilfe für den Befehl `+` anzeigen.
 2. Lass Dir die Hilfe für einen Befehl Deiner Wahl anzeigen.
 3. Schaue Dir die Beschreibung ebenfalls auf [Julias Dokumentationseite](https://docs.julialang.org/) an.
@@ -111,12 +122,73 @@ md"""
     In diesem Modus kann man mit dem Dateisystem mit den Befehlen, die das Betriebssystem zur Verfügung stellt, interagieren. 
 """
 
+# ╔═╡ 01546534-8dcf-4bdb-9f52-681c0f1df9e3
+md"""### Übung 5
+1. Wechsle in den Shell-Modus und erstelle:
+   - eine Datei
+   - ein Verzeichnis
+   über diesen Vorgang.
+2. Wie kommt man aus dem Shell-Modus wieder in den REPL-Modus?
+"""
+
 # ╔═╡ 13d379da-0b0d-4aa5-982d-29a80e7643e0
 md"## Umgang mit verschiedenen Umgebungen"
 
+# ╔═╡ ced81d4a-c606-45c3-837b-02684a1537db
+md"""Bis jetzt haben wir den Umgang mit der REPL geübt. Dies ist bei weitem nicht die einzige Art und Weise, wie man mit Julia interagiert.
+"""
+
+# ╔═╡ 252e4fff-27e1-4361-a4cb-39f80ade71ba
+md"""## Pluto Notebooks
+
+Pluto Notebooks kann man aus der REPL folgendermaßen nutzen.
+
+1. Installieren über den Paketmodus mittels: `add Pluto`
+2. In der REPL muss man das Paket aktivieren/nutzen mittels `using Pluto`
+3. und die Oberfläche Starten durch: `Pluto.run()`
+
+Dieses Notebook ist ein **Pluto** Notebook.
+"""
+
+# ╔═╡ a12dd40c-4093-4dca-bb61-197b68d5efd1
+md"""## Jupyter Notebooks
+Jupyter ist eine Akürzung, die sich auf die folgenden Programmiersprachen:
+- [**Ju**lia](https://julialang.org)
+- [**Pyt**hon](https://www.python.org)
+- [**R**](https://www.r-project.org)
+
+bezieht.
+
+### Installation
+Es gibt die Möglichkeit Jupyter direkt über Julia zu installieren. Eine Anleitung dafür ist [hier](https://julialang.github.io/IJulia.jl/stable/manual/installation/) zu finden.
+
+Ich empfehle Jupyter über Python zu installieren. Dazu braucht man eine Python-Installation die man [hier](https://www.python.org/downloads/) bekommt. Anschließend kann man mittels der folgenden Befehle:
+
+1. `python -m venv env` ein Python-Environment erstellen,
+2. mit `source env/bin/activate` es aktivieren und
+3. mit `pip install jupyterlab` Jupyter-Notebooks installieren. Dies kann man durch
+4. `jupyter-lab` über die Kommandozeile starten.
+
+**Dies hat den Vorteil, dass die Installation von Jupyter-Notebooks auf das Python Environment `env` isoliert ist.**
+"""
+
+# ╔═╡ f4581bea-56dc-418e-88e5-0c5403a0d8a6
+md"""### Beispiel Notebook
+Das Beispiel Jupyter-Notebook ist im `kurs-01`-Verzeichnis unter dem Namen: `kurs-01.ipynb` zu finden.
+"""
+
+# ╔═╡ bb7bb8c8-26a2-4237-8524-43e93185f22d
+load("./assets/Jupyter-Notebook.png")
+
+# ╔═╡ 75c14f98-5a99-4075-bdb9-0204cba0209a
+md"""## Julia und VSCode
+
+Die Dokumenation für die Extension ist [hier](https://code.visualstudio.com/docs/languages/julia) zu finden.
+"""
+
 # ╔═╡ 046cfa4a-2b43-4af3-b3af-c839b76040e4
 md"""
-### Hilfsfunktionen für dieses Notebook
+## Hilfsfunktionen für dieses Notebook
 """
 
 # ╔═╡ eb97a176-a3ca-497c-92fc-de8d99fe9553
@@ -283,6 +355,14 @@ hint(md"""
 	reverse(o::Base.Ordering)
 
 	reverses ordering specified by o.
+""")
+
+# ╔═╡ 858a4bbd-e734-4ec4-8714-0dcdc28a12f4
+hint(md"""
+1. unter MacOS oder Linux: 
+   - Erstellen einer Datei: `touch datei.txt`
+   - Erstellen eines Verzeichnisses: `mkdir`
+2. Drücken der Backspace-Taste
 """)
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -1408,12 +1488,14 @@ version = "17.4.0+0"
 """
 
 # ╔═╡ Cell order:
-# ╟─9986c5b7-2d88-406a-a225-05fb043ca81f
+# ╠═9986c5b7-2d88-406a-a225-05fb043ca81f
 # ╟─10353b52-8b0e-11ee-3d0d-3f9b07862a48
 # ╟─306d1dc4-0cb3-433c-b83c-ce15a04bab23
 # ╟─60fd6fe4-be67-4eff-87d1-42c922004e72
 # ╟─7252ffad-7a07-4e23-b0b5-a21ec6692e8f
 # ╟─019dfc42-45ba-4bb0-8c29-9dc4f4dd9557
+# ╟─933b52af-1546-47a3-bbbf-0493714bcadc
+# ╠═e3eadef9-61ff-4eec-8c6a-49a94d6071d4
 # ╟─96ea7e65-4352-4c6a-a007-96e7b822b7f6
 # ╟─b4649e71-bfa2-4a90-ae5c-7e8a56d66a4d
 # ╟─0b42bc0f-5b3c-41f0-8713-5f8a39c6651b
@@ -1431,7 +1513,15 @@ version = "17.4.0+0"
 # ╟─37d28eaa-d11c-4386-8abf-28640348d612
 # ╟─3a16cc2f-e1ce-4045-93a4-2ca2db156fbd
 # ╟─2d082a81-e9e3-4246-b94f-d5da248d6625
+# ╟─01546534-8dcf-4bdb-9f52-681c0f1df9e3
+# ╟─858a4bbd-e734-4ec4-8714-0dcdc28a12f4
 # ╟─13d379da-0b0d-4aa5-982d-29a80e7643e0
+# ╟─ced81d4a-c606-45c3-837b-02684a1537db
+# ╟─252e4fff-27e1-4361-a4cb-39f80ade71ba
+# ╟─a12dd40c-4093-4dca-bb61-197b68d5efd1
+# ╟─f4581bea-56dc-418e-88e5-0c5403a0d8a6
+# ╟─bb7bb8c8-26a2-4237-8524-43e93185f22d
+# ╠═75c14f98-5a99-4075-bdb9-0204cba0209a
 # ╟─046cfa4a-2b43-4af3-b3af-c839b76040e4
 # ╠═eb97a176-a3ca-497c-92fc-de8d99fe9553
 # ╟─00000000-0000-0000-0000-000000000001
