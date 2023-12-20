@@ -2,16 +2,16 @@
 # sollen verschiedene Konzepte der VSCode-Erweiterung
 # für Julia erleutert werden.
 
-# α ist die Fein-Struktur-Konstante 
+# so kann man eine Variable definieren
 α = 1/137
 
-println("The fine structure constant is $α")
+println("α ist die Fein-Struktur-Konstante: $α")
 
 #=
 Der folgende Code erstellt eine quadratische Funktion
 und stellt diese grafisch dar.
 =#
 using Plots
-f(x)=x^2+2x
-p = plot(f, 0, 10, label="f(x)")
+f(x)=α*x^2+x
+p = plot(f, -100, 100, label="f(x)")
 savefig(p,"Quadratische_Function")
