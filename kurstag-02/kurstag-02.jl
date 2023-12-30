@@ -4,366 +4,367 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ 9986c5b7-2d88-406a-a225-05fb043ca81f
+# ╔═╡ 608469ba-9f6c-11ee-3740-fff2920aac1c
 begin
 	using PlutoUI, Images, FileIO
 	TableOfContents()
 end
 
-# ╔═╡ 10353b52-8b0e-11ee-3d0d-3f9b07862a48
-md"# VHS-Kurs: Einführung in Julia"
-
-# ╔═╡ 306d1dc4-0cb3-433c-b83c-ce15a04bab23
+# ╔═╡ 211891dd-5811-454d-9530-49ed28d6adfe
 md"""
-In diesem Kursteil wollen wir zunächst die verschiedenen Komponenten von Julia kennenlernen und Julia auch in unterschiedlichen Umgebungen laufen lassen. 
-
-Ziel ist es:
-
-1. die Modi (modes) kennenzulernen
-   - Ausführungsmodus: REPL (__R__ead __E__valuate __P__rint __L__oop)
-   - Paketmodus
-   - Hilfemodus
-   - Shell-Modus
-2. die Umgebungen kennzulernen:
-   - REPL (__R__ead __E__valuate __P__rint __L__oop)
-   - Pluto
-   - Jupyter
-   - VSCode
+# VHS-Kurs: Einführung in Julia: Kurstag 2: Datentypen und Operatoren
 """
 
-# ╔═╡ 60fd6fe4-be67-4eff-87d1-42c922004e72
-md"## Ausführungsmodus / REPL "
-
-# ╔═╡ 7252ffad-7a07-4e23-b0b5-a21ec6692e8f
+# ╔═╡ 127de8a6-c092-438f-9cb0-83532a5343c7
 md"""
-!!! tip "Achtung"
-	Der Ausführungsmodus, die REPL, erscheit automatisch nach dem Starten von Julia.
+## Numerische Datentypen
 """
 
-# ╔═╡ 019dfc42-45ba-4bb0-8c29-9dc4f4dd9557
-load("./assets/REPL_Julia.png")
+# ╔═╡ 12606683-a23d-4b5e-acc2-94634ff6fe89
+load("./assets/Numerische_Typen_Julia.png")
 
-# ╔═╡ 933b52af-1546-47a3-bbbf-0493714bcadc
+# ╔═╡ 36ec497f-191b-4b06-ac39-52aa4ac05f92
 md"""
-### Übung 1
-1. Nutze Julia als Taschenrechner.
-2. Mit `ans` kann man auf das Ergebnis der letzten Rechnung zugreifen. Stelle eine Rechnung auf die dies ausnützt.
-3. Man kann auch einfach Variable benutzen, um sich das Ergbnis zu merken. Nutze dies aus.
+### Standard-Datentypen 
 """
 
-# ╔═╡ e3eadef9-61ff-4eec-8c6a-49a94d6071d4
-# `ans` geht nicht in Pluto
-
-# ╔═╡ 96ea7e65-4352-4c6a-a007-96e7b822b7f6
-md"## Paketmodus"
-
-# ╔═╡ b4649e71-bfa2-4a90-ae5c-7e8a56d66a4d
+# ╔═╡ 8fdce7cf-06f8-4d5d-924e-242a06af3679
 md"""
-!!! tip "Achtung"
-	In den Paketmodus kommt man in dem man die Taste \"]\" drückt.
+Man unterscheidet im obigen Diagramm zwischen __konkreten__ und __abstrakten__ Typen. 
+Die __abstrakten__ Typen lassen sich __nicht__ erzeugen, sondern stellen nur __gemeinsames__ Verhalten dar.
+
+Die __konkreten__ Typen sind:
+- Int128, Int64, Int32, Int16, Int8: vorzeichenbehaftete ganze Zahlen
+- UInt128, UInt64, UInt32, UInt16, UInt8: __nicht__ vorzeichenbehaftete ganze Zahlen
+- BigInt: vorzeichenbehaftete ganze Zahlen mit beliebiger Präzission
+- Bool: die Wahrheitswerte: wahr (true) und falsch (flase)
+- Rational: Brüche von ganzen Zahlen 
+- Float64, Float32, Float16: Gleitkommazahlen
+- BigFloat: Gleitkommazahlen mit beliebiger Präzission
+- Complex: komplexe Zahlen, wobei Real- und Imaginärteil reelle Zahlen sind
 """
 
-# ╔═╡ 0b42bc0f-5b3c-41f0-8713-5f8a39c6651b
-load("./assets/Paketmodus_Julia.png")
-
-# ╔═╡ 5a3845a9-399f-42e3-97f7-5d9ffbb6fd29
+# ╔═╡ 29353080-35bb-4867-b63c-3521f56a9927
 md"""
-!!! info 
-    In diesem Modus kann man in der aktuellen/aktiven Umgebung Pakete (Packages)    
-    installieren. 
+!!! tip
+	Mit dem Kommando `typeof` kann man sich den konkreten Datentyp einer Variable oder einer Wertes anzeigen lassen.
 """
 
-# ╔═╡ 0ec4277c-7d78-42b6-a49f-3a2fd2f110ca
-md"""### Übung 2
-1. Lass Dir die Hilfe für den Packetmodus anzeigen?
-2. Welche Packet sind bereits in Deiner Umgebung installiert?
-"""
+# ╔═╡ 0c6a2a3f-1f08-4e45-94dc-427702713c75
+typeof(2)
 
-# ╔═╡ 47c26d47-854e-485b-a6c0-8ee84efaa8c3
-md"""### Übung 3
-1. Installiere das Paket `Plots`
-2. Finde auf [Julia Packages](https://juliapackages.com/packages) ein Paket, dass Dich interessiert und installiere es.
-"""
-
-# ╔═╡ ebfd85c8-de3c-4fca-8509-fdcb3d9b0d7e
-md"## Hilfemodus"
-
-# ╔═╡ e814be19-16bb-4611-baeb-52b279a1557b
+# ╔═╡ 2a012a0e-ca83-49cb-aaed-c5146ec78a13
 md"""
-!!! tip "Achtung"
-	In den Hilfemodus kommt man in dem man die Taste \"?\" drückt in der REPL.
+!!! tip
+	Mit dem Kommando `bitstring` kann man sich die Binärdarstellung einer beliebigen Zahl anzeigen lassen.
 """
 
-# ╔═╡ 0fde5abc-bb3c-409e-8408-cb9c1d913c0f
-load("./assets/Hilfemodus_Julia.png")
+# ╔═╡ f473b5a4-eccf-4020-8c8d-33caddd85826
+bitstring(2)
 
-# ╔═╡ 8753fe57-fee0-4aad-bc06-dd2796b977b1
-md"""### Übung 4
-1. Lass Dir die Hilfe für den Befehl `+` anzeigen.
-2. Lass Dir die Hilfe für einen Befehl Deiner Wahl anzeigen.
-3. Schaue Dir die Beschreibung ebenfalls auf [Julias Dokumentationseite](https://docs.julialang.org/) an.
-"""
+# ╔═╡ ffd5929c-51b8-4cdb-8285-4e15026d9875
+length(bitstring(2))
 
-# ╔═╡ a9442804-7198-4173-9121-ab19f1f04dcf
-md"## Shell-Modus"
-
-# ╔═╡ 37d28eaa-d11c-4386-8abf-28640348d612
+# ╔═╡ 4f133e9d-b916-41da-9251-3514fcf9f5a9
 md"""
-!!! tip "Achtung"
-	In den Shell-Modus kommt man in dem man die Taste \";\" drückt in der REPL.
+!!! warning "Achtung"
+	Die Binary-Darstellung hängt vom Datentype ab, d.h. `Int64` hat eine 64-bit-Darstellung.
 """
 
-# ╔═╡ 3a16cc2f-e1ce-4045-93a4-2ca2db156fbd
-load("./assets/Shellmodus_Julia.png")
-
-# ╔═╡ 2d082a81-e9e3-4246-b94f-d5da248d6625
+# ╔═╡ ef37041d-0b4d-4204-9c22-9ce7d7952af7
 md"""
-!!! info 
-    In diesem Modus kann man mit dem Dateisystem mit den Befehlen, die das Betriebssystem zur Verfügung stellt, interagieren. 
+Möchte man mit kleineren Datentypen arbeiten, so geht dies auch. Das obige `Int64` ist der Standard für `Integer` auf meinem Computer.
+
+Hier Beispiele für kleinere Darstellungen:
 """
 
-# ╔═╡ 01546534-8dcf-4bdb-9f52-681c0f1df9e3
-md"""### Übung 5
-1. Wechsle in den Shell-Modus und erstelle:
-   - eine Datei
-   - ein Verzeichnis
-   über diesen Vorgang.
-2. Wie kommt man aus dem Shell-Modus wieder in den REPL-Modus?
-"""
+# ╔═╡ 34cf8b22-9da3-4ab1-ba1c-0a3a1e83ee29
+Int8(1)
 
-# ╔═╡ 13d379da-0b0d-4aa5-982d-29a80e7643e0
-md"## Umgang mit verschiedenen Umgebungen"
+# ╔═╡ 51ecbb07-d338-404e-b9ae-9701e75e4d73
+bitstring(Int8(1))
 
-# ╔═╡ ced81d4a-c606-45c3-837b-02684a1537db
-md"""Bis jetzt haben wir den Umgang mit der REPL geübt. Dies ist bei weitem nicht die einzige Art und Weise, wie man mit Julia interagiert.
-"""
+# ╔═╡ aabb2fb0-06d7-43d7-8805-edb8beb8fd5c
+length(bitstring(Int8(1)))
 
-# ╔═╡ 252e4fff-27e1-4361-a4cb-39f80ade71ba
-md"""## Pluto Notebooks
-
-Pluto Notebooks kann man aus der REPL folgendermaßen nutzen.
-
-1. Installieren über den Paketmodus mittels: `add Pluto`
-2. In der REPL muss man das Paket aktivieren/nutzen mittels `using Pluto`
-3. und die Oberfläche Starten durch: `Pluto.run()`
-
-Dieses Notebook ist ein **Pluto** Notebook.
-"""
-
-# ╔═╡ a12dd40c-4093-4dca-bb61-197b68d5efd1
-md"""## Jupyter Notebooks
-Jupyter ist eine Akürzung, die sich auf die folgenden Programmiersprachen:
-- [**Ju**lia](https://julialang.org)
-- [**Pyt**hon](https://www.python.org)
-- [**R**](https://www.r-project.org)
-
-bezieht.
-
-### Installation
-Es gibt die Möglichkeit Jupyter direkt über Julia zu installieren. Eine Anleitung dafür ist [hier](https://julialang.github.io/IJulia.jl/stable/manual/installation/) zu finden.
-
-Ich empfehle Jupyter über Python zu installieren. Dazu braucht man eine Python-Installation die man [hier](https://www.python.org/downloads/) bekommt. Anschließend kann man mittels der folgenden Befehle:
-
-1. `python -m venv env` ein Python-Environment erstellen,
-2. mit `source env/bin/activate` es aktivieren und
-3. mit `pip install jupyterlab` Jupyter-Notebooks installieren. Dies kann man durch
-4. `jupyter-lab` über die Kommandozeile starten.
-
-**Dies hat den Vorteil, dass die Installation von Jupyter-Notebooks auf das Python Environment `env` isoliert ist.**
-"""
-
-# ╔═╡ f4581bea-56dc-418e-88e5-0c5403a0d8a6
-md"""### Beispiel Notebook
-Das Beispiel Jupyter-Notebook ist im `kurs-01`-Verzeichnis unter dem Namen: `kurs-01.ipynb` zu finden.
-"""
-
-# ╔═╡ bb7bb8c8-26a2-4237-8524-43e93185f22d
-load("./assets/Jupyter-Notebook.png")
-
-# ╔═╡ 75c14f98-5a99-4075-bdb9-0204cba0209a
-md"""## Julia und VSCode
-
-Die Dokumenation für die Extension ist [hier](https://code.visualstudio.com/docs/languages/julia) zu finden.
-"""
-
-# ╔═╡ 046cfa4a-2b43-4af3-b3af-c839b76040e4
+# ╔═╡ 0c8425d7-71fd-4553-a835-4bb38561309b
 md"""
-## Hilfsfunktionen für dieses Notebook
+!!! note "Bemerkung"
+	Die Zahl hinter dem Typ steht für die Anzahl der zur Darstellung im Binärformat genutzten Bits.
 """
 
-# ╔═╡ eb97a176-a3ca-497c-92fc-de8d99fe9553
+# ╔═╡ f6a7952a-c5c4-4e32-904c-e85dacf1713e
+md"""
+Wir schauen uns jetzt an, wie das Vorzeichen für ganze Zahlen (Integer) behandelt wird.
+"""
+
+# ╔═╡ 02d72773-37ea-4ebd-9c6f-ccd51d96f4b7
+Int8(-1)
+
+# ╔═╡ f07a1e5a-c465-499b-a92e-d9b91a1c776d
+bitstring(Int8(-1))
+
+# ╔═╡ 817860ac-b284-4b02-865a-207cec9fc8ff
+md"""Dies Darstellung erscheint zunächst komisch, aber wir können sie verstehen.
+Dazu stellen wir allen Integer-Zahlen von ihrem maximalen bis zu ihrem minimalen Wert da.
+"""
+
+# ╔═╡ 42af2d00-1dbe-40bd-9031-3da3cbd2d0b4
+md"""
+!!! tip
+	Mit den Kommandos `typemin` und `typemax` erhält man die minimale und maximale Zahl des betrachteten Zahlentyps.
+"""
+
+# ╔═╡ ec3a9cfd-dec4-47bb-8dd2-9df5a08a918b
+typemax(Int8)
+
+# ╔═╡ f9bb8c82-6cce-462b-a936-4ab823d683ae
+typemin(Int8)
+
+# ╔═╡ 67f8ef07-4093-471b-883d-9551042aace9
 begin
-	hint(text) = Markdown.MD(Markdown.Admonition("hint", "Antwort", [text]))
+	println("8 Bit Integer-Zahlen mit Vorzeichen (achte auf das Vorzeichen-Bit)\n")
+	println("Number \t Binary")
+	int8_min = typemin(Int8)
+	int8_max = typemax(Int8)
+	for n in int8_max:-1:int8_min
+	    if n ∈ -int8_min:-120 || n ∈ -5:5 || n ∈ 125:int8_max
+	        println(n, ":\t", bitstring(Int8(n)))
+	    elseif n ∈ union(-119:-117,6:8)
+	        println("\t   .")
+	    end
+	end
 end
 
-# ╔═╡ 5f53228a-fd00-49e1-87c8-8676eb8d75c0
-hint(md"""
-1. Was macht der Befehl:
+# ╔═╡ 5f22ef4b-5cc9-4c04-814a-de81a49450ca
+md"""
+!!! note "Bemerkung"
+	Die Binärdarstellung der ganzen Zahlen (Integer) mit Vorzeichen ist aufsteigenden von der kleinsten Zahl bis zur -1 und ab der Null wieder aufsteigende bis zur größten Zahl. Das vorderste Bit ist das Vorzeichen-Bit.
+"""
 
-```
-	status, st: summarize contents of and changes to environment` ?
-```
+# ╔═╡ f603f393-34b6-4c09-b842-13ca35f2ccf8
+md"""
+#### Übung 1: Standard-Datentyp UInt8 
+(ganze Zahlen ohne Vorzeichen)
+1. Bestimme den maximalen und minimalen Wert des Typs `UInt8`.
+2. Passe obige Ausgabe für `Int8` so an, dass Du das Ergebnis für `UInt8` erhälst. 
+3. Wie sieht die obige Ausgabe aus?
+"""
 
-2. Folgende Packete sind bereits installiert:
-```
-  (kurs-01) pkg> st
-  Status `~/private/vhs-einfuehrung-julia-2023/kurs-01/Project.toml`
-  [5789e2e9] FileIO v1.16.1
-  [916415d5] Images v0.26.0
-  [c3e4b0f8] Pluto v0.19.32
-  [7f904dfe] PlutoUI v0.7.54
-```
-""")
+# ╔═╡ 9204fd20-c3c6-48cf-acdb-2a3f1fab054e
+md"""
+### Standard-Operationen 
+#### Unäre (einseitige) Operatoren
+"""
 
-# ╔═╡ 5b50cbdb-7da1-4582-845b-7d1bacf6ecc5
-hint(md"""
-1. `add Plots`
-2. z.B.: 
-		add DrWatson
-		siehe [Dr Watson](https://juliadynamics.github.io/DrWatson.jl/dev/)
-""")
+# ╔═╡ 47e68e27-144c-46df-b180-6b491e9d9bde
+md"Unärer Plus-Operator (oder einfach Identität):"
 
-# ╔═╡ f48e2447-2170-4f52-a11b-9ad686a43d61
-hint(md"""
-1. Hilfe zu `+`-Operator
-	help?> +
-    search: +
+# ╔═╡ d9f6b662-c8ca-4a1a-ac09-4798ca45b841
++1
 
-    +(x, y...)
+# ╔═╡ cef7c017-4595-4b92-8962-d9832f10e00c
+md"Unärer Minus-Operator (Abbildung auf das additive Inverse):"
 
-    Addition operator. x+y+z+... calls this function with all arguments, i.e.
-    +(x, y, z, ...).
+# ╔═╡ b96bde8f-4cbc-4ce8-b43b-70c58ed5fb64
+-1
 
-    Examples
-    ≡≡≡≡≡≡≡≡≡≡
+# ╔═╡ 2ea1bc14-9e91-41d3-afd4-428f4503df0e
+md"#### Binäre Operatoren"
 
-    julia> 1 + 20 + 4
-    25
-    etc
-2. Hilfe zu `reverse`-Funktion
-	help?> reverse
-     search: reverse reverse! reverseind bitreverse StridedVecOrMat StridedVector
-    
-    reverse(v [, start=firstindex(v) [, stop=lastindex(v) ]] )
-    
-    Return a copy of v reversed from start to stop. See also Iterators.reverse
-    for reverse-order iteration without making a copy, and in-place reverse!.
-    
-    Examples
-    ≡≡≡≡≡≡≡≡≡≡
-    
-    julia> A = Vector(1:5)
-    5-element Vector{Int64}:
-    1
-    2
-    3
-    4
-    5
+# ╔═╡ 187c092e-ad8c-4402-aa05-e0733b336550
+md"Addition:"
 
-    julia> reverse(A)
-	5-element Vector{Int64}:
-    5
-    4
-    3
-    2
-    1
-	
-	julia> reverse(A, 1, 4)
-	5-element Vector{Int64}:
-    4
-    3
-    2
-    1
-    5
+# ╔═╡ f6f4c530-23d1-4293-9cd3-a83251f67f11
+1+1
 
-    julia> reverse(A, 3, 5)
-    5-element Vector{Int64}:
-    1
-    2
-    5
-    4
-    3
+# ╔═╡ 77e17d76-7b5b-4b89-89a1-7e889530490b
+md"Subtraktion:"
 
-    ────────────────────────────────────────────────────────────────────────────
+# ╔═╡ ef89de7f-6843-40e2-beef-61a09bb914eb
+1-2
 
-    reverse(A; dims=:)
+# ╔═╡ 14dd583e-bb89-4ad4-887e-513423a637a9
+md"Multiplikation:"
 
-    Reverse A along dimension dims, which can be an integer (a single
-    dimension), a tuple of integers (a tuple of dimensions) or : (reverse along
-    all the dimensions, the default). See also reverse! for in-place reversal.
-	
-    Examples
-    ≡≡≡≡≡≡≡≡≡≡
-	
-    julia> b = Int64[1 2; 3 4]
-    2×2 Matrix{Int64}:
-    1  2
-    3  4
+# ╔═╡ 3288a869-9891-4177-8cbf-e6ed3e3c80bf
+5*2
 
-    julia> reverse(b, dims=2)
-    2×2 Matrix{Int64}:
-    2  1
-    4  3
+# ╔═╡ e2906acf-65d5-4b2e-ab58-15521392a02d
+md"Division: nur Ganzzahlquotient"
 
-    julia> reverse(b)
-    2×2 Matrix{Int64}:
-    4  3
-    2  1
- 
-    │ Julia 1.6
-    │
-    │  Prior to Julia 1.6, only single-integer dims are supported in
-    │  reverse.
- 
-    ────────────────────────────────────────────────────────────────────────────
- 
-    reverse(s::AbstractString) -> AbstractString
+# ╔═╡ 59c7602c-14be-4faa-81ff-387d730581e7
+3 ÷ 2
 
-    Reverses a string. Technically, this function reverses the codepoints in a
-    string and its main utility is for reversed-order string processing,
-    especially for reversed regular-expression searches. See also reverseind to
-    convert indices in s to indices in reverse(s) and vice-versa, and graphemes
-    from module Unicode to operate on user-visible "characters" (graphemes)
-    rather than codepoints. See also Iterators.reverse for reverse-order
-    iteration without making a copy. Custom string types must implement the
-    reverse function themselves and should typically return a string with the
-    same type and encoding. If they return a string with a different encoding,
-    they must also override reverseind for that string type to satisfy
-    s[reverseind(s,i)] == reverse(s)[i].
+# ╔═╡ 5a34c57e-5885-4df4-8305-5cb0391ef229
+md"Dies ist das Gleiche wie: div(2,2) = $(div(2,2))"
 
-	Examples
-	≡≡≡≡≡≡≡≡≡≡
+# ╔═╡ 911930fd-54ce-4f89-b2de-a6b85c1ac378
+md"Division mit Rest: "
 
-	julia> reverse("JuliaLang")
-	"gnaLailuJ"
-	
-	│ Note
-	│
-	│  The examples below may be rendered differently on different
-	│  systems. The comments indicate how they're supposed to be rendered
-	
-	Combining characters can lead to surprising results:
+# ╔═╡ ef92e922-3637-4f97-9012-17ddfe8823a0
+typeof(3/2), 3/2
 
-	julia> reverse("ax̂e") # hat is above x in the input, above e in the output "êxa"
-	
-	julia> using Unicode
-	
-	julia> join(reverse(collect(graphemes("ax̂e")))) # reverses graphemes; hat is above    x in both in- and output "ex̂a"
-	
-	────────────────────────────────────────────────────────────────────────────
-	
-	reverse(o::Base.Ordering)
+# ╔═╡ b4d55262-321d-4870-a06f-fb3dfe3c897f
+typeof(2/2), 2/2
 
-	reverses ordering specified by o.
-""")
+# ╔═╡ b447d086-52d2-4f05-be0b-6f3deabfd9f1
+md"(hier geben wir zwei Werte bei der Zelle zurück)"
 
-# ╔═╡ 858a4bbd-e734-4ec4-8714-0dcdc28a12f4
-hint(md"""
-1. unter MacOS oder Linux: 
-   - Erstellen einer Datei: `touch datei.txt`
-   - Erstellen eines Verzeichnisses: `mkdir`
-2. Drücken der Backspace-Taste
-""")
+# ╔═╡ 6ff1fbaf-8551-4bf7-8bed-648fc7b07d7c
+md"""
+!!! warning "Achtung"
+	Durch verschiedene Operationen (/) verlässt man die ursprüngliche Zahlendomäne. Dies ist natürlich analog der Mathematik, aber im Gegensatz zur Mathematik unterscheiden sich die Typen von 2 (Int) und 2.0 (Float).
+"""
+
+# ╔═╡ 52d76ceb-257d-4664-973c-9dc073a2f9f9
+md"Exponenzieren:"
+
+# ╔═╡ e0144d69-0bca-4e2e-938b-3e34ca8680c8
+2^3
+
+# ╔═╡ 18181c18-f307-4ecc-99ca-0ec263d062c7
+md"Teilungsrest:"
+
+# ╔═╡ 83c1be17-dda5-472b-9208-e75a13118601
+3 % 2
+
+# ╔═╡ 0757fc13-1ac5-44f7-b8d8-52a4a77bbed8
+md"""
+oder in anderer Notation:
+
+mod(3,2)=$(mod(3,2))
+"""
+
+# ╔═╡ 99c28994-c077-47af-9764-799ab6c849f1
+md"""
+#### Übung 2: Übertragung auf andere numerische Datentypen
+1. Übertrage die obigen Operationen auf andere numerische Datentypen?
+2. Welche Operationen führen aus der Domäne der ursprünglichen Zahlen hinaus?
+3. Untersuche den Datentyp: Rational. 
+4. Was passiert, wenn man √-1 ausrechnet? 
+"""
+
+# ╔═╡ 2ee60d80-de03-42b6-9343-7f0779e79452
+md"""### Operatorrangfolge"""
+
+# ╔═╡ 1e0f1b46-cff6-4b3c-829f-637e9c6e9533
+md"""
+!!! tip
+	Die Operatorrangfolge ist wie in der Mathematik und lässt sich z.B.: durch die Merkregel:
+
+	__KlaPoPuS (Klammer vor Potenz vor Punkt vor Strich)__
+
+	erinnern.
+"""
+
+
+# ╔═╡ eadf6143-781e-411c-ab2f-e04d26797803
+1+(3+4)^2*5
+
+# ╔═╡ 76feca8f-39ed-4cc5-9be2-98f366da2cc8
+1+7^2*5
+
+# ╔═╡ ae984997-3119-486f-b3ec-5fc5a171f5eb
+1+49*5
+
+# ╔═╡ 9362ef16-a700-4bcf-a475-c0633e5df42a
+1+245
+
+# ╔═╡ 3b1f09df-875c-4e05-bf56-b2ac1e84de95
+md"""
+## Zeichen und Zeichenketten
+### Zeichen
+"""
+
+# ╔═╡ d4260739-a6c8-4f02-96b9-279abb0e11b0
+md"""
+!!! tip
+    Zeichen (Char) lassen sich in Julia durch einfach Hochkommata erzeugen.
+"""
+
+# ╔═╡ b416d9c8-803b-4e3e-b66b-7e20c89f96bb
+'a'
+
+# ╔═╡ 65fcd88e-09ca-4079-9d7d-e395f1382b2d
+typeof('a')
+
+# ╔═╡ 0b84a9df-149b-4690-bfa1-078943b2e4b3
+codepoint('a')
+
+# ╔═╡ 59f6cb34-24e8-48a9-882e-310f1a78a1d4
+Char(codepoint('a'))
+
+# ╔═╡ 8713df22-2846-41d4-abcd-006795a6b758
+md"Alle Zeichen bis $(Int(typemax(UInt8)))"
+
+# ╔═╡ 6f0af6be-69fd-42c1-98da-c868eb5f3948
+for i in 1:typemax(UInt8)
+	println(i,":\t", Char(UInt8(i)))
+end
+
+# ╔═╡ 8894c690-9a0c-40d7-ac74-708a1218ada4
+md"""
+### Zeichenketten (String)
+"""
+
+# ╔═╡ fa56dc37-eeb8-4b40-a54c-6b586c85ee9a
+md"""
+!!! tip
+    Zeichenketten (String) lassen sich in Julia durch Anführungszeiche erzeugen.
+"""
+
+# ╔═╡ 71024eb6-380e-4a48-ac67-e3d0ece3e0b7
+"Dies ist ein String"
+
+# ╔═╡ 63fd5865-df42-4883-a8b0-75645a6ebbb2
+typeof("Dies ist ein String")
+
+# ╔═╡ eeabf882-a967-4137-9ea3-09487055d9ec
+md"""
+Man kann auch Strings erzeugen, die über mehrere Zeilen gehen:
+"""
+
+# ╔═╡ 0e575a99-ea33-4902-920f-11938594fe5b
+"""    ein
+          mehrzeiliger
+				String
+"""
+
+# ╔═╡ f93c55c6-cb45-422d-8e07-359105252446
+md"""
+### Zeichenketten-Verkettung (Concatination)
+"""
+
+# ╔═╡ 543bf419-6dfd-44c0-b7af-220e99d7346c
+
+
+# ╔═╡ 709f786b-e2e9-4f6f-a334-a6fda3c28abe
+md"""
+### Zeichenketten-Interpolation
+"""
+
+# ╔═╡ 5c8bef64-c555-4266-b1a0-ed8894a99faa
+subtypes(Number)
+
+# ╔═╡ 66fef14c-ae91-4ddb-98a0-c7d886c682b3
+typeof(Float64)
+
+# ╔═╡ 165a2caf-7dfe-4a0f-9b1a-2483b55d0879
+md"""
+!!! tip
+    Mit dem Kommando
+	1.  `suptypes` kann man sich alle Untertypen und mit dem Kommando
+	2.  `supertypes` alle Obertypen eines gegebebenen Typs 
+	anzeigen lassen.
+"""
+
+# ╔═╡ aace03b3-2285-4739-b17e-7e87613bf4dc
+md"""
+Eine Übersicht über alle unterstützten numerischen Operatoren kann man hier finden:
+
+[https://docs.julialang.org/en/v1/manual/mathematical-operations/](https://docs.julialang.org/en/v1/manual/mathematical-operations/)
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -405,9 +406,9 @@ version = "1.2.2"
 
 [[deps.Adapt]]
 deps = ["LinearAlgebra", "Requires"]
-git-tree-sha1 = "02f731463748db57cc2ebfbd9fbc9ce8280d3433"
+git-tree-sha1 = "cde29ddf7e5726c9fb511f340244ea3481267608"
 uuid = "79e6a3ab-5dfb-504d-930d-738a2a938a0e"
-version = "3.7.1"
+version = "3.7.2"
 weakdeps = ["StaticArrays"]
 
     [deps.Adapt.extensions]
@@ -425,9 +426,9 @@ version = "0.2.0"
 
 [[deps.ArrayInterface]]
 deps = ["Adapt", "LinearAlgebra", "Requires", "SparseArrays", "SuiteSparse"]
-git-tree-sha1 = "247efbccf92448be332d154d6ca56b9fcdd93c31"
+git-tree-sha1 = "bbec08a37f8722786d87bedf84eae19c020c4efa"
 uuid = "4fba245c-0d91-5ea0-9b3e-6abc04ee57a9"
-version = "7.6.1"
+version = "7.7.0"
 
     [deps.ArrayInterface.extensions]
     ArrayInterfaceBandedMatricesExt = "BandedMatrices"
@@ -470,9 +471,9 @@ uuid = "62783981-4cbd-42fc-bca8-16325de8dc4b"
 version = "0.1.5"
 
 [[deps.CEnum]]
-git-tree-sha1 = "eb4cb44a499229b3b8426dcfb5dd85333951ff90"
+git-tree-sha1 = "389ad5c84de1ae7cf0e28e381131c98ea87d54fc"
 uuid = "fa961155-64e5-5f13-b03f-caf6b980ea82"
-version = "0.4.2"
+version = "0.5.0"
 
 [[deps.CPUSummary]]
 deps = ["CpuId", "IfElse", "PrecompileTools", "Static"]
@@ -488,9 +489,9 @@ version = "0.2.2"
 
 [[deps.ChainRulesCore]]
 deps = ["Compat", "LinearAlgebra"]
-git-tree-sha1 = "e0af648f0692ec1691b5d094b8724ba1346281cf"
+git-tree-sha1 = "2118cb2765f8197b08e5958cdd17c165427425ee"
 uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-version = "1.18.0"
+version = "1.19.0"
 weakdeps = ["SparseArrays"]
 
     [deps.ChainRulesCore.extensions]
@@ -504,9 +505,9 @@ version = "0.1.12"
 
 [[deps.Clustering]]
 deps = ["Distances", "LinearAlgebra", "NearestNeighbors", "Printf", "Random", "SparseArrays", "Statistics", "StatsBase"]
-git-tree-sha1 = "05f9816a77231b07e634ab8715ba50e5249d6f76"
+git-tree-sha1 = "407f38961ac11a6e14b2df7095a2577f7cb7cb1b"
 uuid = "aaaa29a8-35af-508c-8bc3-b662a17a0fe5"
-version = "0.15.5"
+version = "0.15.6"
 
 [[deps.ColorSchemes]]
 deps = ["ColorTypes", "ColorVectorSpace", "Colors", "FixedPointNumbers", "PrecompileTools", "Random"]
@@ -540,9 +541,9 @@ version = "0.12.10"
 
 [[deps.Compat]]
 deps = ["UUIDs"]
-git-tree-sha1 = "8a62af3e248a8c4bad6b32cbbe663ae02275e32c"
+git-tree-sha1 = "886826d76ea9e72b35fcd000e535588f7b60f21d"
 uuid = "34da2185-b29b-5c13-b0c7-acf172513d20"
-version = "4.10.0"
+version = "4.10.1"
 weakdeps = ["Dates", "LinearAlgebra"]
 
     [deps.Compat.extensions]
@@ -592,9 +593,9 @@ uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
 
 [[deps.Distances]]
 deps = ["LinearAlgebra", "Statistics", "StatsAPI"]
-git-tree-sha1 = "5225c965635d8c21168e32a12954675e7bea1151"
+git-tree-sha1 = "66c4c81f259586e8f002eacebc177e1fb06363b0"
 uuid = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
-version = "0.10.10"
+version = "0.10.11"
 weakdeps = ["ChainRulesCore", "SparseArrays"]
 
     [deps.Distances.extensions]
@@ -624,9 +625,9 @@ version = "0.3.2"
 
 [[deps.FFTW]]
 deps = ["AbstractFFTs", "FFTW_jll", "LinearAlgebra", "MKL_jll", "Preferences", "Reexport"]
-git-tree-sha1 = "b4fbdd20c889804969571cc589900803edda16b7"
+git-tree-sha1 = "ec22cbbcd01cba8f41eecd7d44aac1f23ee985e3"
 uuid = "7a1cc6ca-52ef-59f5-83cd-3a7055c09341"
-version = "1.7.1"
+version = "1.7.2"
 
 [[deps.FFTW_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -827,10 +828,10 @@ uuid = "1d092043-8f09-5a30-832f-7509e371ab51"
 version = "0.1.5"
 
 [[deps.IntelOpenMP_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
-git-tree-sha1 = "ad37c091f7d7daf900963171600d7c1c5c3ede32"
+deps = ["Artifacts", "JLLWrappers", "Libdl"]
+git-tree-sha1 = "31d6adb719886d4e32e38197aae466e98881320b"
 uuid = "1d5cc7b8-4909-519e-a0f8-d0f5ad9712d0"
-version = "2023.2.0+0"
+version = "2024.0.0+0"
 
 [[deps.InteractiveUtils]]
 deps = ["Markdown"]
@@ -858,15 +859,15 @@ uuid = "92d709cd-6900-40b7-9082-c6be49f344b6"
 version = "0.2.2"
 
 [[deps.IterTools]]
-git-tree-sha1 = "4ced6667f9974fc5c5943fa5e2ef1ca43ea9e450"
+git-tree-sha1 = "274c38bd733f9d29036d0a73658fff1dc1d3a065"
 uuid = "c8e1da08-722c-5040-9ed9-7db0dc04731e"
-version = "1.8.0"
+version = "1.9.0"
 
 [[deps.JLD2]]
 deps = ["FileIO", "MacroTools", "Mmap", "OrderedCollections", "Pkg", "PrecompileTools", "Printf", "Reexport", "Requires", "TranscodingStreams", "UUIDs"]
-git-tree-sha1 = "9bbb5130d3b4fa52846546bca4791ecbdfb52730"
+git-tree-sha1 = "c2d0f45afcb5f6209155670bffd100c3b4937ea3"
 uuid = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
-version = "0.4.38"
+version = "0.4.40"
 
 [[deps.JLLWrappers]]
 deps = ["Artifacts", "Preferences"]
@@ -882,15 +883,15 @@ version = "0.21.4"
 
 [[deps.JpegTurbo]]
 deps = ["CEnum", "FileIO", "ImageCore", "JpegTurbo_jll", "TOML"]
-git-tree-sha1 = "d65930fa2bc96b07d7691c652d701dcbe7d9cf0b"
+git-tree-sha1 = "fa6d0bcff8583bac20f1ffa708c3913ca605c611"
 uuid = "b835a17e-a41a-41e7-81f0-2f016b05efe0"
-version = "0.1.4"
+version = "0.1.5"
 
 [[deps.JpegTurbo_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
-git-tree-sha1 = "6f2675ef130a300a112286de91973805fcc5ffbc"
+git-tree-sha1 = "60b1194df0a3298f460063de985eae7b01bc011a"
 uuid = "aacddb02-875f-59d6-b918-886e6ef4fbf8"
-version = "2.1.91+0"
+version = "3.0.1+0"
 
 [[deps.LERC_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -985,16 +986,16 @@ uuid = "6c6e2e6c-3030-632d-7369-2d6c69616d65"
 version = "0.1.4"
 
 [[deps.MKL_jll]]
-deps = ["Artifacts", "IntelOpenMP_jll", "JLLWrappers", "LazyArtifacts", "Libdl", "Pkg"]
-git-tree-sha1 = "eb006abbd7041c28e0d16260e50a24f8f9104913"
+deps = ["Artifacts", "IntelOpenMP_jll", "JLLWrappers", "LazyArtifacts", "Libdl"]
+git-tree-sha1 = "72dc3cf284559eb8f53aa593fe62cb33f83ed0c0"
 uuid = "856f044c-d86e-5d09-b602-aeab76dc8ba7"
-version = "2023.2.0+0"
+version = "2024.0.0+0"
 
 [[deps.MacroTools]]
 deps = ["Markdown", "Random"]
-git-tree-sha1 = "9ee1618cbf5240e6d4e0371d6f24065083f60c48"
+git-tree-sha1 = "b211c553c199c111d998ecdaf7623d1b89b69f93"
 uuid = "1914dd2f-81c6-5fcd-8719-6d5c9610ff09"
-version = "0.5.11"
+version = "0.5.12"
 
 [[deps.ManualMemory]]
 git-tree-sha1 = "bcaef4fc7a0cfe2cba636d84cda54b5e4e4ca3cd"
@@ -1048,9 +1049,9 @@ version = "1.0.2"
 
 [[deps.NearestNeighbors]]
 deps = ["Distances", "StaticArrays"]
-git-tree-sha1 = "2c3726ceb3388917602169bed973dbc97f1b51a8"
+git-tree-sha1 = "3ef8ff4f011295fd938a521cb605099cecf084ca"
 uuid = "b8a86587-4115-5ab1-83bc-aa920d37bbce"
-version = "0.4.13"
+version = "0.4.15"
 
 [[deps.Netpbm]]
 deps = ["FileIO", "ImageCore", "ImageMetadata"]
@@ -1063,10 +1064,13 @@ uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
 version = "1.2.0"
 
 [[deps.OffsetArrays]]
-deps = ["Adapt"]
-git-tree-sha1 = "2ac17d29c523ce1cd38e27785a7d23024853a4bb"
+git-tree-sha1 = "6a731f2b5c03157418a20c12195eb4b74c8f8621"
 uuid = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
-version = "1.12.10"
+version = "1.13.0"
+weakdeps = ["Adapt"]
+
+    [deps.OffsetArrays.extensions]
+    OffsetArraysAdaptExt = "Adapt"
 
 [[deps.OpenBLAS_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
@@ -1097,9 +1101,9 @@ version = "1.6.3"
 
 [[deps.PNGFiles]]
 deps = ["Base64", "CEnum", "ImageCore", "IndirectArrays", "OffsetArrays", "libpng_jll"]
-git-tree-sha1 = "5ded86ccaf0647349231ed6c0822c10886d4a1ee"
+git-tree-sha1 = "67186a2bc9a90f9f85ff3cc8277868961fb57cbd"
 uuid = "f57f5aa1-a3ce-4bc8-8ab9-96f992907883"
-version = "0.4.1"
+version = "0.4.3"
 
 [[deps.PaddedViews]]
 deps = ["OffsetArrays"]
@@ -1317,9 +1321,9 @@ version = "0.8.8"
 
 [[deps.StaticArrayInterface]]
 deps = ["ArrayInterface", "Compat", "IfElse", "LinearAlgebra", "PrecompileTools", "Requires", "SparseArrays", "Static", "SuiteSparse"]
-git-tree-sha1 = "03fec6800a986d191f64f5c0996b59ed526eda25"
+git-tree-sha1 = "5d66818a39bb04bf328e92bc933ec5b4ee88e436"
 uuid = "0d7ed370-da01-4f52-bd93-41d350b8b718"
-version = "1.4.1"
+version = "1.5.0"
 weakdeps = ["OffsetArrays", "StaticArrays"]
 
     [deps.StaticArrayInterface.extensions]
@@ -1328,12 +1332,13 @@ weakdeps = ["OffsetArrays", "StaticArrays"]
 
 [[deps.StaticArrays]]
 deps = ["LinearAlgebra", "PrecompileTools", "Random", "StaticArraysCore"]
-git-tree-sha1 = "5ef59aea6f18c25168842bded46b16662141ab87"
+git-tree-sha1 = "fba11dbe2562eecdfcac49a05246af09ee64d055"
 uuid = "90137ffa-7385-5640-81b9-e52037218182"
-version = "1.7.0"
-weakdeps = ["Statistics"]
+version = "1.8.1"
+weakdeps = ["ChainRulesCore", "Statistics"]
 
     [deps.StaticArrays.extensions]
+    StaticArraysChainRulesCoreExt = "ChainRulesCore"
     StaticArraysStatisticsExt = "Statistics"
 
 [[deps.StaticArraysCore]]
@@ -1438,9 +1443,9 @@ uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 
 [[deps.VectorizationBase]]
 deps = ["ArrayInterface", "CPUSummary", "HostCPUFeatures", "IfElse", "LayoutPointers", "Libdl", "LinearAlgebra", "SIMDTypes", "Static", "StaticArrayInterface"]
-git-tree-sha1 = "b182207d4af54ac64cbc71797765068fdeff475d"
+git-tree-sha1 = "7209df901e6ed7489fe9b7aa3e46fb788e15db85"
 uuid = "3d5dd08c-fd9d-11e8-17fa-ed2836048c2f"
-version = "0.21.64"
+version = "0.21.65"
 
 [[deps.WoodburyMatrices]]
 deps = ["LinearAlgebra", "SparseArrays"]
@@ -1465,10 +1470,10 @@ uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
 version = "5.8.0+0"
 
 [[deps.libpng_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "Zlib_jll"]
-git-tree-sha1 = "94d180a6d2b5e55e447e2d27a29ed04fe79eb30c"
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Zlib_jll"]
+git-tree-sha1 = "93284c28274d9e75218a416c65ec49d0e0fcdf3d"
 uuid = "b53b4c65-9356-5827-b1ea-8c7a1a84506f"
-version = "1.6.38+0"
+version = "1.6.40+0"
 
 [[deps.libsixel_jll]]
 deps = ["Artifacts", "JLLWrappers", "JpegTurbo_jll", "Libdl", "Pkg", "libpng_jll"]
@@ -1488,41 +1493,85 @@ version = "17.4.0+0"
 """
 
 # ╔═╡ Cell order:
-# ╠═9986c5b7-2d88-406a-a225-05fb043ca81f
-# ╟─10353b52-8b0e-11ee-3d0d-3f9b07862a48
-# ╟─306d1dc4-0cb3-433c-b83c-ce15a04bab23
-# ╟─60fd6fe4-be67-4eff-87d1-42c922004e72
-# ╟─7252ffad-7a07-4e23-b0b5-a21ec6692e8f
-# ╟─019dfc42-45ba-4bb0-8c29-9dc4f4dd9557
-# ╟─933b52af-1546-47a3-bbbf-0493714bcadc
-# ╠═e3eadef9-61ff-4eec-8c6a-49a94d6071d4
-# ╟─96ea7e65-4352-4c6a-a007-96e7b822b7f6
-# ╟─b4649e71-bfa2-4a90-ae5c-7e8a56d66a4d
-# ╟─0b42bc0f-5b3c-41f0-8713-5f8a39c6651b
-# ╟─5a3845a9-399f-42e3-97f7-5d9ffbb6fd29
-# ╟─0ec4277c-7d78-42b6-a49f-3a2fd2f110ca
-# ╟─5f53228a-fd00-49e1-87c8-8676eb8d75c0
-# ╟─47c26d47-854e-485b-a6c0-8ee84efaa8c3
-# ╟─5b50cbdb-7da1-4582-845b-7d1bacf6ecc5
-# ╟─ebfd85c8-de3c-4fca-8509-fdcb3d9b0d7e
-# ╟─e814be19-16bb-4611-baeb-52b279a1557b
-# ╟─0fde5abc-bb3c-409e-8408-cb9c1d913c0f
-# ╟─8753fe57-fee0-4aad-bc06-dd2796b977b1
-# ╟─f48e2447-2170-4f52-a11b-9ad686a43d61
-# ╟─a9442804-7198-4173-9121-ab19f1f04dcf
-# ╟─37d28eaa-d11c-4386-8abf-28640348d612
-# ╟─3a16cc2f-e1ce-4045-93a4-2ca2db156fbd
-# ╟─2d082a81-e9e3-4246-b94f-d5da248d6625
-# ╟─01546534-8dcf-4bdb-9f52-681c0f1df9e3
-# ╟─858a4bbd-e734-4ec4-8714-0dcdc28a12f4
-# ╟─13d379da-0b0d-4aa5-982d-29a80e7643e0
-# ╟─ced81d4a-c606-45c3-837b-02684a1537db
-# ╟─252e4fff-27e1-4361-a4cb-39f80ade71ba
-# ╟─a12dd40c-4093-4dca-bb61-197b68d5efd1
-# ╟─f4581bea-56dc-418e-88e5-0c5403a0d8a6
-# ╟─bb7bb8c8-26a2-4237-8524-43e93185f22d
-# ╠═75c14f98-5a99-4075-bdb9-0204cba0209a
-# ╟─046cfa4a-2b43-4af3-b3af-c839b76040e4
-# ╠═eb97a176-a3ca-497c-92fc-de8d99fe9553
+# ╟─608469ba-9f6c-11ee-3740-fff2920aac1c
+# ╟─211891dd-5811-454d-9530-49ed28d6adfe
+# ╟─127de8a6-c092-438f-9cb0-83532a5343c7
+# ╟─12606683-a23d-4b5e-acc2-94634ff6fe89
+# ╟─36ec497f-191b-4b06-ac39-52aa4ac05f92
+# ╟─8fdce7cf-06f8-4d5d-924e-242a06af3679
+# ╟─29353080-35bb-4867-b63c-3521f56a9927
+# ╠═0c6a2a3f-1f08-4e45-94dc-427702713c75
+# ╟─2a012a0e-ca83-49cb-aaed-c5146ec78a13
+# ╠═f473b5a4-eccf-4020-8c8d-33caddd85826
+# ╠═ffd5929c-51b8-4cdb-8285-4e15026d9875
+# ╟─4f133e9d-b916-41da-9251-3514fcf9f5a9
+# ╟─ef37041d-0b4d-4204-9c22-9ce7d7952af7
+# ╠═34cf8b22-9da3-4ab1-ba1c-0a3a1e83ee29
+# ╠═51ecbb07-d338-404e-b9ae-9701e75e4d73
+# ╠═aabb2fb0-06d7-43d7-8805-edb8beb8fd5c
+# ╟─0c8425d7-71fd-4553-a835-4bb38561309b
+# ╟─f6a7952a-c5c4-4e32-904c-e85dacf1713e
+# ╠═02d72773-37ea-4ebd-9c6f-ccd51d96f4b7
+# ╠═f07a1e5a-c465-499b-a92e-d9b91a1c776d
+# ╟─817860ac-b284-4b02-865a-207cec9fc8ff
+# ╟─42af2d00-1dbe-40bd-9031-3da3cbd2d0b4
+# ╠═ec3a9cfd-dec4-47bb-8dd2-9df5a08a918b
+# ╠═f9bb8c82-6cce-462b-a936-4ab823d683ae
+# ╠═67f8ef07-4093-471b-883d-9551042aace9
+# ╟─5f22ef4b-5cc9-4c04-814a-de81a49450ca
+# ╟─f603f393-34b6-4c09-b842-13ca35f2ccf8
+# ╟─9204fd20-c3c6-48cf-acdb-2a3f1fab054e
+# ╟─47e68e27-144c-46df-b180-6b491e9d9bde
+# ╠═d9f6b662-c8ca-4a1a-ac09-4798ca45b841
+# ╟─cef7c017-4595-4b92-8962-d9832f10e00c
+# ╠═b96bde8f-4cbc-4ce8-b43b-70c58ed5fb64
+# ╟─2ea1bc14-9e91-41d3-afd4-428f4503df0e
+# ╟─187c092e-ad8c-4402-aa05-e0733b336550
+# ╠═f6f4c530-23d1-4293-9cd3-a83251f67f11
+# ╟─77e17d76-7b5b-4b89-89a1-7e889530490b
+# ╠═ef89de7f-6843-40e2-beef-61a09bb914eb
+# ╟─14dd583e-bb89-4ad4-887e-513423a637a9
+# ╠═3288a869-9891-4177-8cbf-e6ed3e3c80bf
+# ╟─e2906acf-65d5-4b2e-ab58-15521392a02d
+# ╠═59c7602c-14be-4faa-81ff-387d730581e7
+# ╟─5a34c57e-5885-4df4-8305-5cb0391ef229
+# ╟─911930fd-54ce-4f89-b2de-a6b85c1ac378
+# ╠═ef92e922-3637-4f97-9012-17ddfe8823a0
+# ╠═b4d55262-321d-4870-a06f-fb3dfe3c897f
+# ╟─b447d086-52d2-4f05-be0b-6f3deabfd9f1
+# ╟─6ff1fbaf-8551-4bf7-8bed-648fc7b07d7c
+# ╟─52d76ceb-257d-4664-973c-9dc073a2f9f9
+# ╠═e0144d69-0bca-4e2e-938b-3e34ca8680c8
+# ╟─18181c18-f307-4ecc-99ca-0ec263d062c7
+# ╠═83c1be17-dda5-472b-9208-e75a13118601
+# ╟─0757fc13-1ac5-44f7-b8d8-52a4a77bbed8
+# ╟─99c28994-c077-47af-9764-799ab6c849f1
+# ╟─2ee60d80-de03-42b6-9343-7f0779e79452
+# ╟─1e0f1b46-cff6-4b3c-829f-637e9c6e9533
+# ╠═eadf6143-781e-411c-ab2f-e04d26797803
+# ╠═76feca8f-39ed-4cc5-9be2-98f366da2cc8
+# ╠═ae984997-3119-486f-b3ec-5fc5a171f5eb
+# ╠═9362ef16-a700-4bcf-a475-c0633e5df42a
+# ╟─3b1f09df-875c-4e05-bf56-b2ac1e84de95
+# ╟─d4260739-a6c8-4f02-96b9-279abb0e11b0
+# ╠═b416d9c8-803b-4e3e-b66b-7e20c89f96bb
+# ╠═65fcd88e-09ca-4079-9d7d-e395f1382b2d
+# ╠═0b84a9df-149b-4690-bfa1-078943b2e4b3
+# ╠═59f6cb34-24e8-48a9-882e-310f1a78a1d4
+# ╟─8713df22-2846-41d4-abcd-006795a6b758
+# ╠═6f0af6be-69fd-42c1-98da-c868eb5f3948
+# ╟─8894c690-9a0c-40d7-ac74-708a1218ada4
+# ╟─fa56dc37-eeb8-4b40-a54c-6b586c85ee9a
+# ╠═71024eb6-380e-4a48-ac67-e3d0ece3e0b7
+# ╠═63fd5865-df42-4883-a8b0-75645a6ebbb2
+# ╟─eeabf882-a967-4137-9ea3-09487055d9ec
+# ╠═0e575a99-ea33-4902-920f-11938594fe5b
+# ╟─f93c55c6-cb45-422d-8e07-359105252446
+# ╠═543bf419-6dfd-44c0-b7af-220e99d7346c
+# ╠═709f786b-e2e9-4f6f-a334-a6fda3c28abe
+# ╠═5c8bef64-c555-4266-b1a0-ed8894a99faa
+# ╠═66fef14c-ae91-4ddb-98a0-c7d886c682b3
+# ╟─165a2caf-7dfe-4a0f-9b1a-2483b55d0879
+# ╟─aace03b3-2285-4739-b17e-7e87613bf4dc
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
