@@ -25,7 +25,7 @@ load("./assets/Numerische_Typen_Julia.png")
 
 # ╔═╡ 36ec497f-191b-4b06-ac39-52aa4ac05f92
 md"""
-### Standard-Datentypen 
+### Datentypen 
 """
 
 # ╔═╡ 8fdce7cf-06f8-4d5d-924e-242a06af3679
@@ -153,7 +153,7 @@ md"""
 
 # ╔═╡ 9204fd20-c3c6-48cf-acdb-2a3f1fab054e
 md"""
-### Standard-Operationen 
+### Operationen 
 #### Unäre (einseitige) Operatoren
 """
 
@@ -271,6 +271,36 @@ md"""
 # ╔═╡ 9362ef16-a700-4bcf-a475-c0633e5df42a
 1+245
 
+# ╔═╡ aace03b3-2285-4739-b17e-7e87613bf4dc
+md"""
+Eine Übersicht über alle unterstützten numerischen Operatoren kann man hier finden:
+
+[https://docs.julialang.org/en/v1/manual/mathematical-operations/](https://docs.julialang.org/en/v1/manual/mathematical-operations/)
+"""
+
+# ╔═╡ ea358f14-f3b8-4b98-8354-9b22c830f88c
+md"""
+#### Übung 3: 
+1. Welchen `Julia`-Ausdruck muss man eingeben, damit man folgenden Bruch ausrechnet:
+
+$\frac{3-2}{4-1}$
+
+2. Welches ist der korrekte `Julia`-Ausdruck für:
+
+$2^{4-2}$ 
+
+3. Welcher der Ausdrücke liefert ein anderes Ergebnis:
+
+   a. $(2-3)-4$
+
+   b. $2-3-4$
+
+   c. $2-(3-4)$
+
+   Warum? Was ist links-assoziativ?
+4. Wie sieht es mit dem `Julia`-Ausdruck 2^3^4 aus? Wie werden die Klammern hier automatisch gesetzt?
+"""
+
 # ╔═╡ 3b1f09df-875c-4e05-bf56-b2ac1e84de95
 md"""
 ## Zeichen und Zeichenketten
@@ -337,33 +367,60 @@ md"""
 """
 
 # ╔═╡ 543bf419-6dfd-44c0-b7af-220e99d7346c
+md"""
+Im Gegensatz zu anderen Programmiersprachen wird in Julia die Verkettung (Concatination) von Zeichenketten mit dem `*`-Operator durchgeführt.
+"""
 
+# ╔═╡ b1c68c08-2f35-4a2f-82cc-ade0af44cdef
+begin
+	s1 = "Hallo"
+	s2 = "Welt!"
+
+	s1*" "*s2
+end
+
+# ╔═╡ e4fc9ce0-b7c2-4686-9e47-832145654e18
+md"""
+Da der `*`-Operator ebenfalls für Multiplikation genutzt wird, wird eine analoge Behandlung bei der Exponential-Schreibweise von Zeichenketten genutzt. Hier ein Beispiel:
+"""
+
+# ╔═╡ 1fef8d2e-17bc-4de0-8fc3-3e48ab8ef732
+(s1*" ")^3*s2
+
+# ╔═╡ eb74a0a2-fdd9-4fd1-a810-9fbf8663f435
+md"""
+Außerdem kann man folgendes Konstrukt verwenden:
+"""
+
+# ╔═╡ 89a42b4c-e44b-46eb-b904-01530bc075ee
+string(s1," ",s2)
 
 # ╔═╡ 709f786b-e2e9-4f6f-a334-a6fda3c28abe
 md"""
 ### Zeichenketten-Interpolation
 """
 
-# ╔═╡ 5c8bef64-c555-4266-b1a0-ed8894a99faa
-subtypes(Number)
+# ╔═╡ 6b49e12d-426b-431e-9422-4646bcbc8294
+begin
+	s3 = "KursteilnehmerInnen"
+	s4 = "Hallo $s3"
+end
 
-# ╔═╡ 66fef14c-ae91-4ddb-98a0-c7d886c682b3
-typeof(Float64)
-
-# ╔═╡ 165a2caf-7dfe-4a0f-9b1a-2483b55d0879
+# ╔═╡ 6927ab20-a886-4657-89da-8a6b53c769b5
 md"""
-!!! tip
-    Mit dem Kommando
-	1.  `suptypes` kann man sich alle Untertypen und mit dem Kommando
-	2.  `supertypes` alle Obertypen eines gegebebenen Typs 
-	anzeigen lassen.
+Möchte man eine auch Berechnungen innerhalb einer Zeichenkette durchführen, so geht dies mit der Interpolation.
 """
 
-# ╔═╡ aace03b3-2285-4739-b17e-7e87613bf4dc
-md"""
-Eine Übersicht über alle unterstützten numerischen Operatoren kann man hier finden:
+# ╔═╡ bc7bc37e-22a9-4aa9-bd8a-cd2b8ede3016
+#Radius
+r=3
 
-[https://docs.julialang.org/en/v1/manual/mathematical-operations/](https://docs.julialang.org/en/v1/manual/mathematical-operations/)
+# ╔═╡ 679e9257-4c43-4544-bd9f-6cbf629738be
+"Der Umfang des Kreises mit Radius R ist U=$(2*π*r) und die Fläche A=$(π*r^2)"
+
+# ╔═╡ efc57d33-aa5d-4f8c-87c2-b36a388daa3a
+md"""
+## Funktionen und Methoden
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -1552,6 +1609,8 @@ version = "17.4.0+0"
 # ╠═76feca8f-39ed-4cc5-9be2-98f366da2cc8
 # ╠═ae984997-3119-486f-b3ec-5fc5a171f5eb
 # ╠═9362ef16-a700-4bcf-a475-c0633e5df42a
+# ╟─aace03b3-2285-4739-b17e-7e87613bf4dc
+# ╟─ea358f14-f3b8-4b98-8354-9b22c830f88c
 # ╟─3b1f09df-875c-4e05-bf56-b2ac1e84de95
 # ╟─d4260739-a6c8-4f02-96b9-279abb0e11b0
 # ╠═b416d9c8-803b-4e3e-b66b-7e20c89f96bb
@@ -1567,11 +1626,17 @@ version = "17.4.0+0"
 # ╟─eeabf882-a967-4137-9ea3-09487055d9ec
 # ╠═0e575a99-ea33-4902-920f-11938594fe5b
 # ╟─f93c55c6-cb45-422d-8e07-359105252446
-# ╠═543bf419-6dfd-44c0-b7af-220e99d7346c
-# ╠═709f786b-e2e9-4f6f-a334-a6fda3c28abe
-# ╠═5c8bef64-c555-4266-b1a0-ed8894a99faa
-# ╠═66fef14c-ae91-4ddb-98a0-c7d886c682b3
-# ╟─165a2caf-7dfe-4a0f-9b1a-2483b55d0879
-# ╟─aace03b3-2285-4739-b17e-7e87613bf4dc
+# ╟─543bf419-6dfd-44c0-b7af-220e99d7346c
+# ╠═b1c68c08-2f35-4a2f-82cc-ade0af44cdef
+# ╟─e4fc9ce0-b7c2-4686-9e47-832145654e18
+# ╠═1fef8d2e-17bc-4de0-8fc3-3e48ab8ef732
+# ╟─eb74a0a2-fdd9-4fd1-a810-9fbf8663f435
+# ╠═89a42b4c-e44b-46eb-b904-01530bc075ee
+# ╟─709f786b-e2e9-4f6f-a334-a6fda3c28abe
+# ╠═6b49e12d-426b-431e-9422-4646bcbc8294
+# ╟─6927ab20-a886-4657-89da-8a6b53c769b5
+# ╠═bc7bc37e-22a9-4aa9-bd8a-cd2b8ede3016
+# ╠═679e9257-4c43-4544-bd9f-6cbf629738be
+# ╠═efc57d33-aa5d-4f8c-87c2-b36a388daa3a
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
