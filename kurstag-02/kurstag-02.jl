@@ -4,6 +4,16 @@
 using Markdown
 using InteractiveUtils
 
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    quote
+        local iv = try Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value catch; b -> missing; end
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : iv(el)
+        el
+    end
+end
+
 # ╔═╡ 608469ba-9f6c-11ee-3740-fff2920aac1c
 begin
 	using PlutoUI, Images, FileIO
@@ -418,10 +428,250 @@ r=3
 # ╔═╡ 679e9257-4c43-4544-bd9f-6cbf629738be
 "Der Umfang des Kreises mit Radius R ist U=$(2*π*r) und die Fläche A=$(π*r^2)"
 
+# ╔═╡ 5519a33e-d60d-4b7a-942f-f74939746d43
+md"""
+#### Übung 4: 
+1. Bestimme die Länge eines Strings (Zeichenkette).
+2. Wiederhole eine Zeichenekette durch Modifikation eines [Sliders](https://featured.plutojl.org/basic/plutoui.jl) in einem Bereich zwischen 0 und 1000 Mal. Gebe die Länge der resultierenden Zeichenkette aus. Die Verwendung von Pluto ist dafür notwendig.
+3. Verwende Funktionen wie occursin, um das Vorhandensein eines Unterstrings zu überprüfen, und replace, um einen Teil des Strings zu ersetzen.
+4. Erforsche weitere String-Funktionen in Julia, wie zum Beispiel strip, split, join und repeat.
+"""
+
 # ╔═╡ efc57d33-aa5d-4f8c-87c2-b36a388daa3a
 md"""
-## Funktionen und Methoden
+## Boolsche Logik und bedingte Ausdrücke
+
+Um die logischen Ablauf (Control flow) von Programm zu kontrollieren benutzen Programmiersprachen Boolsche Logik und bedingte Ausdrücke.
+
+### Boolsche Logik
+
+In der Boolschenn Logik kennt man verschiedene Operatoren und Gesetze. Siehe hierzu [https://de.wikipedia.org/wiki/Boolesche_Algebra](https://de.wikipedia.org/wiki/Boolesche_Algebra).
+
+Julia nutzt dazu den Datentyp: [__Bool__](https://docs.julialang.org/en/v1/base/numbers/#Core.Bool), der nur zwei Werte annehmen kann.
+
+- true (== 1)
+- false (==0)
 """
+
+# ╔═╡ c532c3a0-8c57-4b8c-846b-7f482fde61e7
+true == 1
+
+# ╔═╡ 73646c2b-79f8-44d4-a366-76bac145cb2b
+true == 0
+
+# ╔═╡ 750f16f6-47e7-4698-a683-0a54b9e31772
+false == 1
+
+# ╔═╡ 56bde8fb-c208-4de6-a361-ea15e6b8197a
+false == 0
+
+# ╔═╡ 6ede7c13-08b7-466f-a754-c6a84307d573
+md"""
+#### Und-Verknüpfung
+
+Die Und (AND)-Verknüfpung && erfüllt die folgende Wahrheitstabelle:
+```math
+\begin{array}{|c|c|c|}
+ x & y & x \mbox{ \&\& } y \\
+\hline
+false & false & false \\
+true & false & false \\
+false & true & false \\
+true & true & true
+\end{array}
+```
+"""
+
+# ╔═╡ 4a64eabf-ecf9-414e-b07a-419f74f4c5b1
+false && false
+
+# ╔═╡ 1843deeb-12f5-4951-8dea-737bc4170662
+true && false
+
+# ╔═╡ 11f4fe9e-9e8e-42b5-a40a-4f7fc57b5f2d
+false && true
+
+# ╔═╡ 105cf711-666f-4579-b51a-a125d7f031c5
+true && true
+
+# ╔═╡ b48c2a2f-0894-4b30-ab8d-7f0958a684c2
+md"""
+#### Oder-Verknüpfung
+
+Die Oder (OR)-Verknüfpung || erfüllt die folgende Wahrheitstabelle:
+```math
+\begin{array}{|c|c|c|}
+ x & y & x \mbox{ || } y \\
+\hline
+false & false & false \\
+true & false & true \\
+false & true & true \\
+true & true & true
+\end{array}
+```
+"""
+
+# ╔═╡ 69e311ea-56c3-4768-9a72-e5e681c9dbf8
+false || false, true || false, false || true, true || true
+
+# ╔═╡ baf58134-1cd6-4470-8167-073970517c6d
+md"""
+!!! tip
+    Umgangsprachlich entspricht das `oder` mehr dem exklusiven ODER (XOR) in der Programmierung. Man spricht hier auch vom entweder oder.
+"""
+
+# ╔═╡ 3d9dd161-663f-40e8-b524-4193c29196ba
+md"""
+#### Exklusives Oder (XOR)-Verknüpfung
+
+Die Exklusive Oder (XOR)-Verknüfpung $$\vee$$ erfüllt die folgende Wahrheitstabelle:
+```math
+\begin{array}{|c|c|c|}
+ x & y & x  \vee  y \\
+\hline
+false & false & false \\
+true & false & true \\
+false & true & true \\
+true & true & false
+\end{array}
+```
+"""
+
+# ╔═╡ a15391d8-0c57-4a55-9562-90877043ede6
+false ⊻ false, true ⊻ false, false ⊻ true, true ⊻ true
+
+# ╔═╡ 329c9d46-99b9-40e0-96c3-69af17e03388
+md"""
+### Bedingte Ausdrücke
+
+Hier gibt es zwei Ausprägungen, auf die wir im Folgenden eingehen.
+
+#### Short-Circuit Evaluation
+"""
+
+# ╔═╡ 62d6605a-50be-4fd4-b379-30734406e55a
+md"""
+!!! warning "Achtung"
+	1. In der UND-Verknüpfung `a && b` wird der zweite Term `b` erst ausgewertet, wenn der erste Term `a` den Wahrheitswert `true` hat.
+	1. In der ODER-Verknüpfung `a || b` wird der zweite Term `b` erst ausgewertet, wenn der erste Term `a` den Wahrheitswert `false` hat.
+
+Dies wird oft in Julia genutzt. Ein Anwendungsbeispiel ist die Prüfung von Eingabewerten. Hier ein Beispiel für die UND-Verknüpfung:
+"""
+
+
+
+# ╔═╡ fbf70088-32db-4cb9-b4c7-185149550ea6
+begin
+	eingabewert1 = -1
+	eingabewert1 < 0 && error("Eingabewert ist zu klein!") 
+end
+
+# ╔═╡ 2a62c447-c029-4a83-83ad-e53d974e3139
+begin
+	eingabewert2 = 1
+	eingabewert2 < 0 && error("Eingabewert ist zu klein!") 
+end
+
+# ╔═╡ b56bdaca-be24-4379-b245-feb7b1f15a92
+md"""der obige Block hat keine Ausgabe, des Satzes: "Eingabewert ist zu klein!", da der erste Term nicht wahr (true) ist. Dies erkennt man auch an dem false oberhalb des Feldes. Im vorletzen Block gab es solch eine Ausgabe nicht, da das `print` -Kommando keinen Rückgabewert hat."""
+
+# ╔═╡ b187a837-1321-40cc-91bd-06d9c4ce30ca
+md"""
+#### if-elseif-else bedingte Ausdrücke
+"""
+
+# ╔═╡ 2c9f1562-5adf-4773-9482-b3ad8fa67f7a
+md"""
+!!! tip 
+
+	__if ( bedingung1 )__
+
+		Anweisungen 1
+
+	__elseif( bedingung2 )__
+
+		Anweisungen 2
+		.
+
+		.
+
+		.
+
+	else
+
+		Anweisungen sonst
+
+	end
+"""
+
+# ╔═╡ 50584aaa-fa9e-46d9-858b-d11b7d2692a4
+md"__Beispiel:__"
+
+# ╔═╡ 853a7ad7-7cfe-4c85-8ca7-5811629d05b2
+begin
+	bedingung1 = true
+	bedingung2 = false
+	
+	if(bedingung1)
+		"Bedinung 1 erfüllt"
+	elseif(bedingung2)
+		"Bedingung 2 erfüllt"
+	else
+		"Fall: keine Bedinung erfüllt -> Sonstige Anweisung"
+	end
+end
+
+# ╔═╡ f785397e-e40d-417f-b39e-884a7589625a
+md"""
+!!! warning "Achtung"
+	`elseif` und `else` sind optionale Anteile der if-Bedingung
+"""
+
+# ╔═╡ 0d6ba76d-b790-4a45-b5c4-de33d468e23c
+md"""
+#### Ternärer Operator
+
+Wie andere Programmiersprachen besitzt Julia auch einen ternären Operator (ternary operator). Der Ternäre Operator ist eine kurze Form einer if-Anweisung, die wie eine Zuweisung nutze kann.
+"""
+
+# ╔═╡ c1d50d98-06b0-4a67-b5be-cb056ffb2704
+md"""
+!!! tip 
+	Der Ternäre Operator hat die Struktur:
+
+    `bedingung ? <Rückgabewert wenn wahr > : <Rückgabewert wenn falsch`
+"""
+
+# ╔═╡ 92ea05a4-37b8-4f86-a812-ebdd05e2c937
+md"__Beispiel__"
+
+# ╔═╡ 514bf743-dbe1-4886-9071-c7a282d6edcf
+@bind is_box_checked CheckBox()
+
+# ╔═╡ dfe6eecd-4864-4316-821e-86e465f55456
+is_box_checked ? "Häkchen gesetzt" : "Häkchen nicht gesetzt"
+
+# ╔═╡ f372431f-08c0-4206-88a0-4ec10f012e9a
+md"""
+#### Übung 5: 
+1. Schreibe eine if-Anweisung, die eine bereitgestellte Zahl prüft. Es soll
+   - fizz ausgegeben werden, wenn die Zahl ohne Rest durch 3 teilbar ist,
+   - buzz ausgegeben werden, wenn die Zahl ohne Rest durch 5 teilbar ist und
+   - fizz buzz, wenn Sie ohne Rest durch 3 und 5 teilbar ist.
+2. Verwende den ternären Operator, um eine Anweisung zu schreiben, die überprüft, ob     die Länge eines Strings größer als 5 ist, und entsprechend "Lang" oder "Kurz"     
+    zurückgibt. Um den String einzugeben benutze folgenden Befehl in einem Pluto-  
+    Notebook:
+    
+	```julia
+	    @bind text TextField(default="test")
+```
+"""
+
+# ╔═╡ cd369ef2-83d4-422a-aceb-f92e7fcf39a3
+@bind text TextField(default="test")
+
+# ╔═╡ 4eb1def0-0b6b-4bec-86ce-25a29e891f3b
+length(text)>5 ? "Lang" : "Kurz"
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -431,7 +681,7 @@ Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 
 [compat]
-FileIO = "~1.16.1"
+FileIO = "~1.16.2"
 Images = "~0.26.0"
 PlutoUI = "~0.7.54"
 """
@@ -440,9 +690,9 @@ PlutoUI = "~0.7.54"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.9.2"
+julia_version = "1.10.0"
 manifest_format = "2.0"
-project_hash = "78732f90007a038a4a5ca918705e568ed140d658"
+project_hash = "4f50f408933af9ceda4b0e4d987baae020127e91"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -457,9 +707,9 @@ weakdeps = ["ChainRulesCore", "Test"]
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
-git-tree-sha1 = "793501dcd3fa7ce8d375a2c878dca2296232686e"
+git-tree-sha1 = "c278dfab760520b8bb7e9511b968bf4ba38b7acc"
 uuid = "6e696c72-6542-2067-7265-42206c756150"
-version = "1.2.2"
+version = "1.2.3"
 
 [[deps.Adapt]]
 deps = ["LinearAlgebra", "Requires"]
@@ -609,7 +859,7 @@ weakdeps = ["Dates", "LinearAlgebra"]
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "1.0.5+0"
+version = "1.0.5+1"
 
 [[deps.ComputationalResources]]
 git-tree-sha1 = "52cb3ec90e8a8bea0e62e275ba577ad0f74821f7"
@@ -640,9 +890,9 @@ version = "1.15.0"
 
 [[deps.DataStructures]]
 deps = ["Compat", "InteractiveUtils", "OrderedCollections"]
-git-tree-sha1 = "3dbd312d370723b6bb43ba9d02fc36abade4518d"
+git-tree-sha1 = "ac67408d9ddf207de5cfa9a97e114352430f01ed"
 uuid = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
-version = "0.18.15"
+version = "0.18.16"
 
 [[deps.Dates]]
 deps = ["Printf"]
@@ -694,9 +944,9 @@ version = "3.3.10+0"
 
 [[deps.FileIO]]
 deps = ["Pkg", "Requires", "UUIDs"]
-git-tree-sha1 = "299dc33549f68299137e51e6d49a13b5b1da9673"
+git-tree-sha1 = "c5c28c245101bd59154f649e19b038d15901b5dc"
 uuid = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
-version = "1.16.1"
+version = "1.16.2"
 
 [[deps.FileWatching]]
 uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
@@ -886,9 +1136,9 @@ version = "0.1.5"
 
 [[deps.IntelOpenMP_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
-git-tree-sha1 = "31d6adb719886d4e32e38197aae466e98881320b"
+git-tree-sha1 = "5fdf2fe6724d8caabf43b557b84ce53f3b7e2f6b"
 uuid = "1d5cc7b8-4909-519e-a0f8-d0f5ad9712d0"
-version = "2024.0.0+0"
+version = "2024.0.2+0"
 
 [[deps.InteractiveUtils]]
 deps = ["Markdown"]
@@ -916,15 +1166,15 @@ uuid = "92d709cd-6900-40b7-9082-c6be49f344b6"
 version = "0.2.2"
 
 [[deps.IterTools]]
-git-tree-sha1 = "274c38bd733f9d29036d0a73658fff1dc1d3a065"
+git-tree-sha1 = "42d5f897009e7ff2cf88db414a389e5ed1bdd023"
 uuid = "c8e1da08-722c-5040-9ed9-7db0dc04731e"
-version = "1.9.0"
+version = "1.10.0"
 
 [[deps.JLD2]]
 deps = ["FileIO", "MacroTools", "Mmap", "OrderedCollections", "Pkg", "PrecompileTools", "Printf", "Reexport", "Requires", "TranscodingStreams", "UUIDs"]
-git-tree-sha1 = "c2d0f45afcb5f6209155670bffd100c3b4937ea3"
+git-tree-sha1 = "e65d2bd5754885e97407ff686da66a58b1e20df8"
 uuid = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
-version = "0.4.40"
+version = "0.4.41"
 
 [[deps.JLLWrappers]]
 deps = ["Artifacts", "Preferences"]
@@ -974,21 +1224,26 @@ version = "0.3.1"
 [[deps.LibCURL]]
 deps = ["LibCURL_jll", "MozillaCACerts_jll"]
 uuid = "b27032c2-a3e7-50c8-80cd-2d36dbcbfd21"
-version = "0.6.3"
+version = "0.6.4"
 
 [[deps.LibCURL_jll]]
 deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll", "Zlib_jll", "nghttp2_jll"]
 uuid = "deac9b47-8bc7-5906-a0fe-35ac56dc84c0"
-version = "7.84.0+0"
+version = "8.4.0+0"
 
 [[deps.LibGit2]]
-deps = ["Base64", "NetworkOptions", "Printf", "SHA"]
+deps = ["Base64", "LibGit2_jll", "NetworkOptions", "Printf", "SHA"]
 uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
+
+[[deps.LibGit2_jll]]
+deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll"]
+uuid = "e37daf67-58a4-590a-8e99-b0245dd2ffc5"
+version = "1.6.4+0"
 
 [[deps.LibSSH2_jll]]
 deps = ["Artifacts", "Libdl", "MbedTLS_jll"]
 uuid = "29816b5a-b9ab-546f-933c-edad1886dfa8"
-version = "1.10.2+0"
+version = "1.11.0+1"
 
 [[deps.Libdl]]
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
@@ -1071,7 +1326,7 @@ uuid = "d6f4376e-aef5-505a-96c1-9c027394607a"
 [[deps.MbedTLS_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
-version = "2.28.2+0"
+version = "2.28.2+1"
 
 [[deps.MetaGraphs]]
 deps = ["Graphs", "JLD2", "Random"]
@@ -1096,7 +1351,7 @@ version = "0.3.4"
 
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
-version = "2022.10.11"
+version = "2023.1.10"
 
 [[deps.NaNMath]]
 deps = ["OpenLibm_jll"]
@@ -1106,9 +1361,9 @@ version = "1.0.2"
 
 [[deps.NearestNeighbors]]
 deps = ["Distances", "StaticArrays"]
-git-tree-sha1 = "3ef8ff4f011295fd938a521cb605099cecf084ca"
+git-tree-sha1 = "ded64ff6d4fdd1cb68dfcbb818c69e144a5b2e4c"
 uuid = "b8a86587-4115-5ab1-83bc-aa920d37bbce"
-version = "0.4.15"
+version = "0.4.16"
 
 [[deps.Netpbm]]
 deps = ["FileIO", "ImageCore", "ImageMetadata"]
@@ -1132,7 +1387,7 @@ weakdeps = ["Adapt"]
 [[deps.OpenBLAS_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
-version = "0.3.21+4"
+version = "0.3.23+2"
 
 [[deps.OpenEXR]]
 deps = ["Colors", "FileIO", "OpenEXR_jll"]
@@ -1149,7 +1404,7 @@ version = "3.1.4+0"
 [[deps.OpenLibm_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "05823500-19ac-5b8b-9628-191a04bc5112"
-version = "0.8.1+0"
+version = "0.8.1+2"
 
 [[deps.OrderedCollections]]
 git-tree-sha1 = "dfdf5519f235516220579f949664f1bf44e741c5"
@@ -1176,14 +1431,14 @@ version = "0.12.3"
 
 [[deps.Parsers]]
 deps = ["Dates", "PrecompileTools", "UUIDs"]
-git-tree-sha1 = "a935806434c9d4c506ba941871b327b96d41f2bf"
+git-tree-sha1 = "8489905bcdbcfac64d1daa51ca07c0d8f0283821"
 uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
-version = "2.8.0"
+version = "2.8.1"
 
 [[deps.Pkg]]
 deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-version = "1.9.2"
+version = "1.10.0"
 
 [[deps.PkgVersion]]
 deps = ["Pkg"]
@@ -1258,7 +1513,7 @@ deps = ["InteractiveUtils", "Markdown", "Sockets", "Unicode"]
 uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 
 [[deps.Random]]
-deps = ["SHA", "Serialization"]
+deps = ["SHA"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [[deps.RangeArrays]]
@@ -1356,13 +1611,14 @@ uuid = "6462fe0b-24de-5631-8697-dd941f90decc"
 
 [[deps.SortingAlgorithms]]
 deps = ["DataStructures"]
-git-tree-sha1 = "5165dfb9fd131cf0c6957a3a7605dede376e7b63"
+git-tree-sha1 = "66e0a8e672a0bdfca2c3f5937efb8538b9ddc085"
 uuid = "a2af1166-a08f-5f64-846c-94a0d3cef48c"
-version = "1.2.0"
+version = "1.2.1"
 
 [[deps.SparseArrays]]
 deps = ["Libdl", "LinearAlgebra", "Random", "Serialization", "SuiteSparse_jll"]
 uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+version = "1.10.0"
 
 [[deps.StackViews]]
 deps = ["OffsetArrays"]
@@ -1389,9 +1645,9 @@ weakdeps = ["OffsetArrays", "StaticArrays"]
 
 [[deps.StaticArrays]]
 deps = ["LinearAlgebra", "PrecompileTools", "Random", "StaticArraysCore"]
-git-tree-sha1 = "fba11dbe2562eecdfcac49a05246af09ee64d055"
+git-tree-sha1 = "4e17a790909b17f7bf1496e3aec138cf01b60b3b"
 uuid = "90137ffa-7385-5640-81b9-e52037218182"
-version = "1.8.1"
+version = "1.9.0"
 weakdeps = ["ChainRulesCore", "Statistics"]
 
     [deps.StaticArrays.extensions]
@@ -1406,7 +1662,7 @@ version = "1.4.2"
 [[deps.Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]
 uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
-version = "1.9.0"
+version = "1.10.0"
 
 [[deps.StatsAPI]]
 deps = ["LinearAlgebra"]
@@ -1425,9 +1681,9 @@ deps = ["Libdl", "LinearAlgebra", "Serialization", "SparseArrays"]
 uuid = "4607b0f0-06f3-5cda-b6b1-a6196a1729e9"
 
 [[deps.SuiteSparse_jll]]
-deps = ["Artifacts", "Libdl", "Pkg", "libblastrampoline_jll"]
+deps = ["Artifacts", "Libdl", "libblastrampoline_jll"]
 uuid = "bea87d4a-7f5b-5778-9afe-8cc45184846c"
-version = "5.10.1+6"
+version = "7.2.1+1"
 
 [[deps.TOML]]
 deps = ["Dates"]
@@ -1513,7 +1769,7 @@ version = "0.5.6"
 [[deps.Zlib_jll]]
 deps = ["Libdl"]
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
-version = "1.2.13+0"
+version = "1.2.13+1"
 
 [[deps.Zstd_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -1524,7 +1780,7 @@ version = "1.5.5+0"
 [[deps.libblastrampoline_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
-version = "5.8.0+0"
+version = "5.8.0+1"
 
 [[deps.libpng_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Zlib_jll"]
@@ -1541,16 +1797,16 @@ version = "1.10.3+0"
 [[deps.nghttp2_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850ede-7688-5339-a07c-302acd2aaf8d"
-version = "1.48.0+0"
+version = "1.52.0+1"
 
 [[deps.p7zip_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
-version = "17.4.0+0"
+version = "17.4.0+2"
 """
 
 # ╔═╡ Cell order:
-# ╟─608469ba-9f6c-11ee-3740-fff2920aac1c
+# ╠═608469ba-9f6c-11ee-3740-fff2920aac1c
 # ╟─211891dd-5811-454d-9530-49ed28d6adfe
 # ╟─127de8a6-c092-438f-9cb0-83532a5343c7
 # ╟─12606683-a23d-4b5e-acc2-94634ff6fe89
@@ -1637,6 +1893,39 @@ version = "17.4.0+0"
 # ╟─6927ab20-a886-4657-89da-8a6b53c769b5
 # ╠═bc7bc37e-22a9-4aa9-bd8a-cd2b8ede3016
 # ╠═679e9257-4c43-4544-bd9f-6cbf629738be
-# ╠═efc57d33-aa5d-4f8c-87c2-b36a388daa3a
+# ╟─5519a33e-d60d-4b7a-942f-f74939746d43
+# ╟─efc57d33-aa5d-4f8c-87c2-b36a388daa3a
+# ╠═c532c3a0-8c57-4b8c-846b-7f482fde61e7
+# ╠═73646c2b-79f8-44d4-a366-76bac145cb2b
+# ╠═750f16f6-47e7-4698-a683-0a54b9e31772
+# ╠═56bde8fb-c208-4de6-a361-ea15e6b8197a
+# ╟─6ede7c13-08b7-466f-a754-c6a84307d573
+# ╠═4a64eabf-ecf9-414e-b07a-419f74f4c5b1
+# ╠═1843deeb-12f5-4951-8dea-737bc4170662
+# ╠═11f4fe9e-9e8e-42b5-a40a-4f7fc57b5f2d
+# ╠═105cf711-666f-4579-b51a-a125d7f031c5
+# ╟─b48c2a2f-0894-4b30-ab8d-7f0958a684c2
+# ╠═69e311ea-56c3-4768-9a72-e5e681c9dbf8
+# ╟─baf58134-1cd6-4470-8167-073970517c6d
+# ╟─3d9dd161-663f-40e8-b524-4193c29196ba
+# ╠═a15391d8-0c57-4a55-9562-90877043ede6
+# ╟─329c9d46-99b9-40e0-96c3-69af17e03388
+# ╟─62d6605a-50be-4fd4-b379-30734406e55a
+# ╠═fbf70088-32db-4cb9-b4c7-185149550ea6
+# ╠═2a62c447-c029-4a83-83ad-e53d974e3139
+# ╟─b56bdaca-be24-4379-b245-feb7b1f15a92
+# ╟─b187a837-1321-40cc-91bd-06d9c4ce30ca
+# ╟─2c9f1562-5adf-4773-9482-b3ad8fa67f7a
+# ╟─50584aaa-fa9e-46d9-858b-d11b7d2692a4
+# ╠═853a7ad7-7cfe-4c85-8ca7-5811629d05b2
+# ╟─f785397e-e40d-417f-b39e-884a7589625a
+# ╟─0d6ba76d-b790-4a45-b5c4-de33d468e23c
+# ╟─c1d50d98-06b0-4a67-b5be-cb056ffb2704
+# ╟─92ea05a4-37b8-4f86-a812-ebdd05e2c937
+# ╠═514bf743-dbe1-4886-9071-c7a282d6edcf
+# ╠═dfe6eecd-4864-4316-821e-86e465f55456
+# ╟─f372431f-08c0-4206-88a0-4ec10f012e9a
+# ╠═cd369ef2-83d4-422a-aceb-f92e7fcf39a3
+# ╠═4eb1def0-0b6b-4bec-86ce-25a29e891f3b
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
