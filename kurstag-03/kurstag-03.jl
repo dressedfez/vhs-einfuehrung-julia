@@ -329,11 +329,17 @@ md"""
 
 # ╔═╡ bfbe7b02-1b6f-4c07-9143-d12c7db73e64
 md"""
- Anlegen eines Dict (Schlüssel-Werte-Paar)
+Anlegen eines Dict (Schlüssel-Werte-Paar)
 """
 
 # ╔═╡ c42d2bfc-2d1c-456f-b09a-d68c56973f7b
 names_age = Dict("Frank"=> 49, "Anna" => 45, "Egon" => 92)
+
+# ╔═╡ 7e23f17c-9b87-4fca-bc60-38515443124a
+md"""
+!!! warning "Achtung"
+	Im Gegensatz zu Array sind Dicts __nicht__ geordnet.
+"""
 
 # ╔═╡ b734cfe0-5ad1-4f5c-bb50-25430d9df3a9
 md"Hinzufügen eines Wertes zu bestehendem Dict"
@@ -344,16 +350,143 @@ begin
 	names_age
 end
 
-# ╔═╡ 0cdd697b-2253-4029-b513-9daebe1b15cf
+# ╔═╡ 851c1c0b-24b1-4707-9eb8-15ced8ff867d
+md"Prüfung, ob Schlüssel in Dict enthalten ist"
 
+# ╔═╡ dc0ac6e4-6bc7-47fc-8aec-7484ce769554
+haskey(names_age,"Frank"),haskey(names_age,"FRANK")
+
+# ╔═╡ d4b28d7e-03a9-42c0-8054-bfa94ad69b76
+md"""
+!!! warning "Achtung"
+	Die Prüfung auf den Schlüssel beachtet Groß- und Kleinschreibung.
+"""
+
+# ╔═╡ 0cdd697b-2253-4029-b513-9daebe1b15cf
+md"Abfragen eine Wertes bzgl. eines Schlüssels"
 
 # ╔═╡ a9abd3fb-f74a-4bd8-9862-3bfafec6f579
 names_age["Frank"]
 
+# ╔═╡ aa0e87f3-8795-4a57-8068-d1afaf3856db
+#names_age["FRANK"] # wirft Fehler, wenn auskommentiert
+
+# ╔═╡ 1b13bafe-e46d-46d7-b49b-6534bd112627
+md"Abfrage eines Schlüssel mit Default-Rückgabe"
+
+# ╔═╡ a03db1b0-0145-4f2e-8d02-93617348a73a
+get(names_age,"FRANK",-1)
+
+# ╔═╡ 10efb5d1-146e-476c-bf37-f944a9492626
+md"Löschen eines Schlüssel-Wert-Paares:"
+
+# ╔═╡ 2a7913e4-22d7-4c07-8ee4-c05a31638e2f
+delete!(names_age,"FRANK") # Schlüssel nicht enthalten, Dict wird zurückgegeben
+
+# ╔═╡ 8170c94b-ed7a-462d-b4ec-c2cc8ce4f057
+delete!(names_age,"Frank") 
+
+# ╔═╡ e0c197a2-b798-49c6-98d0-4396fc2695df
+md"Element mit Schlüssel wurde entfernt, Dict ohne Schlüssel-Wert-Paar wird zurückgegeben."
+
+# ╔═╡ c921a63c-5e9f-48c9-9e4f-62997eb0dfa9
+length(names_age)
+
+# ╔═╡ af5c06b8-fcfe-442d-8d16-49ed808d9d8d
+md"gibt die Anzahl der Schlüssel-Wert-Paare zurück."
+
+# ╔═╡ 53b4636b-e021-4e33-a65a-628ac31b48da
+md"""
+#### Übung 2: 
+1. Erstelle verschachtelte Dicts, die die Adresse und Telefonnummer von Personen speichern kann.
+2. Untersuche die Funktion `merge` für Dicts.
+"""
+
 # ╔═╡ 563d8d0b-aa48-4002-b578-e54d4aa8b283
 md"""
 ### Tuple 
+
+Sind, wie Arrays, geordnete Kontainer-Datenstrukturen, .d.h. sie enthalten Elemente eines bestimmten Typs in einer festgelegten Reihenfolge. Im Gegensatz zu Arrays sind Tuple __NICHT__ modifzierbar. Damit sind sie besonderes für Asynchrone Aufgaben hervorragend geeignet. Die Typen von Tuple-Elemente müssen nicht gleich sein und werden durch Julia im Tuple mitgespeichert.
 """
+
+# ╔═╡ 31ecf613-811f-41a5-9d93-255d8a611b41
+md"Erzeuge eines Tuples"
+
+# ╔═╡ 784872e1-cb49-42ee-990b-0750c0e89585
+t1 = ("Frank", 49)
+
+# ╔═╡ 28c75d66-ec91-4e97-b67c-fea5bda2915e
+typeof(t1)
+
+# ╔═╡ af3a9b41-d940-4c90-a0f5-72416745aece
+md"Auslesen eines Tuples"
+
+# ╔═╡ 52d85fe0-31b9-4056-ab6d-03153c2de1c2
+"$(t1[1]) ist $(t1[2]) Jahre alt."
+
+# ╔═╡ de243369-924e-4f63-826e-a25269e56bd5
+md"wie Arrays können Tuples Elemente über ihre Position ausgelesen werden"
+
+# ╔═╡ ab4f703c-dbf9-4331-bd85-2a7f72beae34
+t1[1] = "Egon"	
+
+# ╔═╡ 5b47b087-3a8a-43c5-bd0d-65f336570a3b
+t1
+
+# ╔═╡ aff50e48-af73-4198-905d-7b6e545fb429
+md"""
+#### Unpacking und Splatting von  Tuplen
+"""
+
+# ╔═╡ 1f4af46a-41bf-4f9a-b464-53795930048b
+md"Beispiel für das Auspacken (Unpacking) eines Tuples"
+
+# ╔═╡ d429861a-4a5b-4106-b9c7-8741b990ae68
+begin
+	name, age = t1;
+	"$name ist $age Jahre alt."
+end
+
+# ╔═╡ df62f062-031b-454d-bdb6-ff638847e8ed
+md"man kann Tuple auch verschachteln"
+
+# ╔═╡ f609d6f9-28ff-4ad0-9a2f-531d29047625
+t2 = ("Egon", 92)
+
+# ╔═╡ 469ba0cb-c9a9-465b-a8c1-55ac3adccf42
+t_both = (t1,t2)
+
+# ╔═╡ 3b27cd67-b73b-4bb8-aa8f-081b8ac1b807
+md" aber dies ist oft nicht, was man möchte. Man möchte die Elemente alle in einem Tupel und nicht verschachtelt. Dazu nutzt man den Splat-Operator `...`"
+
+# ╔═╡ 4ae9a1ac-2272-46b1-9619-5ae95aaa6715
+t_both_in_one = (t1...,t2...)
+
+# ╔═╡ 582f0ee1-febc-4774-8ff2-ac68ae81ada4
+md"""
+#### Named-Tuple
+"""
+
+# ╔═╡ 8bb5c9e7-08ad-4694-ba43-1cb79c2dd1d5
+t3 = (name="Frank",age=49)
+
+# ╔═╡ bae5735c-c529-4ba1-a4bf-14c227adcc38
+typeof(t3)
+
+# ╔═╡ d770789a-1c3e-44b1-bd39-657c8060276d
+md"Auslesen eines Named-Tuples"
+
+# ╔═╡ 273738b2-3781-4374-b619-d69bc481cf89
+"$(t3.name) ist $(t3[:age]) Jahre alt."
+
+# ╔═╡ e28bda3f-f1fa-4dab-9449-8c7b37eface6
+md"""
+#### Übung 3: 
+1. Finde eine Möglichkeit den Inhalt zweier Variablen x und y auszutauschen ohne eine Hilfsvariable zu nutzen.
+"""
+
+# ╔═╡ 3959eaff-514e-4030-b1f5-a29eda2e146c
+
 
 # ╔═╡ 38236c4c-dad2-471c-b098-0716eaad9f77
 md"""
@@ -364,7 +497,7 @@ md"""
 md"## Hilfsfunktionen für Notebook"
 
 # ╔═╡ 7aea8983-9d64-4e10-8fa1-c69c42c0eade
-function plot_vector_addition(v1,v2)
+function plot_vector_addition(v1::Vector,v2::Vector)
 	plot(legend=true, ratio=1, xlims=(-1, 5), ylims=(-1, 5))
 	plot!([0,v1[1]],[0,v1[2]], color=:blue, label="Vector v₁",arrow=(:closed, 2.0))
 	plot!([0,v2[1]],[0,v2[2]], color=:red, label="Vector v₂",arrow=(:closed, 2.0))
@@ -2192,14 +2325,51 @@ version = "1.4.1+1"
 # ╟─b20cf4c6-1391-4e6d-b348-971176a1915c
 # ╟─bfbe7b02-1b6f-4c07-9143-d12c7db73e64
 # ╠═c42d2bfc-2d1c-456f-b09a-d68c56973f7b
+# ╟─7e23f17c-9b87-4fca-bc60-38515443124a
 # ╟─b734cfe0-5ad1-4f5c-bb50-25430d9df3a9
 # ╠═291bbe09-a638-4a05-9681-b1db737c6ffe
-# ╠═0cdd697b-2253-4029-b513-9daebe1b15cf
+# ╟─851c1c0b-24b1-4707-9eb8-15ced8ff867d
+# ╠═dc0ac6e4-6bc7-47fc-8aec-7484ce769554
+# ╟─d4b28d7e-03a9-42c0-8054-bfa94ad69b76
+# ╟─0cdd697b-2253-4029-b513-9daebe1b15cf
 # ╠═a9abd3fb-f74a-4bd8-9862-3bfafec6f579
+# ╠═aa0e87f3-8795-4a57-8068-d1afaf3856db
+# ╟─1b13bafe-e46d-46d7-b49b-6534bd112627
+# ╠═a03db1b0-0145-4f2e-8d02-93617348a73a
+# ╟─10efb5d1-146e-476c-bf37-f944a9492626
+# ╠═2a7913e4-22d7-4c07-8ee4-c05a31638e2f
+# ╠═8170c94b-ed7a-462d-b4ec-c2cc8ce4f057
+# ╟─e0c197a2-b798-49c6-98d0-4396fc2695df
+# ╠═c921a63c-5e9f-48c9-9e4f-62997eb0dfa9
+# ╟─af5c06b8-fcfe-442d-8d16-49ed808d9d8d
+# ╟─53b4636b-e021-4e33-a65a-628ac31b48da
 # ╟─563d8d0b-aa48-4002-b578-e54d4aa8b283
+# ╟─31ecf613-811f-41a5-9d93-255d8a611b41
+# ╠═784872e1-cb49-42ee-990b-0750c0e89585
+# ╠═28c75d66-ec91-4e97-b67c-fea5bda2915e
+# ╟─af3a9b41-d940-4c90-a0f5-72416745aece
+# ╠═52d85fe0-31b9-4056-ab6d-03153c2de1c2
+# ╟─de243369-924e-4f63-826e-a25269e56bd5
+# ╠═ab4f703c-dbf9-4331-bd85-2a7f72beae34
+# ╠═5b47b087-3a8a-43c5-bd0d-65f336570a3b
+# ╟─aff50e48-af73-4198-905d-7b6e545fb429
+# ╟─1f4af46a-41bf-4f9a-b464-53795930048b
+# ╠═d429861a-4a5b-4106-b9c7-8741b990ae68
+# ╟─df62f062-031b-454d-bdb6-ff638847e8ed
+# ╠═f609d6f9-28ff-4ad0-9a2f-531d29047625
+# ╠═469ba0cb-c9a9-465b-a8c1-55ac3adccf42
+# ╟─3b27cd67-b73b-4bb8-aa8f-081b8ac1b807
+# ╠═4ae9a1ac-2272-46b1-9619-5ae95aaa6715
+# ╟─582f0ee1-febc-4774-8ff2-ac68ae81ada4
+# ╠═8bb5c9e7-08ad-4694-ba43-1cb79c2dd1d5
+# ╠═bae5735c-c529-4ba1-a4bf-14c227adcc38
+# ╟─d770789a-1c3e-44b1-bd39-657c8060276d
+# ╠═273738b2-3781-4374-b619-d69bc481cf89
+# ╠═e28bda3f-f1fa-4dab-9449-8c7b37eface6
+# ╠═3959eaff-514e-4030-b1f5-a29eda2e146c
 # ╟─38236c4c-dad2-471c-b098-0716eaad9f77
 # ╟─8ac5955a-11f8-4006-88f4-7bb543a5b467
-# ╠═7aea8983-9d64-4e10-8fa1-c69c42c0eade
-# ╠═640b0485-17eb-4107-96e2-b175aaacf419
+# ╟─7aea8983-9d64-4e10-8fa1-c69c42c0eade
+# ╟─640b0485-17eb-4107-96e2-b175aaacf419
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
