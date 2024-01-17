@@ -483,14 +483,125 @@ md"Auslesen eines Named-Tuples"
 md"""
 #### Übung 3: 
 1. Finde eine Möglichkeit den Inhalt zweier Variablen x und y auszutauschen ohne eine Hilfsvariable zu nutzen.
+2. Erstelle zwei oder mehr Named-Tuple und spiele mit der Funktion `merge` rum. Was passiert, wenn die Namen übereinstimmen, aber die Werte nicht.
 """
-
-# ╔═╡ 3959eaff-514e-4030-b1f5-a29eda2e146c
-
 
 # ╔═╡ 38236c4c-dad2-471c-b098-0716eaad9f77
 md"""
 ## Schleifen
+"""
+
+# ╔═╡ ad00afb5-63b1-4975-ac29-e1463ba2f15c
+md"In den meisten Fällen werden Schleifen dazu genutzt, um über Daten-Kontainer, wie Arrays, Tuples, Dicts, etc. zu iterieren."
+
+# ╔═╡ 98f08e1e-e5da-47de-aaf4-6f02a02cb251
+md"### While-Schleife"
+
+# ╔═╡ 855410f1-0d89-4aca-99f4-89c02554eef8
+md"""
+Die `while`-Schleife hat die folgende Struktur
+```julia
+
+while <boolsche-Bedingung>
+   <Schleifen-Körper>
+end
+
+```
+
+Beispiel:
+
+```julia 
+while true
+	println("Toller VHS-Kurs")
+end
+```
+Dies ist eine Endlos-Schleife, d.h. es wird in der Konsole untereinander immer
+wieder `Toller VHS-Kurs` ausgegeben. Diese Ausgabe kann nur durch ein Abbrechen des 
+Programmes gestoppt werden.
+
+#### Beispiel:
+
+"""
+
+# ╔═╡ 5955efa5-b7ed-4bc7-a60e-ee0ad816166b
+begin
+	zaehler = 1
+	while zaehler <= 10
+		println("Toller VHS-Kurs (Ausgabe: $zaehler)")
+		zaehler +=1
+	end
+end
+
+# ╔═╡ 114b260d-8ba3-4a09-8375-c021da9cf532
+md"Nutzung der `while`-Schleife, um über ein Array zu iterieren:"
+
+# ╔═╡ 2edbb136-ebb8-448f-a76e-ca7a98200ecc
+begin 
+	teilnehmer_namen = ["Frank", "Markus", "Thomas", "Heinrich"]
+	index = 1
+	while index <= length(teilnehmer_namen)
+    	println("Hallo $(teilnehmer_namen[index]), wie geht es Dir?")
+    	global index += 1
+	end
+end
+
+# ╔═╡ 3d0ff5cd-375f-4cd0-9689-146752cf5bb2
+
+
+# ╔═╡ 1cb77434-2530-44c2-8ea1-59c5b90a3f00
+md"""### For-Schleife
+
+Die `for`-Schleife hat die folgende Struktur
+
+```julia
+for <Variable> in / ∈ <Iterator>
+	<Schleifen-Körper>
+end
+```
+
+Beispiel:
+"""
+
+# ╔═╡ 4079c83b-5f4c-4e75-a3c8-1f16ae7f09c5
+for name in ["Frank","Tobias","Karla","Ewa"]
+	println(name)
+end
+
+# ╔═╡ 4962b3a1-c990-4cb8-94ab-0c229d324dc3
+md"""
+#### continue-Keyword
+
+Überspringen eines Elementes - continue-Keyword
+"""
+
+# ╔═╡ 1c6bc7f7-36cc-4568-ad4d-ea5cba648a7a
+for name in ["Ewa","Frank","Tobias","Karla"]
+	if endswith(name,"a")
+		continue
+	end
+	println(name)
+end
+
+# ╔═╡ 2ac468d7-da8c-42ae-9259-21e898ed9a79
+md"""
+#### break-Keyword
+Abbrechen der for-Schleife durch Bedingung - break-Keyword
+"""
+
+# ╔═╡ 04c33e60-ac9a-4a24-a70c-d2ecc27a9ea5
+for name ∈ ["Ewa","Frank","Tobias","Karla"]
+	if startswith(name,"T")
+		break
+	end
+	println(name)
+end
+
+# ╔═╡ 1f669e06-88c1-40d4-a58a-248b0057843d
+md"""
+#### Übung 4: 
+1. Schreibe eine While-Schleife, die nach einer Benutzereingabe fragt und solange weiterläuft, bis der Benutzer "exit" eingibt. Wenn der Benutzer nicht "exit" eingibt soll das Programm den gegebenen Text in umgekehrter Reihenfolge ausgeben." 
+2. Schreibe eine For-Schleife, die nur gerade Zahlen von 2 bis 100 ausgibt.
+3. Verwende den in-Operator mit einem benannten Range, um eine For-Schleife zu erstellen, die die Buchstaben "A" bis "E" ausgibt. Hinweis: schaue die das Kommando `range` an.
 """
 
 # ╔═╡ 8ac5955a-11f8-4006-88f4-7bb543a5b467
@@ -2365,9 +2476,22 @@ version = "1.4.1+1"
 # ╠═bae5735c-c529-4ba1-a4bf-14c227adcc38
 # ╟─d770789a-1c3e-44b1-bd39-657c8060276d
 # ╠═273738b2-3781-4374-b619-d69bc481cf89
-# ╠═e28bda3f-f1fa-4dab-9449-8c7b37eface6
-# ╠═3959eaff-514e-4030-b1f5-a29eda2e146c
+# ╟─e28bda3f-f1fa-4dab-9449-8c7b37eface6
 # ╟─38236c4c-dad2-471c-b098-0716eaad9f77
+# ╟─ad00afb5-63b1-4975-ac29-e1463ba2f15c
+# ╟─98f08e1e-e5da-47de-aaf4-6f02a02cb251
+# ╟─855410f1-0d89-4aca-99f4-89c02554eef8
+# ╠═5955efa5-b7ed-4bc7-a60e-ee0ad816166b
+# ╟─114b260d-8ba3-4a09-8375-c021da9cf532
+# ╠═2edbb136-ebb8-448f-a76e-ca7a98200ecc
+# ╠═3d0ff5cd-375f-4cd0-9689-146752cf5bb2
+# ╟─1cb77434-2530-44c2-8ea1-59c5b90a3f00
+# ╠═4079c83b-5f4c-4e75-a3c8-1f16ae7f09c5
+# ╟─4962b3a1-c990-4cb8-94ab-0c229d324dc3
+# ╠═1c6bc7f7-36cc-4568-ad4d-ea5cba648a7a
+# ╟─2ac468d7-da8c-42ae-9259-21e898ed9a79
+# ╠═04c33e60-ac9a-4a24-a70c-d2ecc27a9ea5
+# ╟─1f669e06-88c1-40d4-a58a-248b0057843d
 # ╟─8ac5955a-11f8-4006-88f4-7bb543a5b467
 # ╟─7aea8983-9d64-4e10-8fa1-c69c42c0eade
 # ╟─640b0485-17eb-4107-96e2-b175aaacf419
