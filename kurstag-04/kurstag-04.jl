@@ -228,20 +228,182 @@ md"""
 3. Implementiere eine Funktion, die die Lösungen einer quadratischen Gleichung für gegebene Werte von a, b, c zurückgibt.
 4. Schreibe eine Funktion, die die Anzahl der Vokale in einem gegebenen String zählt.
 5. Implementiere eine Funktion, die die ersten n Zahlen der Fibonacci-Folge generiert und zurückgibt. Die Fibonacci-Folge ist wie folgt definiert 
-"""
 
-# ╔═╡ 433bed37-09e7-4d6f-b34b-21a98e7f1561
-L"""
-F_n = F_{n-1}+F_{n-2}
-"""
+```math
+  F_n = F_{n-1}+F_{n-2}
+```
 
-# ╔═╡ c713fd09-5121-4189-a9d3-5fbcded5e0aa
-md"wobei"
+mit
 
-# ╔═╡ fd8ffd44-63b6-45fe-a9e3-b78eeb3de7fc
-L"""
+```math
 F_1 = F_2 = 1
+```
 """
+
+# ╔═╡ c62b7a98-4697-432c-9ee5-f742b0b49c3f
+md"""## Individuelle Datentypen"""
+
+# ╔═╡ 2c10bace-2e14-4889-84b4-757350904ac7
+md"""### Konkrete Datentypen"""
+
+# ╔═╡ acd031ea-7c64-48fd-b29b-96d3bce1972d
+md"""Julia erlaubt wie anderen Sprachen (Java, Go, Python) eigene Datentypen zu definieren. Im Gegensatz zu diesen Sprachen ist Julia __nicht__ wirklich eine objektorientierte Sprache, wie wir gleich sehen werden.
+
+
+Allgemein kann man Datenstrukturen mit dem Keyword `struct` wie folgt definieren:
+
+!!! tip 
+	Eigene Datentypen kann man mittels des `struct`-Keywords definieren:
+	```julia
+	struct DatenTypeName
+		datenfeld1::Typ1
+		datenfeld2::Typ2
+	 .
+     .
+     .
+
+    end
+	```
+    Per Konvention werden die Name der Datentypen groß geschrieben.
+
+#### Beispiel
+
+"""
+
+# ╔═╡ 39fe7968-8f5d-4c48-a36b-3dba5dce6f69
+struct Dog
+	name::String
+	alter::Int
+end
+
+# ╔═╡ e932e742-9d91-476b-b9e0-689ef0b13347
+md"Instanzen der Datentypen erzeugt man, wie in folgemden Beispiel gezeigt:"
+
+# ╔═╡ 152938a5-0b34-4065-b57f-c7c3aca20733
+md"""
+
+!!! warning "Achtung" 
+	Im Gegensatz zu objektorientierten Sprachen, wie Java oder Python, sind nur Daten mit Datentypen assoziert. Datentypen haben keine Methoden wie in diesen Sprachen.
+"""
+
+# ╔═╡ 1258a5f5-d68c-432a-84a5-b1c8f3a974ca
+md"### Abstrakte Datentypen"
+
+# ╔═╡ 8f371ce4-d19b-4d14-be63-a2fb0abf0490
+md"""Analog zu Java, Go, Python besitzt auch Julia abstrakte Datentypen. Wie in diesen Sprachen kann man auch in Julia __keine Instanzen__ dieser abstrakten Datentypen erstellen. Diese abstrakten Datentypen sind dazu da Verhalten zu organisieren, wie wir später sehen werden.
+
+
+Allgemein kann man abstrakte Datentypen mit den Keywords `abstract type` wie folgt definieren:
+
+!!! tip 
+	Eigene Datentypen kann man mittels des `struct`-Keywords definieren:
+	```julia
+	abstract type NameAbstrakterDatenTyp end
+	```
+
+    Per Konvention werden die Name der abstrakteb Datentypen ebenfalls groß geschrieben.
+
+#### Beispiel
+"""
+
+# ╔═╡ 6490cec7-132b-41c7-8a18-bebef37ed8e2
+abstract type Animal end
+
+# ╔═╡ 05f03db9-7857-4ec2-b52f-12d867b1701c
+md"""
+
+!!! warning "Achtung" 
+	Im Gegensatz zu anderen objektorientierten Sprachen, wie Java oder Python, haben haben abstrakte Datentypen in Julia __keine__ assozierten Daten. Sie werden logischen und Verhaltensstrukturierung genutzt.
+"""
+
+# ╔═╡ 22fbb745-d780-4bb3-a760-d62372f7cbf5
+md"""### Vererbung bei Datentypen
+
+Die Strukturierung von Datentypen kann über die __Vererbung__ von abstrakten Datentypen erreicht werden. 
+
+
+!!! tip 
+	Die Vererbung von einem abstrakten Datentype erreicht man durch folgende Notation
+	```julia
+	abstract type ErbenderTyp <: VererbenderTyp  end
+	```
+    im Fall von abstrakten Datentypen und
+	```julia
+	struct ErbenderTyp <: VererbenderTyp 
+		...
+	end
+	```
+	im Fall von konkreten Datentypen.
+	
+#### Beispiel
+
+"""
+
+# ╔═╡ 192cb4fd-e9e2-409c-b491-9f4742de0e8b
+abstract type Lebewesen end ## definieren abstrakten Typ, um davon zu erben
+
+# ╔═╡ 84bda381-1b74-4aa4-a338-eeb3090c9736
+abstract type Tier <: Lebewesen end # ein Tier **ist** ein Lebenwesen 
+
+# ╔═╡ 2856d8bf-077a-49b5-b879-1c1a7584d969
+struct Hund <: Tier # ein Hund **ist** ein Tier (Hund war schon oben definiert)
+	name::String
+	alter::Int
+end
+
+# ╔═╡ c92328f5-d38f-4695-9635-83b972dafd86
+benno = Hund("Benno",5)
+
+# ╔═╡ ed912043-2c57-4a2f-956b-53da4f74d450
+md"Die Beziehung zwischen den Typen kann man mit den verschiedenen Befehlen untersuchen:"
+
+# ╔═╡ a38c72a9-b6f7-4a3b-b50b-2dd3df6a8ccb
+supertypes(Hund)
+
+# ╔═╡ 0164400e-3e91-4536-8ad4-ef89ae9091ff
+supertype(Hund)
+
+# ╔═╡ c79db17c-f4e1-486c-85bb-f26605b749da
+subtypes(Hund)
+
+# ╔═╡ 25ed0976-0540-4a5f-8814-3c6b6a3e70b1
+subtypes(Tier)
+
+# ╔═╡ 2beda6e2-b087-4af0-beb1-ed40c552b10e
+md"Folgendermaßen kann man direkt prüfen, ob ein gegebener Typ von einem anderen Typ  erbt:"
+
+# ╔═╡ 39b4e8de-3288-471c-93f0-0c72c7c27cf4
+ Hund <: Lebewesen
+
+# ╔═╡ c6457e91-5237-42a6-bfe8-433ab67a74f3
+Int <: Lebewesen
+
+# ╔═╡ db1d8af7-1fcc-447d-9d2b-229309b30d11
+md"Folgendermaßen kann man direkt prüfen, ob eine __Instanz__ eines gegebenen Typs mit einem anderen Typ in einer Vererbungsbeziehung steht:"
+
+# ╔═╡ 38cd5cd9-2c09-4535-91ea-5a0eec757960
+benno isa Lebewesen
+
+# ╔═╡ 008c0b76-0a20-441f-ac36-23df3d507b3b
+benno isa Int
+
+# ╔═╡ 7e894af8-e380-4ba6-9ce1-b14adec11ccf
+md"""
+#### Übung 2:
+1. Definiere eine Struktur Auto, die die Eigenschaften marke, modell und baujahr hat. Schreibe Funktionen, um ein Auto zu erstellen und Informationen darüber anzuzeigen. Überschreibe dazu die Funktion `show` aus dem Base-Modul (siehe [hier](https://docs.julialang.org/en/v1/base/io-network/#Base.show-Tuple{IO,%20Any,%20Any}))
+1. Erstelle eine Klasse Bankkonto, die die Eigenschaften kontonummer, inhaber und kontostand hat. Implementiere Methoden, um Geld einzuzahlen, abzuheben und den Kontostand anzuzeigen.
+1. Definiere einen abstrakten Typ GeometrischeForm mit Untertypen Kreis und Rechteck. Implementiere Methoden, um den Flächeninhalt und den Umfang jeder geometrischen Form zu berechnen. Implemetiere eine Methode `beschreibe`, die eine Geometrische Form annimmt und den Flächeninhalt sowie den Namen der geometrischen Figur ausgibt.
+"""
+
+
+
+# ╔═╡ 4a90ea54-990c-4e21-8408-2511d51bfd1b
+md"""## Multiple Dispatch
+__The secret power of Julia__
+"""
+
+# ╔═╡ ae5e8f3c-a557-4ad5-9496-a4ccc248b214
+
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1389,8 +1551,34 @@ version = "1.4.1+1"
 # ╠═c05cc5a7-e639-4b32-8a8b-3e0ff86693cd
 # ╠═3858d61c-819e-45bd-9255-7285da3f92cc
 # ╟─ee59219c-52c0-4dce-9b7d-a5773feb4363
-# ╟─433bed37-09e7-4d6f-b34b-21a98e7f1561
-# ╟─c713fd09-5121-4189-a9d3-5fbcded5e0aa
-# ╟─fd8ffd44-63b6-45fe-a9e3-b78eeb3de7fc
+# ╟─c62b7a98-4697-432c-9ee5-f742b0b49c3f
+# ╟─2c10bace-2e14-4889-84b4-757350904ac7
+# ╟─acd031ea-7c64-48fd-b29b-96d3bce1972d
+# ╠═39fe7968-8f5d-4c48-a36b-3dba5dce6f69
+# ╟─e932e742-9d91-476b-b9e0-689ef0b13347
+# ╠═c92328f5-d38f-4695-9635-83b972dafd86
+# ╟─152938a5-0b34-4065-b57f-c7c3aca20733
+# ╟─1258a5f5-d68c-432a-84a5-b1c8f3a974ca
+# ╟─8f371ce4-d19b-4d14-be63-a2fb0abf0490
+# ╠═6490cec7-132b-41c7-8a18-bebef37ed8e2
+# ╟─05f03db9-7857-4ec2-b52f-12d867b1701c
+# ╟─22fbb745-d780-4bb3-a760-d62372f7cbf5
+# ╠═192cb4fd-e9e2-409c-b491-9f4742de0e8b
+# ╠═84bda381-1b74-4aa4-a338-eeb3090c9736
+# ╠═2856d8bf-077a-49b5-b879-1c1a7584d969
+# ╟─ed912043-2c57-4a2f-956b-53da4f74d450
+# ╠═a38c72a9-b6f7-4a3b-b50b-2dd3df6a8ccb
+# ╠═0164400e-3e91-4536-8ad4-ef89ae9091ff
+# ╠═c79db17c-f4e1-486c-85bb-f26605b749da
+# ╠═25ed0976-0540-4a5f-8814-3c6b6a3e70b1
+# ╟─2beda6e2-b087-4af0-beb1-ed40c552b10e
+# ╠═39b4e8de-3288-471c-93f0-0c72c7c27cf4
+# ╠═c6457e91-5237-42a6-bfe8-433ab67a74f3
+# ╟─db1d8af7-1fcc-447d-9d2b-229309b30d11
+# ╠═38cd5cd9-2c09-4535-91ea-5a0eec757960
+# ╠═008c0b76-0a20-441f-ac36-23df3d507b3b
+# ╟─7e894af8-e380-4ba6-9ce1-b14adec11ccf
+# ╟─4a90ea54-990c-4e21-8408-2511d51bfd1b
+# ╠═ae5e8f3c-a557-4ad5-9496-a4ccc248b214
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
