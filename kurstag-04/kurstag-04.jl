@@ -402,8 +402,146 @@ md"""## Multiple Dispatch
 __The secret power of Julia__
 """
 
-# ╔═╡ ae5e8f3c-a557-4ad5-9496-a4ccc248b214
+# ╔═╡ 8661b042-9c11-44bf-8f81-8a4a9a0617a7
+md"""Was bedeutet "Dispatch"? Welche Arten von Dispatch werden unterschieden?
 
+
+!!! tip "Definition"
+	Dispatch bedeutet Daten an Empfänger (können auch Funktionen) zu verteilen, damit diese vom Empfänger verarbeitet werden können.
+	
+Man unterscheidet mehrere Arten von Dispatch, die nicht unbedingt auschließend seien müssen:
+
+1. Statisches Dispatch:
+
+   Die Dispatch-Regeln werden während des Kompelierens des Source-Codes festgelegt und sind danach nicht mehr veränderbar. Die Zielfunktionen sind damit schon zu diesem Zeitpunkt fest und können sich nicht durch das Laufzeitverhalten ändern.
+
+
+2. Dynamisches Dispatch:
+
+   Die Dispatch-Regeln werden während der Laufzeit des Programmes festgelegt. Der Kompiler erstellt eine Lookup-Tabelle für alle Funktion. In der Laufzeit wird  dynamisch entschieden welche Methode aufgerufen wird.
+
+
+3. Multiple Dispatch
+
+   Die Dispatch-Regeln werden nicht nur durch den Namen der Funktion vorgegeben sondern auch durch die Ordnung und die Typen der Funktions-Parameter. Die Auswahl hängt von der, während der Laufzeit auftreten, Parametertypen ab.
+
+
+!!! warning "Achtung"
+	__Julia__ ist eine Sprache, die dynamisches und multiples Dispatch unterstützt. Die meisten Sprachen unterstützen nur statisches Dispatch, oder ein eingeschränktes (weitestgehend nicht multiples) dynamisches Dispatch. 
+"""
+
+# ╔═╡ ae5e8f3c-a557-4ad5-9496-a4ccc248b214
+md"""#### Beispiel
+für dynamisches Dispatchen
+"""
+
+# ╔═╡ c39a8e82-3685-4a1e-84fa-d9f38da220aa
+function beschreibe(lebewesen::Lebewesen) 
+	println("Ich bin ein Lebenwesen und brauche Nahrung.")
+end
+
+# ╔═╡ ef72707b-1404-48ce-8c46-486fc4b050ef
+function beschreibe(tier::Tier)
+	println("Ich bin ein Tier und kann mich bewegen, aber nicht sprechen.")
+end
+
+# ╔═╡ a1261c62-b5f7-43be-8e2d-f428679fc9c5
+function beschreibe(hund::Hund)
+	println("Ich bin ein Hund, kann laufen und bällen.")
+end
+
+# ╔═╡ 620c788e-f181-4d54-bc90-7b63521cb39f
+begin
+	struct Katze <: Tier
+		name::String
+	end
+	molly = Katze("Molly")
+end
+
+# ╔═╡ 5440ce80-7aee-46e7-a684-d60d6177d4f0
+beschreibe(benno)
+
+# ╔═╡ 468348f0-b76c-4c88-936e-f11611871973
+beschreibe(molly)
+
+# ╔═╡ bbd2707e-01e7-4d5e-969e-1bbfe606c826
+begin
+	struct Mensch <: Lebewesen
+		name::String
+	end
+	egon = Mensch("Egon")
+end
+
+# ╔═╡ 1747e51f-b41c-4e58-ae35-4c36731c59fb
+beschreibe(egon)
+
+# ╔═╡ 8fd3673c-2c51-49ca-bd6a-52b7a5fe7287
+#methods(beschreibe) # bitte auskommentieren
+
+# ╔═╡ 7bf7428f-74fd-45fd-a82f-82392f7426ad
+md"""#### Beispiel
+für multiples Dispatchen
+
+__Vorbereitung:__
+"""
+
+# ╔═╡ b0056396-ccce-4231-880b-da66679f0bad
+abstract type Thing end
+
+# ╔═╡ 960ef5bb-61d0-4be8-a692-0b3ea210c97f
+struct Moon <: Thing
+	name::String
+end
+
+# ╔═╡ f0537dd1-43f7-45b7-916a-4e6667872eda
+struct Astroid <: Thing
+	name::String
+end
+
+# ╔═╡ 0413c29a-f343-44e7-9bb7-e406acc9b6b4
+abstract type Spaceship <: Thing end
+
+# ╔═╡ 95e3a054-a68f-42fc-86db-c8775e459eb1
+begin
+	struct TransportShip <: Spaceship
+		name::String
+	end
+	struct Stardestroyer <: Spaceship
+		name::String
+	end
+	struct XWing <: Spaceship
+		name::String
+	end
+end
+
+# ╔═╡ a8d30f0f-c1a8-4f11-acca-7f44652f4e12
+meets(a::Thing,b::Thing) = println("Thing $(a.name) meets $(b.name)")
+
+# ╔═╡ 3a75a418-01b4-49f8-aad0-27ec95583a78
+meets(astroid::Astroid, moon::Moon) = println("Astroid $(astroid.name) crashes into moon $(moon.name)")
+
+# ╔═╡ 8206e6ca-1052-4c40-989c-598b4cca0da3
+meets(a::Astroid,b::Astroid) = println("Astroid $(a.name) merges with astroid $(b.name)")
+
+# ╔═╡ 55815409-3d79-413e-9daf-cdaff41d68da
+meets(astroid::Astroid,space_ship::Spaceship) = println("Astroid $(a.name) destroys spaceship $(space_ship.name)")
+
+# ╔═╡ 63cf0c21-e7df-4004-b567-bcb68c0d3a61
+meets(astroid::Astroid, star_destroyer::Stardestroyer) = println("Stardestroyer $(star_destroyer.name) destroys astroid $(astroid.name).")
+
+# ╔═╡ d2ee6938-bc50-446c-8164-be27d4caa202
+begin
+	xwing = XWing("Cooler Xing")
+	moon = Moon("Mond")
+	meets(xwing,moon)
+end
+
+# ╔═╡ 98e20c3e-0c67-458a-8a51-9996ea8e01e9
+begin
+	astroid_XCP1 = Astroid("XCP1")
+	astroid_XCP2 = Astroid("XCP2")
+	meets(astroid_XCP1,astroid_XCP2)
+end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1579,6 +1717,29 @@ version = "1.4.1+1"
 # ╠═008c0b76-0a20-441f-ac36-23df3d507b3b
 # ╟─7e894af8-e380-4ba6-9ce1-b14adec11ccf
 # ╟─4a90ea54-990c-4e21-8408-2511d51bfd1b
-# ╠═ae5e8f3c-a557-4ad5-9496-a4ccc248b214
+# ╟─8661b042-9c11-44bf-8f81-8a4a9a0617a7
+# ╟─ae5e8f3c-a557-4ad5-9496-a4ccc248b214
+# ╠═c39a8e82-3685-4a1e-84fa-d9f38da220aa
+# ╠═ef72707b-1404-48ce-8c46-486fc4b050ef
+# ╠═a1261c62-b5f7-43be-8e2d-f428679fc9c5
+# ╠═620c788e-f181-4d54-bc90-7b63521cb39f
+# ╠═5440ce80-7aee-46e7-a684-d60d6177d4f0
+# ╠═468348f0-b76c-4c88-936e-f11611871973
+# ╠═bbd2707e-01e7-4d5e-969e-1bbfe606c826
+# ╠═1747e51f-b41c-4e58-ae35-4c36731c59fb
+# ╠═8fd3673c-2c51-49ca-bd6a-52b7a5fe7287
+# ╟─7bf7428f-74fd-45fd-a82f-82392f7426ad
+# ╠═b0056396-ccce-4231-880b-da66679f0bad
+# ╠═960ef5bb-61d0-4be8-a692-0b3ea210c97f
+# ╠═f0537dd1-43f7-45b7-916a-4e6667872eda
+# ╠═0413c29a-f343-44e7-9bb7-e406acc9b6b4
+# ╠═95e3a054-a68f-42fc-86db-c8775e459eb1
+# ╠═a8d30f0f-c1a8-4f11-acca-7f44652f4e12
+# ╠═3a75a418-01b4-49f8-aad0-27ec95583a78
+# ╠═8206e6ca-1052-4c40-989c-598b4cca0da3
+# ╠═55815409-3d79-413e-9daf-cdaff41d68da
+# ╠═63cf0c21-e7df-4004-b567-bcb68c0d3a61
+# ╠═d2ee6938-bc50-446c-8164-be27d4caa202
+# ╠═98e20c3e-0c67-458a-8a51-9996ea8e01e9
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
