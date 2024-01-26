@@ -22,7 +22,8 @@ end
 
 # ╔═╡ 211891dd-5811-454d-9530-49ed28d6adfe
 md"""
-# VHS-Kurs: Einführung in Julia: Kurstag 2: Datentypen und Operatoren
+# Einführung in Julia - Kurstag 2
+__Datentypen und Operatoren__
 """
 
 # ╔═╡ 127de8a6-c092-438f-9cb0-83532a5343c7
@@ -1832,7 +1833,7 @@ version = "17.4.0+2"
 # ╠═f9bb8c82-6cce-462b-a936-4ab823d683ae
 # ╠═67f8ef07-4093-471b-883d-9551042aace9
 # ╟─5f22ef4b-5cc9-4c04-814a-de81a49450ca
-# ╠═f603f393-34b6-4c09-b842-13ca35f2ccf8
+# ╟─f603f393-34b6-4c09-b842-13ca35f2ccf8
 # ╟─9204fd20-c3c6-48cf-acdb-2a3f1fab054e
 # ╟─47e68e27-144c-46df-b180-6b491e9d9bde
 # ╠═d9f6b662-c8ca-4a1a-ac09-4798ca45b841

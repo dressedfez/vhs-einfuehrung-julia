@@ -15,7 +15,8 @@ using LinearAlgebra
 
 # ╔═╡ 65fb214d-3782-4de9-b8dd-34efb047f6c9
 md"""
-# VHS-Kurs: Einführung in Julia: Kurstag 3: Datenstrukturen und Schleifen
+# Einführung in Julia - Kurstag 3
+__Datenstrukturen und Schleifen__
 """
 
 # ╔═╡ 4bffdb22-06fc-465f-9257-ab2974230512
@@ -427,6 +428,9 @@ md"Auslesen eines Tuples"
 # ╔═╡ de243369-924e-4f63-826e-a25269e56bd5
 md"wie Arrays können Tuples Elemente über ihre Position ausgelesen werden"
 
+# ╔═╡ 36d2055f-74fe-4c35-a104-bc66a30eda9f
+md"Tuple sind __nicht__ modifizierbar:"
+
 # ╔═╡ ab4f703c-dbf9-4331-bd85-2a7f72beae34
 t1[1] = "Egon"	
 
@@ -544,9 +548,6 @@ begin
     	global index += 1
 	end
 end
-
-# ╔═╡ 3d0ff5cd-375f-4cd0-9689-146752cf5bb2
-
 
 # ╔═╡ 1cb77434-2530-44c2-8ea1-59c5b90a3f00
 md"""### For-Schleife
@@ -2461,6 +2462,7 @@ version = "1.4.1+1"
 # ╟─af3a9b41-d940-4c90-a0f5-72416745aece
 # ╠═52d85fe0-31b9-4056-ab6d-03153c2de1c2
 # ╟─de243369-924e-4f63-826e-a25269e56bd5
+# ╟─36d2055f-74fe-4c35-a104-bc66a30eda9f
 # ╠═ab4f703c-dbf9-4331-bd85-2a7f72beae34
 # ╠═5b47b087-3a8a-43c5-bd0d-65f336570a3b
 # ╟─aff50e48-af73-4198-905d-7b6e545fb429
@@ -2484,7 +2486,6 @@ version = "1.4.1+1"
 # ╠═5955efa5-b7ed-4bc7-a60e-ee0ad816166b
 # ╟─114b260d-8ba3-4a09-8375-c021da9cf532
 # ╠═2edbb136-ebb8-448f-a76e-ca7a98200ecc
-# ╠═3d0ff5cd-375f-4cd0-9689-146752cf5bb2
 # ╟─1cb77434-2530-44c2-8ea1-59c5b90a3f00
 # ╠═4079c83b-5f4c-4e75-a3c8-1f16ae7f09c5
 # ╟─4962b3a1-c990-4cb8-94ab-0c229d324dc3
