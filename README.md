@@ -10,3 +10,5 @@ Folgende Kurstage und Themen werden behandelt:
 | ------------|----------------------------------------------------|
 | 1           | <ul> <li>Motivation</li> <li>Komponenten und Umgebungen von Julia</li> </ul>|
 | 2           | <ul> <li>Standarddatentypen</li><li>Operationen mit Standarddatentypen</li> </ul>|
+| 3           | <ul> <li>Komplexere Datentypen</li><li>Dict, Array, Vector und Matrix</li> <li>Operation auf diesen Datentypen</li> </ul>|
+| 4           | <ul> <li>Standarddatentypen</li><li>Operationen mit Standarddatentypen</li> </ul>|
