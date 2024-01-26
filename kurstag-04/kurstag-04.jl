@@ -395,8 +395,6 @@ md"""
 1. Definiere einen abstrakten Typ GeometrischeForm mit Untertypen Kreis und Rechteck. Implementiere Methoden, um den Flächeninhalt und den Umfang jeder geometrischen Form zu berechnen. Implemetiere eine Methode `beschreibe`, die eine Geometrische Form annimmt und den Flächeninhalt sowie den Namen der geometrischen Figur ausgibt.
 """
 
-
-
 # ╔═╡ 4a90ea54-990c-4e21-8408-2511d51bfd1b
 md"""## Multiple Dispatch
 __The secret power of Julia__
@@ -514,6 +512,9 @@ begin
 	end
 end
 
+# ╔═╡ f19268af-b274-4cb4-9f03-98f2fc89cde9
+md"Definition der Methoden:"
+
 # ╔═╡ a8d30f0f-c1a8-4f11-acca-7f44652f4e12
 meets(a::Thing,b::Thing) = println("Thing $(a.name) meets $(b.name)")
 
@@ -536,12 +537,66 @@ begin
 	meets(xwing,moon)
 end
 
+# ╔═╡ be4bdd0f-d74b-44b5-b459-a1a39a2cb579
+md"""
+
+!!! warning "Hinweis"
+	__Julia__ sucht immer die Funktion aus, die den übergeben Parametern inklusive ihrer Typen am Nächsten kommen.
+"""
+
 # ╔═╡ 98e20c3e-0c67-458a-8a51-9996ea8e01e9
 begin
 	astroid_XCP1 = Astroid("XCP1")
 	astroid_XCP2 = Astroid("XCP2")
 	meets(astroid_XCP1,astroid_XCP2)
 end
+
+# ╔═╡ bc1769f4-f588-4188-9fd2-0cde5db0e3d7
+md"""#### Beispiel
+Problem: Mehrdeutigkeit
+"""
+
+# ╔═╡ 5dd78c1e-cd73-4ef7-a173-6e5cbd5f048f
+calculate(x::Float64, y) = x+y
+
+# ╔═╡ a521c5ed-3c87-40cb-b623-b5c59a34cb6b
+calculate(x, y::Float64)= x*y
+
+# ╔═╡ 0d147bfb-6c9e-4123-a08e-fdb29e1e4675
+md"Warum funktioneren die beiden Aufrufe, aber der dritte nicht?"
+
+# ╔═╡ 235b50cc-5edc-43e4-b4ea-71c2efc0a226
+calculate(1.0,1)
+
+# ╔═╡ 8003ce5d-9203-4192-a315-ce2070a0e98a
+calculate(1,1.0)
+
+# ╔═╡ e7d661bf-7734-42e4-83a5-7b577b2fdd3a
+#calculate(1.0,1.0) # auskommentieren führt zu Problemen, warum?
+
+# ╔═╡ 28daea99-6b9e-45ac-b71f-7f877ba5852e
+md"""
+
+!!! warning "Hinweis"
+	Mehrdeutigkeit kann man vermeiden durch:
+
+    - Einführung von Beschränkungen via Typisierung und
+    - eine klare und eindeutige Typen-Hierachie
+"""
+
+# ╔═╡ 8d74ef58-d9f1-46d7-92c9-c45b5635f764
+md"""
+#### Übung 3:
+1. Entwickeln Sie ein System für einen Online-Shop in Julia. Erstellen Sie Klassen für Produkte, wie Electronics, Clothing und Books. Implementieren Sie eine Funktion calculate_total_price, die den Gesamtpreis basierend auf dem Warenkorbinhalt berechnet. Verwenden Sie Multiple Dispatch, um spezifische Berechnungsregeln für unterschiedliche Produkttypen und Sonderangebote anzuwenden.
+2. Modellieren Sie ein Personalmanagementsystem für ein Unternehmen. Erstellen Sie Klassen für verschiedene Mitarbeiterrollen wie _Manager_, _Developer_ und _HumanResources_. Implementieren Sie eine Funktion calculate_total_cost, die die Summer der Gehälter aller Mitarbeiter basierend auf ihren Rollen berechnet. Verwenden Sie Multiple Dispatch, um unterschiedliche Gehaltsberechnungsmethoden für verschiedene Mitarbeiterrollen anzuwenden.
+"""
+
+# ╔═╡ 8977b7da-cf53-4aa9-bd9f-a198129971fc
+md"""
+
+!!! warning "Hinweis"
+	__Julia__ führt Multiple Dispatch nur basierend auf den __Nicht-Keyword__-Parametern durch.
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1734,12 +1789,24 @@ version = "1.4.1+1"
 # ╠═f0537dd1-43f7-45b7-916a-4e6667872eda
 # ╠═0413c29a-f343-44e7-9bb7-e406acc9b6b4
 # ╠═95e3a054-a68f-42fc-86db-c8775e459eb1
+# ╟─f19268af-b274-4cb4-9f03-98f2fc89cde9
 # ╠═a8d30f0f-c1a8-4f11-acca-7f44652f4e12
 # ╠═3a75a418-01b4-49f8-aad0-27ec95583a78
 # ╠═8206e6ca-1052-4c40-989c-598b4cca0da3
 # ╠═55815409-3d79-413e-9daf-cdaff41d68da
 # ╠═63cf0c21-e7df-4004-b567-bcb68c0d3a61
 # ╠═d2ee6938-bc50-446c-8164-be27d4caa202
+# ╟─be4bdd0f-d74b-44b5-b459-a1a39a2cb579
 # ╠═98e20c3e-0c67-458a-8a51-9996ea8e01e9
+# ╟─bc1769f4-f588-4188-9fd2-0cde5db0e3d7
+# ╠═5dd78c1e-cd73-4ef7-a173-6e5cbd5f048f
+# ╠═a521c5ed-3c87-40cb-b623-b5c59a34cb6b
+# ╟─0d147bfb-6c9e-4123-a08e-fdb29e1e4675
+# ╠═235b50cc-5edc-43e4-b4ea-71c2efc0a226
+# ╠═8003ce5d-9203-4192-a315-ce2070a0e98a
+# ╠═e7d661bf-7734-42e4-83a5-7b577b2fdd3a
+# ╟─28daea99-6b9e-45ac-b71f-7f877ba5852e
+# ╟─8d74ef58-d9f1-46d7-92c9-c45b5635f764
+# ╟─8977b7da-cf53-4aa9-bd9f-a198129971fc
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
