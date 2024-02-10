@@ -12,3 +12,4 @@ Folgende Kurstage und Themen werden behandelt:
 | 2           | <ul> <li>Standarddatentypen</li><li>Operationen mit Standarddatentypen</li> </ul>|
 | 3           | <ul> <li>Komplexere Datentypen</li><li>Dict, Array, Vector und Matrix</li> <li>Operation auf diesen Datentypen</li> </ul>|
 | 4           | <ul> <li>Funktionen</li><li>Definition eigener Datentypen</li> <li>Multiple Dispatch</li> </ul>|
+| 5           | <ul> <li>Dataframe</li><li>CSV</li> <li>Plot</li><li>DifferentialEquations</li> </ul>|
