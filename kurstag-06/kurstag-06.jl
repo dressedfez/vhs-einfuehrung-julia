@@ -19,38 +19,101 @@ __Differentialgleichungen, Computational Thinking__
 ## Differentialgleichungen
 """
 
+# ╔═╡ 6d40714c-aceb-4c7f-af65-b758b5be7d31
+md"""
+Differentialgleichungen werden bei der Modellierung vieler wissenschaftlicher Beschreibungen (Physik, Biologie, Ökonomie, etc.) genutzt. Im Folgenden wollen wir lernen, wie wir Differentialgleichungen mittels des Pakets [DifferentialEquations.jl](https://docs.sciml.ai/DiffEqDocs/stable/) formulieren, lösen und darstellen kann.
+
+In vielen Phänomen findet man ein exponentielles Verhalten (Wachstum oder Abnahme), das wir als einführendes Beispiel betrachten wollen.
+
+Bei Differentialgleichungen unterscheiden man zwischen Anfangswert- und Randwertproblem. Folgdendes Beispiel ist ein Anfangswertproblem, d.h. der Wert am Anfang ist vorgegeben und wir interessieren uns für das Verhalten zu anderen Zeitpunkten.
+
+$\frac{d u(t)}{dt}=p\; t \hspace{1cm} \mbox{ mit } \hspace{1cm} u(t=0)=u_0$
+"""
+
+# ╔═╡ 672cfa68-0ef6-4a2d-85a6-481eef7852c5
+md"""
+Anfangswert:
+"""
+
+# ╔═╡ 7d7c4503-0214-4dc1-9c30-b4acddf07ae4
+u0=[10.0]
+
+# ╔═╡ e9400902-93ab-4e8c-9b22-3592861ba861
+md"""
+Exponent:
+"""
+
+# ╔═╡ fea10dc1-c8e9-46ca-bd06-0b90edbbe581
+p = 1
+
+# ╔═╡ 7e932d04-d99d-4d56-9d90-a5cdb47cf0ce
+md"""
+Endzeitpunkt:
+"""
+
+# ╔═╡ f0751f31-23f4-4a8d-89f3-faecbb0de41f
+tend=20
+
+# ╔═╡ 651a3cf9-316d-4f91-9b94-22911efc89f9
+md"""
+Integrationsinterval:
+"""
+
+# ╔═╡ 768dd6d2-3b03-4ec2-b6ab-eac82680cbff
+tspan = (0,tend)
+
+# ╔═╡ efea98d5-a3d7-486f-a5e6-6cc1e33f41ea
+md"""
+Definition der In-place und Out-of-place Funktionen für die Differentialgleichungen
+
+Mehr Information findet man [hier](https://docs.sciml.ai/DiffEqDocs/stable/basics/problem/).
+"""
+
+# ╔═╡ b3ecb5d8-99c1-4198-a08e-610f8c980ff0
+increase(x,p,t) = p*x
+
 # ╔═╡ 701bb327-9c0c-47ae-b23f-bcdce30d5c8e
 function decay!(dx,x,p,t)
 	λ = p
 	dx[1] = - λ*x[1]
 end
 
-# ╔═╡ 7d7c4503-0214-4dc1-9c30-b4acddf07ae4
-x0=[10.0]
-
-# ╔═╡ 768dd6d2-3b03-4ec2-b6ab-eac82680cbff
-tspan = (0,17)
-
-# ╔═╡ fea10dc1-c8e9-46ca-bd06-0b90edbbe581
-p = 1
+# ╔═╡ d18b30f4-9c27-4acc-a528-8ba17da98a01
+md"""
+Definition des In-Place-Differentialgleichungsproblems:
+"""
 
 # ╔═╡ b1f7fb10-9db5-420a-b40c-faf5961a8a7c
-problem = ODEProblem(decay!, x0, tspan, p)
+problem_in_place = ODEProblem(decay!, u0, tspan, p)
 
 # ╔═╡ 23e9e1ac-5b14-4760-a8da-22b6f81ffe3e
-begin
-	sol=solve(problem)
-	sol
-end
+sol_in_place=solve(problem_in_place)
 
 # ╔═╡ a0d13324-533e-45a0-9741-e290bfd77134
 	t = 0:0.1:60
 
 # ╔═╡ 29486367-9bca-4988-b935-13c2fab8cb7f
-plot(sol(t))
+plot(sol_in_place(t),
+	xlims=(0,6)
+)
 
 # ╔═╡ 07975475-1862-45d5-9755-bad808188bae
+problem_out_of_place = ODEProblem(increase, u0, tspan, p)
 
+# ╔═╡ c213a921-c969-4463-9ab5-d8c37259f8e6
+begin
+	sol_out_of_place=solve(problem_out_of_place)
+	sol_out_of_place
+end
+
+# ╔═╡ 74063fa0-21c3-4039-96d4-a18f9438f332
+
+
+# ╔═╡ edd6e1e3-a5a2-47ba-bbe7-d98996ef4b5d
+plot(sol_out_of_place(t),
+	xlims=(0,6),
+	ylims=(0,1000)
+)
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -2204,14 +2267,26 @@ version = "1.4.1+1"
 # ╔═╡ Cell order:
 # ╠═5d8deeec-cf6f-11ee-043d-1b45d402d40c
 # ╟─c41ed32e-e9e5-4b66-a6ad-3806447a3115
-# ╠═701bb327-9c0c-47ae-b23f-bcdce30d5c8e
+# ╟─6d40714c-aceb-4c7f-af65-b758b5be7d31
+# ╟─672cfa68-0ef6-4a2d-85a6-481eef7852c5
 # ╠═7d7c4503-0214-4dc1-9c30-b4acddf07ae4
-# ╠═768dd6d2-3b03-4ec2-b6ab-eac82680cbff
+# ╟─e9400902-93ab-4e8c-9b22-3592861ba861
 # ╠═fea10dc1-c8e9-46ca-bd06-0b90edbbe581
+# ╟─7e932d04-d99d-4d56-9d90-a5cdb47cf0ce
+# ╠═f0751f31-23f4-4a8d-89f3-faecbb0de41f
+# ╟─651a3cf9-316d-4f91-9b94-22911efc89f9
+# ╠═768dd6d2-3b03-4ec2-b6ab-eac82680cbff
+# ╟─efea98d5-a3d7-486f-a5e6-6cc1e33f41ea
+# ╠═b3ecb5d8-99c1-4198-a08e-610f8c980ff0
+# ╠═701bb327-9c0c-47ae-b23f-bcdce30d5c8e
+# ╟─d18b30f4-9c27-4acc-a528-8ba17da98a01
 # ╠═b1f7fb10-9db5-420a-b40c-faf5961a8a7c
 # ╠═23e9e1ac-5b14-4760-a8da-22b6f81ffe3e
 # ╠═a0d13324-533e-45a0-9741-e290bfd77134
 # ╠═29486367-9bca-4988-b935-13c2fab8cb7f
 # ╠═07975475-1862-45d5-9755-bad808188bae
+# ╠═c213a921-c969-4463-9ab5-d8c37259f8e6
+# ╠═74063fa0-21c3-4039-96d4-a18f9438f332
+# ╠═edd6e1e3-a5a2-47ba-bbe7-d98996ef4b5d
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
