@@ -4,55 +4,41 @@
 using Markdown
 using InteractiveUtils
 
-# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
-macro bind(def, element)
-    quote
-        local iv = try Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value catch; b -> missing; end
-        local el = $(esc(element))
-        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : iv(el)
-        el
-    end
-end
-
 # ╔═╡ 5d8deeec-cf6f-11ee-043d-1b45d402d40c
 begin
 	using PlutoUI, Plots, LaTeXStrings, DifferentialEquations, OrdinaryDiffEq
 	TableOfContents()
 end
 
-# ╔═╡ c41ed32e-e9e5-4b66-a6ad-3806447a3115
-md"""
-# Einführung in Julia - Kurstag 6
-
-__Differentialgleichungen, Computational Thinking__
-
-## Differentialgleichungen
-"""
-
 # ╔═╡ 6d40714c-aceb-4c7f-af65-b758b5be7d31
 md"""
-Differentialgleichungen werden bei der Modellierung vieler wissenschaftlicher Beschreibungen (Physik, Biologie, Ökonomie, etc.) genutzt. Im Folgenden wollen wir lernen, wie wir Differentialgleichungen mittels des Pakets [DifferentialEquations.jl](https://docs.sciml.ai/DiffEqDocs/stable/) formulieren, lösen und darstellen kann.
-
 In vielen Phänomen findet man ein exponentielles Verhalten (Wachstum oder Abnahme), das wir als einführendes Beispiel betrachten wollen.
 
 Bei Differentialgleichungen unterscheiden man zwischen Anfangswert- und Randwertproblem. Folgdendes Beispiel ist ein Anfangswertproblem, d.h. der Wert am Anfang ist vorgegeben und wir interessieren uns für das Verhalten zu anderen Zeitpunkten.
 
 $\frac{d u(t)}{dt}=p\; u(t) \hspace{1cm} \mbox{ mit } \hspace{1cm} u(t=0)=u_0$
+
+Je nach Vorzeichen von $p$ unterscheidet man:
+    
+  - exponentielles Wachstum ( $p>0$ )
+  - exponentieller Zerfall/Abnahme ( $p<0$ )
 """
 
 # ╔═╡ 6bd514f2-d2bb-45ef-ba07-f54fe147a54b
-md"## Einführendes Beispiel"
+md"## Beispiele"
+
+# ╔═╡ 8e34fc8f-0398-40ee-8076-ee778356ea4c
+md"""
+Zunächst setzen wir alle benötigten Parameter, die der Konstruktuor `ODEProblem` benötigt.
+"""
 
 # ╔═╡ 672cfa68-0ef6-4a2d-85a6-481eef7852c5
 md"""
 Anfangswert:
 """
 
-# ╔═╡ 7d7c4503-0214-4dc1-9c30-b4acddf07ae4
-# ╠═╡ disabled = true
-#=╠═╡
-u0=[10.0]
-  ╠═╡ =#
+# ╔═╡ ea3048ac-a709-40b1-9d59-11f4d2448bd4
+u0=[10]
 
 # ╔═╡ 7e932d04-d99d-4d56-9d90-a5cdb47cf0ce
 md"""
@@ -69,6 +55,14 @@ Integrationsinterval:
 
 # ╔═╡ 768dd6d2-3b03-4ec2-b6ab-eac82680cbff
 tspan = (0,tend)
+
+# ╔═╡ cdb9a5eb-cbf2-440b-9d2e-8177dc74a7dd
+md"""### Expeonentielles Wachstum
+
+Bei der Untersuchungs des Zinseszins wurde dieses Verhalten untersucht und die Euler-Zahl $e$ von [Jakob Bernoulli](https://en.wikipedia.org/wiki/Jacob_Bernoulli) entdeckt.
+
+
+"""
 
 # ╔═╡ e9400902-93ab-4e8c-9b22-3592861ba861
 md"""
@@ -100,123 +94,45 @@ Definition des In-Place-Differentialgleichungsproblems:
 """
 
 # ╔═╡ b1f7fb10-9db5-420a-b40c-faf5961a8a7c
-#=╠═╡
 problem_in_place = ODEProblem(decay!, u0, tspan, p)
-  ╠═╡ =#
 
 # ╔═╡ 23e9e1ac-5b14-4760-a8da-22b6f81ffe3e
-#=╠═╡
 sol_in_place=solve(problem_in_place)
-  ╠═╡ =#
 
 # ╔═╡ a0d13324-533e-45a0-9741-e290bfd77134
 	t = 0:0.1:60
 
 # ╔═╡ 29486367-9bca-4988-b935-13c2fab8cb7f
-#=╠═╡
 plot(sol_in_place(t),
-	xlims=(0,6)
+	xlims=(0,6),
+	xlabel="Zeit t"
 )
-  ╠═╡ =#
 
 # ╔═╡ 07975475-1862-45d5-9755-bad808188bae
-#=╠═╡
 problem_out_of_place = ODEProblem(increase, u0, tspan, p)
-  ╠═╡ =#
 
 # ╔═╡ c213a921-c969-4463-9ab5-d8c37259f8e6
-#=╠═╡
 begin
 	sol_out_of_place=solve(problem_out_of_place)
 	sol_out_of_place
 end
-  ╠═╡ =#
-
-# ╔═╡ 74063fa0-21c3-4039-96d4-a18f9438f332
-
 
 # ╔═╡ edd6e1e3-a5a2-47ba-bbe7-d98996ef4b5d
-#=╠═╡
 plot(sol_out_of_place(t),
 	xlims=(0,6),
 	ylims=(0,1000)
 )
-  ╠═╡ =#
 
-# ╔═╡ 66835695-c0ab-448d-9040-59841cb33e39
-md"""## Verhulst-Differentialgleichungen
-
-Wenn sich die Entwicklung von Populationen, Bakterien, Kaninchen, usw., anschaut, so kommt man auf die Verhulst-Differentialgleichungen
-
-$\frac{d N}{dt} = r N \left(1-\frac{N}{K}\right)$
-
-"""
-
-# ╔═╡ ebe86b98-d700-4089-98c8-fa0243ab2415
-function verhulst(u,p,t)
-	N = u
-	r,K = p
-	r*N*(1-N/K)
-end
-
-# ╔═╡ 76541744-f963-4fbb-850f-2c61f4b3d303
-N_0=0.1
-
-# ╔═╡ 47146e0a-0cd4-4ef7-a177-7b3bcaad091a
-t_verhulst=0:0.01:10
-
-# ╔═╡ 384deee3-6ab1-44d0-8894-0e7b4922b32d
-@bind K Slider(0.1:0.1:20, default=10,show_value=true)
-
-# ╔═╡ 1ff13c64-94b2-4ea7-9c75-d485180ae665
-@bind r Slider(0:0.1:5, default=0,show_value=true)
-
-# ╔═╡ d15b34d8-399d-4e3b-b113-e7161e5dca32
-p_v=(r,K)
-
-# ╔═╡ 9173e85e-e55b-4d2b-beaf-7cccd1122c75
-verhulst_problem = ODEProblem(verhulst,N_0,tspan,p_v)
-
-# ╔═╡ 199018c0-d49d-4d92-888e-164af0d60655
-sol_verhulst=solve(verhulst_problem)
-
-# ╔═╡ b2b33bca-f3a6-4d63-a2a4-68ea081e1521
-plot(sol_verhulst(t_verhulst),
-ylims=(0,21),
-	xlabel="t",
-	ylabel="N(t)",
-	legend=false
-)
-
-# ╔═╡ 766df161-5a11-46a4-a962-ada1159c9168
+# ╔═╡ ff7cf8a1-4f3c-4ec8-bd66-3a1196a5bd58
 md"""
-## Gedämpfter hamonischer Oszillator
+### Übungen
+
+1. Plotte die Lösung
+
+$u(t)=u_0 e^{p t}$
+
+der obigen Differentialgleichung in die Grafiken der numersichen Lösung.
 """
-
-# ╔═╡ c10c152a-734f-400a-b7be-4864317e3c2f
-function harmonic_osci_damped!(du,u,p,t)
-	m,n = p
-	du[1] = u[2]
-	du[2] = - m*u[2]-n*u[1]
-end
-
-# ╔═╡ 84df7bb2-a953-4ba1-8785-1e77cbc7fe67
-p_h=[1,1]
-
-# ╔═╡ 196a1718-d436-43c0-a7ff-1f26bb534f98
-u_h_0=[1,0]
-
-# ╔═╡ 6c1cfb22-b8d2-4667-b881-8d1ea3fbac76
-harmonic_prob = ODEProblem(harmonic_osci_damped!,u_h_0,tspan,p_h)
-
-# ╔═╡ f32c8d23-969d-4066-ad8c-f7bd7c936745
-sol_harm=solve(harmonic_prob);
-
-# ╔═╡ c5fb9d01-613e-4964-8014-d93cf4267326
-t_harmonic=0:0.01:10
-
-# ╔═╡ 01a96f36-5ae3-4f2e-9384-dd53733b7bbf
-plot(sol_harm(t_harmonic))
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -2369,15 +2285,16 @@ version = "1.4.1+1"
 
 # ╔═╡ Cell order:
 # ╠═5d8deeec-cf6f-11ee-043d-1b45d402d40c
-# ╟─c41ed32e-e9e5-4b66-a6ad-3806447a3115
 # ╟─6d40714c-aceb-4c7f-af65-b758b5be7d31
 # ╟─6bd514f2-d2bb-45ef-ba07-f54fe147a54b
+# ╟─8e34fc8f-0398-40ee-8076-ee778356ea4c
 # ╟─672cfa68-0ef6-4a2d-85a6-481eef7852c5
-# ╠═7d7c4503-0214-4dc1-9c30-b4acddf07ae4
+# ╠═ea3048ac-a709-40b1-9d59-11f4d2448bd4
 # ╟─7e932d04-d99d-4d56-9d90-a5cdb47cf0ce
 # ╠═f0751f31-23f4-4a8d-89f3-faecbb0de41f
 # ╟─651a3cf9-316d-4f91-9b94-22911efc89f9
 # ╠═768dd6d2-3b03-4ec2-b6ab-eac82680cbff
+# ╟─cdb9a5eb-cbf2-440b-9d2e-8177dc74a7dd
 # ╟─e9400902-93ab-4e8c-9b22-3592861ba861
 # ╠═fea10dc1-c8e9-46ca-bd06-0b90edbbe581
 # ╟─efea98d5-a3d7-486f-a5e6-6cc1e33f41ea
@@ -2390,25 +2307,7 @@ version = "1.4.1+1"
 # ╠═29486367-9bca-4988-b935-13c2fab8cb7f
 # ╠═07975475-1862-45d5-9755-bad808188bae
 # ╠═c213a921-c969-4463-9ab5-d8c37259f8e6
-# ╠═74063fa0-21c3-4039-96d4-a18f9438f332
 # ╠═edd6e1e3-a5a2-47ba-bbe7-d98996ef4b5d
-# ╟─66835695-c0ab-448d-9040-59841cb33e39
-# ╠═ebe86b98-d700-4089-98c8-fa0243ab2415
-# ╠═76541744-f963-4fbb-850f-2c61f4b3d303
-# ╠═d15b34d8-399d-4e3b-b113-e7161e5dca32
-# ╠═9173e85e-e55b-4d2b-beaf-7cccd1122c75
-# ╠═199018c0-d49d-4d92-888e-164af0d60655
-# ╠═47146e0a-0cd4-4ef7-a177-7b3bcaad091a
-# ╠═384deee3-6ab1-44d0-8894-0e7b4922b32d
-# ╠═1ff13c64-94b2-4ea7-9c75-d485180ae665
-# ╠═b2b33bca-f3a6-4d63-a2a4-68ea081e1521
-# ╟─766df161-5a11-46a4-a962-ada1159c9168
-# ╠═c10c152a-734f-400a-b7be-4864317e3c2f
-# ╠═84df7bb2-a953-4ba1-8785-1e77cbc7fe67
-# ╠═196a1718-d436-43c0-a7ff-1f26bb534f98
-# ╠═6c1cfb22-b8d2-4667-b881-8d1ea3fbac76
-# ╠═f32c8d23-969d-4066-ad8c-f7bd7c936745
-# ╠═c5fb9d01-613e-4964-8014-d93cf4267326
-# ╠═01a96f36-5ae3-4f2e-9384-dd53733b7bbf
+# ╟─ff7cf8a1-4f3c-4ec8-bd66-3a1196a5bd58
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

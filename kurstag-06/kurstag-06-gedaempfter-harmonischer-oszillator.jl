@@ -17,20 +17,20 @@ md"""
 
 # ╔═╡ f6d6ae06-45bc-40ac-a1e5-3e31f4fbd0fd
 md"""
- Die Differentialgleichung, die eine gedämpften harmonischen Oszillator beschreibt ist durch
+ Die Differentialgleichung, die einen gedämpften harmonischen Oszillator beschreibt ist durch
 
 $\frac{d^2 x}{d t^2}+\frac{c}{m}\frac{d x}{d t}+\frac{k}{m}x=0$
 
 gegeben.
 
-Die durch Einführung von $v=dx/dt$ in das Differentialgleichungssystem
+Durch die Einführung von $v=dx/dt$ kann die obigen Differentialgleichung zweiter Ordnung in das Differentialgleichungssystem
 ```math
 \begin{align}
 \frac{d x}{d t} &= v\\
 \frac{d v}{d t} &= -\frac{c}{m} v- \frac{k}{m} x
 \end{align}
 ```
-überführt werden kann. Dies kann man wie folgt in Julia implemenieren:
+überführt werden. Dies kann man wie folgt in Julia implemenieren:
 """
 
 # ╔═╡ c10c152a-734f-400a-b7be-4864317e3c2f
@@ -85,12 +85,28 @@ solution=solve(problem)
 # ╔═╡ c5fb9d01-613e-4964-8014-d93cf4267326
 t=0:0.01:10
 
-# ╔═╡ 01a96f36-5ae3-4f2e-9384-dd53733b7bbf
-plot(solution(t))
+# ╔═╡ 4f2e6759-75d3-4103-855f-d95f9629fa0c
+plot(solution)
+
+# ╔═╡ 9dc258aa-317c-4704-a23b-dae3d4aa6d06
+md"""
+### Übung
+1. Was ist an der oberen Grafik falsch? Wie kann sie verbessern?
+2. Passe die Parameter des gedämpften harmonischen Oszillator so an, dass man jeweils ein Bild der Fälle:
+    - schwache Dämpfung (underdamped oscillator)
+    - aperiodischer Grenzfall (critical damping)
+    - starke Dämpfung (overdamped oscillator)
+   erstellt. Speichere die Bilder im Arbeitsverzeichnis ab.
+"""
 
 # ╔═╡ 131d5680-4abd-497b-834b-bea2aa0cc201
 md"""
 ## Harmonischer Oszillator
+"""
+
+# ╔═╡ fb6a7f1f-1ba1-4f8c-879f-2b624aede14c
+md"""
+Setze man die Dämpfung beim gedämpften harmonischen Oszillator auf Null, so erhält man den harmonischen Oszillator. 
 """
 
 # ╔═╡ 790e0ea0-b258-406e-8e42-f85335805f8c
@@ -112,6 +128,30 @@ end
 
 # ╔═╡ 2053846b-5abf-4c69-b2f3-25c29655a0c2
 plot_harmonic_oscillator(t,u0,4)
+
+# ╔═╡ 2e5b5e3b-a554-47c8-99e6-3b12693efcbb
+md"""
+### Übung
+1. Führe von [PlutoUI](https://featured.plutojl.org/basic/plutoui.jl) Slider für die Anfangswerte $u_0=(x_0,v_0)$ und die Federkonstante $k$ ein.
+2. Ermittle die Periodendauer mit den Angaben auf der [Wikipedia](https://de.wikipedia.org/wiki/Harmonischer_Oszillator#Eindimensionaler_gedämpfter_Oszillator). Stimmt diese mit der Grafik überein?
+"""
+
+# ╔═╡ 7e74a17c-eecb-4ea5-b995-b937a481ea87
+md"""
+## Hilfsfunktionen für dieses Notebook
+"""
+
+# ╔═╡ 9f624ddf-4117-4c56-a84e-6de793c64f8c
+begin
+	hint(text) = Markdown.MD(Markdown.Admonition("hint", "Antwort", [text]))
+end
+
+# ╔═╡ 093d5743-9f3c-4eae-81ea-40c1468e48c1
+hint(
+	begin
+	plot(solution,idxs=[1],label="x(t)",xlabel="t (Zeit)",ylabel="Auslenkung")
+	plot!(twinx(),solution,idxs=[2],linecolor=:red,label="v(t)",xlabel="",ylabel="Geschwindigkeit")
+end)
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -2279,9 +2319,15 @@ version = "1.4.1+1"
 # ╠═6c1cfb22-b8d2-4667-b881-8d1ea3fbac76
 # ╠═f32c8d23-969d-4066-ad8c-f7bd7c936745
 # ╠═c5fb9d01-613e-4964-8014-d93cf4267326
-# ╟─01a96f36-5ae3-4f2e-9384-dd53733b7bbf
+# ╠═4f2e6759-75d3-4103-855f-d95f9629fa0c
+# ╟─9dc258aa-317c-4704-a23b-dae3d4aa6d06
 # ╟─131d5680-4abd-497b-834b-bea2aa0cc201
+# ╟─fb6a7f1f-1ba1-4f8c-879f-2b624aede14c
 # ╠═790e0ea0-b258-406e-8e42-f85335805f8c
 # ╠═2053846b-5abf-4c69-b2f3-25c29655a0c2
+# ╟─2e5b5e3b-a554-47c8-99e6-3b12693efcbb
+# ╟─7e74a17c-eecb-4ea5-b995-b937a481ea87
+# ╠═9f624ddf-4117-4c56-a84e-6de793c64f8c
+# ╠═093d5743-9f3c-4eae-81ea-40c1468e48c1
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
