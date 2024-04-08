@@ -105,7 +105,8 @@ sol_in_place=solve(problem_in_place)
 # ╔═╡ 29486367-9bca-4988-b935-13c2fab8cb7f
 plot(sol_in_place(t),
 	xlims=(0,6),
-	xlabel="Zeit t"
+	xlabel="Zeit t",
+	ylabel="p(t)"
 )
 
 # ╔═╡ 07975475-1862-45d5-9755-bad808188bae
@@ -127,11 +128,12 @@ plot(sol_out_of_place(t),
 md"""
 ### Übungen
 
-1. Plotte die Lösung
+1. Stelle die Lösungen
 
-$u(t)=u_0 e^{p t}$
+   $u(t)=u_0 e^{p t}$
 
-der obigen Differentialgleichung in die Grafiken der numersichen Lösung.
+   der obigen Differentialgleichung in die Grafiken der numersichen Lösung ebenfalls dar.
+2. Bestimme die Euler-Zahl $e$ mittels er numerischen Lösung der obigen Differentialgeleichungen.
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -155,7 +157,7 @@ PlutoUI = "~0.7.57"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.10.1"
+julia_version = "1.10.2"
 manifest_format = "2.0"
 project_hash = "cac2315220a9417f0c4b2f300f465b63895ebcc7"
 
