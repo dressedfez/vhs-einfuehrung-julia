@@ -38,7 +38,7 @@ md"""
 # ╔═╡ 8d61f57a-09fb-432d-abc5-6c0a596fae97
 md"""
 Die Mandelbrot-Menge wurde durch die Arbeiten von [Benoît Mandelbrot](https://de.wikipedia.org/wiki/Benoît_Mandelbrot) 
-in den 1980er-Jahren bekannt und selbst außerhalb der Welt der Mathematik und Chaos-Forscher pupulär.
+in den 1980er-Jahren bekannt und selbst außerhalb der Welt der Mathematik und Chaos-Forscher populär.
 
 
 """
