@@ -17,6 +17,7 @@ end
 # ╔═╡ 5a129079-650f-41e0-8107-75ca17372801
 begin
    using Plots,PlutoUI, Images
+   using Colors: colormap # wir brauchen nur eine Methode
    TableOfContents()
 end
 
@@ -24,6 +25,10 @@ end
 md"""
 # Julia und Mandelbrot-Mengen
 """
+
+# ╔═╡ 12158eaa-ed07-49b6-b700-e785d084b249
+#maximale Anzahl der Iterationen für die Mandelbrot-Menge
+max_iter=255
 
 # ╔═╡ 4db3431c-d524-42af-98fa-b96e81f7478d
 md"""
@@ -64,15 +69,16 @@ function complex_plane(
 	y_cor::Number
 	,width::Number
 	,height::Number
-	,n_x=600
-	,n_y=600)
+	,n_x=500
+	,n_y=500)
 	x=create_vector(x_cor,width,n_x)
 	y=create_vector(y_cor,height,n_y)
 	z = x'.+im.*y
 end
 
 # ╔═╡ 5696dca6-1e4b-4183-bce4-803babc764b1
-Z=complex_plane(0,0,4,4);
+# definire komplexe Ebene (beschrännkt)
+Z=complex_plane(-1,0,3,3);
 
 # ╔═╡ efb59062-5117-4e9d-a311-9f65568db0d0
 md"""
@@ -91,22 +97,23 @@ Methode zur Berechnung der Mandelbrot-Iteration
 c: Startpunkt in der komplexen Zahlenebene
 max_iter: maximale Anzahl der Iteration der Mandelbrot-Abbildung
 ==#
-function mandelbrot_map(c::T,max_iter=1000::Int) where T<:Number
+function mandelbrot_map(c::T,max_iter=255::Int):: Int where T<:Number
 	z=complex(0,0)
 	for index = 1:max_iter
 		z = z*z+c
-		if(abs2(z)>2) 
-			return 1-index/max_iter
+		if abs(z)>2 
+			return index
 		end
 	end
-	return 0
+	return max_iter
 end
 
 # ╔═╡ 98fc798c-ea1d-48b1-823d-48464dd60afb
 #==
 Methode zur Berechnung der Mandelbrot-Menge
+Führe für jeden Punkt in der obigen Ebene die unter `mandelbrot_map` definierte Abbildung durch 
 ==#
-function mandelbrot_set(Z::Matrix{T},max_iter=1000) where T <:Number
+function mandelbrot_set(Z::Matrix{T},max_iter=255)::Matrix{Int} where T <:Number
 	n_r,n_c = size(Z)
 	result=zeros(n_r,n_c)
 	for row_index = 1:n_r
@@ -118,15 +125,49 @@ function mandelbrot_set(Z::Matrix{T},max_iter=1000) where T <:Number
 end
 
 # ╔═╡ aa9cb003-5b68-421c-b3b4-8fda5eb90b7a
-res_m=mandelbrot_set(Z);
+res_m=mandelbrot_set(Z,max_iter)
+
+# ╔═╡ 157d93ef-07c4-49ff-9571-98ee0743c93e
+size(res_m)
+
+# ╔═╡ d18a9af6-e692-4190-97d2-5dcf9c2c5e60
+typeof(res_m)
+
+# ╔═╡ 83431e64-8d9a-424d-be3e-2f28bdd72263
+md"Darstellung der Mandelbrot-Menge"
 
 # ╔═╡ a8cdc43c-b670-400b-8182-8967d37b67c8
-imresize(Gray{N0f8}.(res_m);ratio=2)
+Gray{Float64}.(res_m/max_iter)
+
+# ╔═╡ f2340c47-6d9f-45c4-bfa4-ace05dd53031
+md"Gray darf nur Werte zwischen 0 und 1 annehmen."
+
+# ╔═╡ 5eb9cd82-219a-40a1-a98e-a01a55c25f5d
+Gray{Float64}(0.5)
+
+# ╔═╡ 9ca15c3b-c865-4027-a3e8-c3d8d0157cdc
+#für jeden möglichen Rückgabewert der Iteration vergeben wir eine Farbe
+cmp = colormap("rdbu",max_iter) 
+
+# ╔═╡ e0232503-c2da-4097-bf21-f9db353fc181
+size(cmp)
+
+# ╔═╡ be3e3787-9d96-4a13-a180-c6c7d06a29f0
+md"Farbige Dastellung der Mandelbrot-Menge"
+
+# ╔═╡ a9c64573-81cc-4430-b5e8-c359836f2f14
+cmp[res_m]
+
+# ╔═╡ 8633a5bc-754f-4b51-9e4d-6cfc56b6690c
+typeof(cmp)
+
+# ╔═╡ 6dc11c7d-1815-4c2b-aa31-9f2df9dbaf16
+@bind w Slider(0.00001:0.01:0.5,show_value=true, default=0.25)
 
 # ╔═╡ a104edee-d486-401a-9915-5f873e64c1bb
 begin
-  x_vec = create_vector(-0.2,0.5)
-  y_vec = create_vector(0.9,0.4)
+  x_vec = create_vector(-0.2,w)
+  y_vec = create_vector(0.805,w)
   contourf(x_vec,y_vec,(x,y)->mandelbrot_map(x+y*im), color=:turbo)
 end
 
@@ -151,18 +192,18 @@ z: Startpunkt der Iteration für die Julia-Menge
 c: Komplexer Parameter zur Modifikation der Julia-Menge
 max_iter: maximale Anzahl der Iteration der Julia-Mengen-Abbildung
 ==#
-function julia_map(z,c::T,max_iter::Int) where T <:Number
+function julia_map(z,c::T,max_iter::Int)::Int where T <:Number
 	for index = 1:max_iter
 		z = z*z+c
-		if(abs2(z)>2) 
-			return 1-index/max_iter
+		if abs(z)>2 
+			return index 
 		end
 	end
-	return 0
+	return max_iter
 end
 
 # ╔═╡ 2f121cf5-1338-41d1-bd64-71776708451a
-function julia_set(Z::Matrix{T},c::T,max_iter::Int) where T <:Number
+function julia_set(Z::Matrix{T},c::T,max_iter::Int)::Matrix{Int} where T <:Number
 	n_r,n_c = size(Z)
 	result=zeros(n_r,n_c)
 	for row_index = 1:n_r
@@ -174,7 +215,7 @@ function julia_set(Z::Matrix{T},c::T,max_iter::Int) where T <:Number
 end
 
 # ╔═╡ ab6d0502-369a-49b4-aad5-227606db2b19
-res=julia_set(Z,0.0+0.0*im,1000)
+res_j=julia_set(Z,0.0+0.0*im,max_iter)
 
 # ╔═╡ 99c9a77a-8516-4385-82a4-ff6abd6bd77c
 md"""
@@ -182,7 +223,7 @@ Julia-Menge für Parameter $c=0+i*0 \in \mathbb{C}$ ist ein Kreis.
 """
 
 # ╔═╡ 618d9169-4f44-4eaf-a26c-91609e84429a
-imresize(Gray{N0f8}.(res);ratio=2)
+Gray{N0f8}.(res_j/max_iter)
 
 # ╔═╡ 3320abd2-e7c0-49d2-973c-43dce6f48612
 begin
@@ -195,10 +236,10 @@ begin
 end
 
 # ╔═╡ e9202e30-01f4-428c-900a-41651f89f5a1
-@bind a Slider(-2:0.01:2,show_value=true)
+@bind a Slider(-2:0.01:2,show_value=true, default=-0.54)
 
 # ╔═╡ c08f0a5b-751d-4da8-af08-3e54959fdad6
-@bind b Slider(-2:0.01:2,show_value=true)
+@bind b Slider(-2:0.01:2,show_value=true, default=0.52)
 
 # ╔═╡ ed1cea0b-2c26-497b-9046-64017b5e5437
 contourf(x,y,(x,y)->julia_map(x+im*y,a+b*im,2000))
@@ -223,11 +264,13 @@ md"""
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
+Colors = "5ae59095-9a9b-59fe-a467-6f913c188581"
 Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 
 [compat]
+Colors = "~0.12.11"
 Images = "~0.26.0"
 Plots = "~1.40.1"
 PlutoUI = "~0.7.57"
@@ -237,9 +280,9 @@ PlutoUI = "~0.7.57"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.10.2"
+julia_version = "1.10.4"
 manifest_format = "2.0"
-project_hash = "b01ff20a5cf2d81541b4ea53eb5b0dd3054ca008"
+project_hash = "ebfc1522ead792073223174c3623c7e93f009607"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -412,9 +455,9 @@ version = "0.10.0"
 
 [[deps.Colors]]
 deps = ["ColorTypes", "FixedPointNumbers", "Reexport"]
-git-tree-sha1 = "fc08e5930ee9a4e03f84bfb5211cb54e7769758a"
+git-tree-sha1 = "362a287c3aa50601b0bc359053d5c2468f0e7ce0"
 uuid = "5ae59095-9a9b-59fe-a467-6f913c188581"
-version = "0.12.10"
+version = "0.12.11"
 
 [[deps.Compat]]
 deps = ["TOML", "UUIDs"]
@@ -429,7 +472,7 @@ weakdeps = ["Dates", "LinearAlgebra"]
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "1.1.0+0"
+version = "1.1.1+0"
 
 [[deps.ComputationalResources]]
 git-tree-sha1 = "52cb3ec90e8a8bea0e62e275ba577ad0f74821f7"
@@ -1967,6 +2010,7 @@ version = "1.4.1+1"
 # ╔═╡ Cell order:
 # ╠═5a129079-650f-41e0-8107-75ca17372801
 # ╟─0fcc2066-d627-11ee-2be5-97759e97dc98
+# ╠═12158eaa-ed07-49b6-b700-e785d084b249
 # ╟─4db3431c-d524-42af-98fa-b96e81f7478d
 # ╟─8d61f57a-09fb-432d-abc5-6c0a596fae97
 # ╟─bd4ddbf5-69bb-4935-aa5f-982874a90057
@@ -1978,7 +2022,18 @@ version = "1.4.1+1"
 # ╠═e202d43e-9fb3-4e5a-857b-056cc9b587b7
 # ╠═98fc798c-ea1d-48b1-823d-48464dd60afb
 # ╠═aa9cb003-5b68-421c-b3b4-8fda5eb90b7a
+# ╠═157d93ef-07c4-49ff-9571-98ee0743c93e
+# ╠═d18a9af6-e692-4190-97d2-5dcf9c2c5e60
+# ╟─83431e64-8d9a-424d-be3e-2f28bdd72263
 # ╠═a8cdc43c-b670-400b-8182-8967d37b67c8
+# ╟─f2340c47-6d9f-45c4-bfa4-ace05dd53031
+# ╠═5eb9cd82-219a-40a1-a98e-a01a55c25f5d
+# ╠═9ca15c3b-c865-4027-a3e8-c3d8d0157cdc
+# ╠═e0232503-c2da-4097-bf21-f9db353fc181
+# ╟─be3e3787-9d96-4a13-a180-c6c7d06a29f0
+# ╠═a9c64573-81cc-4430-b5e8-c359836f2f14
+# ╠═8633a5bc-754f-4b51-9e4d-6cfc56b6690c
+# ╠═6dc11c7d-1815-4c2b-aa31-9f2df9dbaf16
 # ╠═a104edee-d486-401a-9915-5f873e64c1bb
 # ╟─3cd1f708-fb77-457a-b3a0-7b0047c2e2f8
 # ╟─432ed51c-4124-449e-821d-00d09dd390c7
@@ -1992,6 +2047,6 @@ version = "1.4.1+1"
 # ╠═c08f0a5b-751d-4da8-af08-3e54959fdad6
 # ╠═ed1cea0b-2c26-497b-9046-64017b5e5437
 # ╟─ac12209c-81c5-4b8d-971e-4f18c3071bdb
-# ╠═f4c03db1-c3e4-4ef8-a4ee-ac0395210ca0
+# ╟─f4c03db1-c3e4-4ef8-a4ee-ac0395210ca0
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
