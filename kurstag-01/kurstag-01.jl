@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.38
+# v0.20.3
 
 using Markdown
 using InteractiveUtils
@@ -150,7 +150,20 @@ Pluto Notebooks kann man aus der REPL folgendermaßen nutzen.
 3. und die Oberfläche Starten durch: `Pluto.run()`
 
 Dieses Notebook ist ein **Pluto** Notebook.
+
+Hier kleine Beispiele für die Nutzung von Variable in Pluto. 
+Unterstützung aller ASCII-Zeichen ist möglich. Änderung von 
+🐱 erlaubt zu zeigen, dass **Pluto** reaktiv ist.
 """
+
+# ╔═╡ a2601a56-8a7f-4e74-a10b-ebebbfa2c2d1
+1+1
+
+# ╔═╡ 82079e31-3659-4949-abe2-6e8cd67fe1c8
+🐱 = 3
+
+# ╔═╡ d113a553-4bc5-40ec-8de8-b07a10fbd567
+3*🐱
 
 # ╔═╡ a12dd40c-4093-4dca-bb61-197b68d5efd1
 md"""## Jupyter Notebooks
@@ -384,7 +397,7 @@ PlutoUI = "~0.7.54"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.10.0"
+julia_version = "1.10.6"
 manifest_format = "2.0"
 project_hash = "78732f90007a038a4a5ca918705e568ed140d658"
 
@@ -553,7 +566,7 @@ weakdeps = ["Dates", "LinearAlgebra"]
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "1.0.5+1"
+version = "1.1.1+0"
 
 [[deps.ComputationalResources]]
 git-tree-sha1 = "52cb3ec90e8a8bea0e62e275ba577ad0f74821f7"
@@ -1078,7 +1091,7 @@ version = "1.12.10"
 [[deps.OpenBLAS_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
-version = "0.3.23+2"
+version = "0.3.23+4"
 
 [[deps.OpenEXR]]
 deps = ["Colors", "FileIO", "OpenEXR_jll"]
@@ -1470,7 +1483,7 @@ version = "1.5.5+0"
 [[deps.libblastrampoline_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
-version = "5.8.0+1"
+version = "5.11.0+0"
 
 [[deps.libpng_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "Zlib_jll"]
@@ -1496,7 +1509,7 @@ version = "17.4.0+2"
 """
 
 # ╔═╡ Cell order:
-# ╠═9986c5b7-2d88-406a-a225-05fb043ca81f
+# ╟─9986c5b7-2d88-406a-a225-05fb043ca81f
 # ╟─10353b52-8b0e-11ee-3d0d-3f9b07862a48
 # ╟─306d1dc4-0cb3-433c-b83c-ce15a04bab23
 # ╟─60fd6fe4-be67-4eff-87d1-42c922004e72
@@ -1526,6 +1539,9 @@ version = "17.4.0+2"
 # ╟─13d379da-0b0d-4aa5-982d-29a80e7643e0
 # ╟─ced81d4a-c606-45c3-837b-02684a1537db
 # ╟─252e4fff-27e1-4361-a4cb-39f80ade71ba
+# ╠═a2601a56-8a7f-4e74-a10b-ebebbfa2c2d1
+# ╠═82079e31-3659-4949-abe2-6e8cd67fe1c8
+# ╠═d113a553-4bc5-40ec-8de8-b07a10fbd567
 # ╟─a12dd40c-4093-4dca-bb61-197b68d5efd1
 # ╟─f4581bea-56dc-418e-88e5-0c5403a0d8a6
 # ╟─bb7bb8c8-26a2-4237-8524-43e93185f22d

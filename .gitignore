@@ -25,3 +25,5 @@ docs/site/
 # environment.
 # I comment this out since for the workshop I want everything to be fixed.
 #Manifest.toml
+
+.vscode
