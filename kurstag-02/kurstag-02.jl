@@ -1,17 +1,19 @@
 ### A Pluto.jl notebook ###
-# v0.19.36
+# v0.20.3
 
 using Markdown
 using InteractiveUtils
 
 # This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
 macro bind(def, element)
+    #! format: off
     quote
         local iv = try Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value catch; b -> missing; end
         local el = $(esc(element))
         global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : iv(el)
         el
     end
+    #! format: on
 end
 
 # ╔═╡ 608469ba-9f6c-11ee-3740-fff2920aac1c
@@ -691,7 +693,7 @@ PlutoUI = "~0.7.54"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.10.0"
+julia_version = "1.10.6"
 manifest_format = "2.0"
 project_hash = "4f50f408933af9ceda4b0e4d987baae020127e91"
 
@@ -860,7 +862,7 @@ weakdeps = ["Dates", "LinearAlgebra"]
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "1.0.5+1"
+version = "1.1.1+0"
 
 [[deps.ComputationalResources]]
 git-tree-sha1 = "52cb3ec90e8a8bea0e62e275ba577ad0f74821f7"
@@ -1388,7 +1390,7 @@ weakdeps = ["Adapt"]
 [[deps.OpenBLAS_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
-version = "0.3.23+2"
+version = "0.3.23+4"
 
 [[deps.OpenEXR]]
 deps = ["Colors", "FileIO", "OpenEXR_jll"]
@@ -1781,7 +1783,7 @@ version = "1.5.5+0"
 [[deps.libblastrampoline_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
-version = "5.8.0+1"
+version = "5.11.0+0"
 
 [[deps.libpng_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Zlib_jll"]
@@ -1818,7 +1820,7 @@ version = "17.4.0+2"
 # ╟─2a012a0e-ca83-49cb-aaed-c5146ec78a13
 # ╠═f473b5a4-eccf-4020-8c8d-33caddd85826
 # ╠═ffd5929c-51b8-4cdb-8285-4e15026d9875
-# ╠═4f133e9d-b916-41da-9251-3514fcf9f5a9
+# ╟─4f133e9d-b916-41da-9251-3514fcf9f5a9
 # ╟─ef37041d-0b4d-4204-9c22-9ce7d7952af7
 # ╠═34cf8b22-9da3-4ab1-ba1c-0a3a1e83ee29
 # ╠═51ecbb07-d338-404e-b9ae-9701e75e4d73

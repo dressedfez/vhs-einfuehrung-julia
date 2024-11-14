@@ -14,8 +14,8 @@ while !gueltige_eingabe
 
     # Nutzung von Short-Circuit Expression
     alter < 0 && begin
-                    println("Bitte geben Sie ein Alter ein, dass größer als Null ist.")
                     run(`clear`)
+                    println("Bitte geben Sie ein Alter ein, dass größer als Null ist.")
                     global gueltige_eingabe = false
                 end
 end
@@ -23,7 +23,7 @@ end
 # if-Anweisung kann auch als Ausdruck verwendet werden.
 text = if  (0 < alter < 16)
         "Sie dürfen noch kein Mofa fahren"
-elseif (16 < alter < 18)
+elseif (16 <= alter < 18)
         "Sie dürfen noch kein Auto fahren"
 else
         "Sie sind alt genug, um Auto und Mofa fahren zu dürfen, wenn Sie einen Führenschein haben."
