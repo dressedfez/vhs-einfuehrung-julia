@@ -94,6 +94,9 @@ Hier Beispiele für kleinere Darstellungen:
 # ╔═╡ 34cf8b22-9da3-4ab1-ba1c-0a3a1e83ee29
 Int8(1)
 
+# ╔═╡ 0cca4b3e-3cd2-4af9-b7e4-d1b8f137301f
+typeof(Int8(1))
+
 # ╔═╡ 51ecbb07-d338-404e-b9ae-9701e75e4d73
 bitstring(Int8(1))
 
@@ -164,6 +167,24 @@ md"""
 3. Wie sieht die obige Ausgabe aus?
 """
 
+# ╔═╡ cef22301-06ee-4897-ae53-497cd9946c8a
+md"Lösung 1:"
+
+# ╔═╡ 7021d829-bde7-4121-9eab-6c3ef14a7960
+Int(typemax(UInt8))
+
+# ╔═╡ 59821bea-21ea-4528-bcb6-ee8a773f5947
+md"Lösung 2:"
+
+# ╔═╡ 5376a7f5-6e88-4b73-8a41-dd4280ac2caa
+md"Im obigen Programm Int8 durch UInt8 ersetzen."
+
+# ╔═╡ 693e21ee-d95e-49b5-b144-213b4b2983b9
+md"Lösung 3:"
+
+# ╔═╡ a775cd14-0cdd-4118-b3f0-aef2ff9e7f0a
+md"Es werden die Zahl von 0 bis 255 in als ganze Zahlen und in Binärdarstellung ausgegeben."
+
 # ╔═╡ 9204fd20-c3c6-48cf-acdb-2a3f1fab054e
 md"""
 ### Operationen 
@@ -207,7 +228,10 @@ md"Multiplikation:"
 md"Division: nur Ganzzahlquotient"
 
 # ╔═╡ 59c7602c-14be-4faa-81ff-387d730581e7
-3 ÷ 2
+7 ÷ 2
+
+# ╔═╡ c6e7aa1e-b67c-4fca-94c4-afad62e2fd17
+7 % 2
 
 # ╔═╡ 5a34c57e-5885-4df4-8305-5cb0391ef229
 md"Dies ist das Gleiche wie: div(2,2) = $(div(2,2))"
@@ -249,6 +273,18 @@ oder in anderer Notation:
 mod(3,2)=$(mod(3,2))
 """
 
+# ╔═╡ f6890cae-3312-4fcd-9efa-99336f533b24
+md"#### Einfaches Beispiel für Nutzung von Operatoren"
+
+# ╔═╡ 8a3b198e-b799-4871-94a9-d75686986857
+m = 95
+
+# ╔═╡ aaaafde9-cd2d-43c7-bab6-7ef2450391a4
+c = 299_792_458 # _ wird hier als genutzt, damit wir die Zahl einfacher lesen und schreiben können
+
+# ╔═╡ bf787872-d71a-4a3a-a506-b3cc9e618797
+E = m*c^2
+
 # ╔═╡ 99c28994-c077-47af-9764-799ab6c849f1
 md"""
 #### Übung 2: Übertragung auf andere numerische Datentypen
@@ -257,6 +293,27 @@ md"""
 3. Untersuche den Datentyp: Rational. 
 4. Was passiert, wenn man √-1 ausrechnet? 
 """
+
+# ╔═╡ 29f8237b-68e9-4f4c-b877-0e7c12e1c70f
+md"Lösung 2:"
+
+# ╔═╡ 7eab6123-7c04-47be-8e65-721f63861e46
+md"Die Domänengrenzen werden wie in der Mathematik überschritten. Ein Beispiel:"
+
+# ╔═╡ bd4af97c-e67b-459b-9fb8-37705b2ef870
+2/3 # Int durch Int --> Float
+
+# ╔═╡ 09a473ba-1fa8-4b38-af9a-d68669d83f34
+md"Lösung 3:"
+
+# ╔═╡ 660f4a6f-d32f-4a94-aad2-20e022a6d860
+md"Verschiedene Beispiel sind [hier](https://docs.julialang.org/en/v1/manual/complex-and-rational-numbers/#Rational-Numbers) zu finden."
+
+# ╔═╡ 400df166-de80-466a-981d-16d8acfdd7e5
+md"Lösung 4:"
+
+# ╔═╡ 52e96842-4c23-47e4-80c7-1a0e1cf9b55d
+#sqrt(-1) # führt zu Fehler (für Lösung siehe entsprechenden Kommentar)
 
 # ╔═╡ 2ee60d80-de03-42b6-9343-7f0779e79452
 md"""### Operatorrangfolge"""
@@ -314,6 +371,48 @@ $2^{4-2}$
 4. Wie sieht es mit dem `Julia`-Ausdruck 2^3^4 aus? Wie werden die Klammern hier automatisch gesetzt?
 """
 
+# ╔═╡ 1555e3b8-bc05-4c99-8b9f-3fc1291e7626
+md"Lösung 1:"
+
+# ╔═╡ e073468c-7a71-4f79-8250-3ef40c269366
+(3-2)/(4-1)
+
+# ╔═╡ 8c6817e7-67dd-46ce-9040-42a0eda29664
+md"oder:"
+
+# ╔═╡ 6fa5cd27-4d3b-468d-8ef6-fe3c698585e2
+(3-2)//(4-1)
+
+# ╔═╡ 6d35b180-b78c-4f2f-afb9-023d00db462c
+isapprox((3-2)//(4-1),(3-2)/(4-1))
+
+# ╔═╡ 62007b66-8b7c-4469-8525-c120bd2a7fbb
+md"Lösung 2:"
+
+# ╔═╡ 7a66d7fc-30b4-49b8-a051-b250464f7be7
+2^(4-2)
+
+# ╔═╡ d9969360-3f88-41c5-bbde-07bb20e62299
+md"Lösung 3:"
+
+# ╔═╡ 8cbb96df-5cdc-4d3f-9437-159b05445b9a
+(2-3)-4, 2-3-4, 2-(3-4)
+
+# ╔═╡ 7f4e79af-797e-42cb-9fde-ef6d4801f7da
+md"Da die Standardauswertung links assoziativ  ist, ist die Auswertung von 2-3-4 und (2-3)-4 gleich."
+
+# ╔═╡ f82751f5-bdf6-4adf-82c6-2d07bf3c1ffb
+md"Lösung 4:"
+
+# ╔═╡ 9a226454-4dc0-4e94-829b-35cd0042891e
+2^3^4, (2^3)^4, 2^(3^4)
+
+# ╔═╡ 430b5b21-714f-4bf1-b650-ed10a31aed80
+md"Das ist komisch. Hier wird das Maximum der betrachteten Typen $(typemax(Int64)) relevant, der kleiner ist als $(BigInt(2)^BigInt(3)^BigInt(4)), wie man durch der Vergleich erreicht: $(typemax(Int64)<BigInt(2)^BigInt(3)^BigInt(4))"
+
+# ╔═╡ 571a7d02-2955-4e8b-8dbd-c538d4b819f0
+2^3.0^4, (2^3.0)^4, 2^(3.0^4)
+
 # ╔═╡ 3b1f09df-875c-4e05-bf56-b2ac1e84de95
 md"""
 ## Zeichen und Zeichenketten
@@ -333,7 +432,7 @@ md"""
 typeof('a')
 
 # ╔═╡ 0b84a9df-149b-4690-bfa1-078943b2e4b3
-codepoint('a')
+Int(codepoint('a'))
 
 # ╔═╡ 59f6cb34-24e8-48a9-882e-310f1a78a1d4
 Char(codepoint('a'))
@@ -439,6 +538,30 @@ md"""
 3. Verwende Funktionen wie occursin, um das Vorhandensein eines Unterstrings zu überprüfen, und replace, um einen Teil des Strings zu ersetzen.
 4. Erforsche weitere String-Funktionen in Julia, wie zum Beispiel strip, split, join und repeat.
 """
+
+# ╔═╡ 334695dc-9c14-449e-bd70-b83cf94430cb
+md"Lösung 1:"
+
+# ╔═╡ 1c9a33f8-3156-4253-8caa-d72d66d25797
+test_string="Hallo Frank, "
+
+# ╔═╡ 7b5b381a-6c9d-40f9-8da4-28a9ca4f1b26
+length(test_string)
+
+# ╔═╡ 299d68e2-8e16-455e-a926-329e48900a12
+md"Lösung 2:"
+
+# ╔═╡ 7f1f0b4d-5887-40aa-80e8-829bc0064395
+@bind faktor Slider(0:1000, show_value=true, default=5  )
+
+# ╔═╡ e9bbff3b-b584-4b15-9409-00dc04ce1e16
+test_string^faktor
+
+# ╔═╡ 346b0816-0714-465b-bfa3-ae32fe170d87
+length(test_string^faktor)
+
+# ╔═╡ f0948abe-4447-4789-b7d8-2446b9a0a983
+length(test_string)*faktor
 
 # ╔═╡ efc57d33-aa5d-4f8c-87c2-b36a388daa3a
 md"""
@@ -1823,6 +1946,7 @@ version = "17.4.0+2"
 # ╟─4f133e9d-b916-41da-9251-3514fcf9f5a9
 # ╟─ef37041d-0b4d-4204-9c22-9ce7d7952af7
 # ╠═34cf8b22-9da3-4ab1-ba1c-0a3a1e83ee29
+# ╠═0cca4b3e-3cd2-4af9-b7e4-d1b8f137301f
 # ╠═51ecbb07-d338-404e-b9ae-9701e75e4d73
 # ╠═aabb2fb0-06d7-43d7-8805-edb8beb8fd5c
 # ╟─0c8425d7-71fd-4553-a835-4bb38561309b
@@ -1836,6 +1960,12 @@ version = "17.4.0+2"
 # ╠═67f8ef07-4093-471b-883d-9551042aace9
 # ╟─5f22ef4b-5cc9-4c04-814a-de81a49450ca
 # ╟─f603f393-34b6-4c09-b842-13ca35f2ccf8
+# ╟─cef22301-06ee-4897-ae53-497cd9946c8a
+# ╠═7021d829-bde7-4121-9eab-6c3ef14a7960
+# ╟─59821bea-21ea-4528-bcb6-ee8a773f5947
+# ╟─5376a7f5-6e88-4b73-8a41-dd4280ac2caa
+# ╟─693e21ee-d95e-49b5-b144-213b4b2983b9
+# ╟─a775cd14-0cdd-4118-b3f0-aef2ff9e7f0a
 # ╟─9204fd20-c3c6-48cf-acdb-2a3f1fab054e
 # ╟─47e68e27-144c-46df-b180-6b491e9d9bde
 # ╠═d9f6b662-c8ca-4a1a-ac09-4798ca45b841
@@ -1850,6 +1980,7 @@ version = "17.4.0+2"
 # ╠═3288a869-9891-4177-8cbf-e6ed3e3c80bf
 # ╟─e2906acf-65d5-4b2e-ab58-15521392a02d
 # ╠═59c7602c-14be-4faa-81ff-387d730581e7
+# ╠═c6e7aa1e-b67c-4fca-94c4-afad62e2fd17
 # ╟─5a34c57e-5885-4df4-8305-5cb0391ef229
 # ╟─911930fd-54ce-4f89-b2de-a6b85c1ac378
 # ╠═ef92e922-3637-4f97-9012-17ddfe8823a0
@@ -1861,7 +1992,18 @@ version = "17.4.0+2"
 # ╟─18181c18-f307-4ecc-99ca-0ec263d062c7
 # ╠═83c1be17-dda5-472b-9208-e75a13118601
 # ╟─0757fc13-1ac5-44f7-b8d8-52a4a77bbed8
+# ╟─f6890cae-3312-4fcd-9efa-99336f533b24
+# ╠═8a3b198e-b799-4871-94a9-d75686986857
+# ╠═aaaafde9-cd2d-43c7-bab6-7ef2450391a4
+# ╠═bf787872-d71a-4a3a-a506-b3cc9e618797
 # ╟─99c28994-c077-47af-9764-799ab6c849f1
+# ╟─29f8237b-68e9-4f4c-b877-0e7c12e1c70f
+# ╟─7eab6123-7c04-47be-8e65-721f63861e46
+# ╠═bd4af97c-e67b-459b-9fb8-37705b2ef870
+# ╟─09a473ba-1fa8-4b38-af9a-d68669d83f34
+# ╟─660f4a6f-d32f-4a94-aad2-20e022a6d860
+# ╟─400df166-de80-466a-981d-16d8acfdd7e5
+# ╠═52e96842-4c23-47e4-80c7-1a0e1cf9b55d
 # ╟─2ee60d80-de03-42b6-9343-7f0779e79452
 # ╟─1e0f1b46-cff6-4b3c-829f-637e9c6e9533
 # ╠═eadf6143-781e-411c-ab2f-e04d26797803
@@ -1870,6 +2012,20 @@ version = "17.4.0+2"
 # ╠═9362ef16-a700-4bcf-a475-c0633e5df42a
 # ╟─aace03b3-2285-4739-b17e-7e87613bf4dc
 # ╟─ea358f14-f3b8-4b98-8354-9b22c830f88c
+# ╟─1555e3b8-bc05-4c99-8b9f-3fc1291e7626
+# ╠═e073468c-7a71-4f79-8250-3ef40c269366
+# ╟─8c6817e7-67dd-46ce-9040-42a0eda29664
+# ╠═6fa5cd27-4d3b-468d-8ef6-fe3c698585e2
+# ╠═6d35b180-b78c-4f2f-afb9-023d00db462c
+# ╟─62007b66-8b7c-4469-8525-c120bd2a7fbb
+# ╠═7a66d7fc-30b4-49b8-a051-b250464f7be7
+# ╟─d9969360-3f88-41c5-bbde-07bb20e62299
+# ╠═8cbb96df-5cdc-4d3f-9437-159b05445b9a
+# ╟─7f4e79af-797e-42cb-9fde-ef6d4801f7da
+# ╟─f82751f5-bdf6-4adf-82c6-2d07bf3c1ffb
+# ╠═9a226454-4dc0-4e94-829b-35cd0042891e
+# ╟─430b5b21-714f-4bf1-b650-ed10a31aed80
+# ╠═571a7d02-2955-4e8b-8dbd-c538d4b819f0
 # ╟─3b1f09df-875c-4e05-bf56-b2ac1e84de95
 # ╟─d4260739-a6c8-4f02-96b9-279abb0e11b0
 # ╠═b416d9c8-803b-4e3e-b66b-7e20c89f96bb
@@ -1897,6 +2053,14 @@ version = "17.4.0+2"
 # ╠═bc7bc37e-22a9-4aa9-bd8a-cd2b8ede3016
 # ╠═679e9257-4c43-4544-bd9f-6cbf629738be
 # ╟─5519a33e-d60d-4b7a-942f-f74939746d43
+# ╟─334695dc-9c14-449e-bd70-b83cf94430cb
+# ╠═1c9a33f8-3156-4253-8caa-d72d66d25797
+# ╠═7b5b381a-6c9d-40f9-8da4-28a9ca4f1b26
+# ╟─299d68e2-8e16-455e-a926-329e48900a12
+# ╠═7f1f0b4d-5887-40aa-80e8-829bc0064395
+# ╠═e9bbff3b-b584-4b15-9409-00dc04ce1e16
+# ╠═346b0816-0714-465b-bfa3-ae32fe170d87
+# ╠═f0948abe-4447-4789-b7d8-2446b9a0a983
 # ╟─efc57d33-aa5d-4f8c-87c2-b36a388daa3a
 # ╠═c532c3a0-8c57-4b8c-846b-7f482fde61e7
 # ╠═73646c2b-79f8-44d4-a366-76bac145cb2b
