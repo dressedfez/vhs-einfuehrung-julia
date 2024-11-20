@@ -6,12 +6,9 @@ using InteractiveUtils
 
 # ╔═╡ dd8698ee-affb-11ee-084e-1ffdbb6f6a08
 begin
-	using PlutoUI, Images, FileIO, Plots
+	using PlutoUI, Images, FileIO, Plots, LinearAlgebra
 	TableOfContents()
 end
-
-# ╔═╡ 3887c502-bec6-4b9c-8373-0dbe9ffff889
-using LinearAlgebra
 
 # ╔═╡ 65fb214d-3782-4de9-b8dd-34efb047f6c9
 md"""
@@ -21,7 +18,7 @@ __Datenstrukturen und Schleifen__
 
 # ╔═╡ 4bffdb22-06fc-465f-9257-ab2974230512
 md"""
-## Datentstrukturen
+## Kontainer-Datenstrukturen
 """
 
 # ╔═╡ 7ddad624-511d-4907-9d5c-84d1bd90731c
@@ -70,6 +67,12 @@ md"Hinzufügen eines Elementes"
 # ╔═╡ 77311223-fea8-44ae-b3ef-616e954272dd
 push!(fibonacci,21)
 
+# ╔═╡ 626d6b76-9cdf-4866-9cbc-961f89ac6146
+md"""
+!!! remark "Bemerkung"
+	Die Funktion `push!` verändert das Array, dass man ihr übergibt. Im Allgemeinen wird in Julia mittels Konvention durch ein `!` ausdrückt, dass eine Funktion ihre Argumente verändert.
+"""
+
 # ╔═╡ ac149eee-8553-47ab-bff9-9631810b1a04
 md"Entfernen eines Elementes"
 
@@ -85,7 +88,7 @@ md"Aktualisieren eines Elementes"
 # ╔═╡ f5dbfb3f-0bf6-444f-9d91-d730ebdcc686
 md"""
 !!! warning "Achtung"
-	Im Gegensatz zu vielen anderen Sprachen (Java, C, etc) fängt die Indizierung bei 1 an. 
+	Im Gegensatz zu vielen anderen Sprachen (Java, C, etc) fängt die Indizierung bei 1 an. Dies ist aber auch hier nur eine Konvention und kann angepasst werden. Um Probleme damnit zu umgehen benutzt man `begin` und `end` (siehe später).
 """
 
 # ╔═╡ 44de9b65-9e43-450c-974a-4d9844315160
@@ -125,7 +128,7 @@ end
 md"2-dimensionale Arrays"
 
 # ╔═╡ c0956429-4b92-45b0-903a-2f97ee2db9c5
-matr1 = [1 2 3; 4 5 5;5 7 8 ]
+matr1 = [1 2 3; 4 5 5;5 7 8; 9 10 11 ]
 
 # ╔═╡ 94617964-1f9f-49b8-9450-12f61d7b7791
 length(matr1) # gibt die Anzahl der Elemente aus
@@ -205,7 +208,7 @@ a×b
 md"Veranschaulichung der Addition von Vektoren"
 
 # ╔═╡ e033443d-fde2-42ea-9608-e00be347b3ee
-	v1 = [2, 3]
+v1 = [2, 3]
 
 # ╔═╡ 8fa20894-d4a7-4f97-94ab-26aec0c043a1
 v2 = [3, 1]
@@ -216,15 +219,18 @@ vs=v1 + v2
 # ╔═╡ 0b18aa82-6d31-4023-b5ad-64df9303e6ef
 md"""
 #### Übung 1: 
-1. Zeige am Beispiel, dass das Kreuzprodukt eines Vektors mit sich selbst null ist.
-2. Zeige am Beispiel, dass das Skalarprodukt zweier Vektoren, die senkrecht aufeinander stehen null ist (das Kreuzprodukt zweier Vektoren stehen senkrecht auf diesen).
+1. Zeige am Beispiel, dass das Kreuzprodukt (cross) eines Vektors mit sich selbst null ist.
+2. Zeige am Beispiel, dass das Skalarprodukt (dot) zweier Vektoren, die senkrecht aufeinander stehen null ist (das Kreuzprodukt zweier Vektoren stehen senkrecht auf diesen).
 """
 
 # ╔═╡ 8a06860b-a85f-446f-82d1-142594af5581
 md"#### Matrizen"
 
+# ╔═╡ ce02226d-22c7-4029-835c-94ad08f7cb31
+
+
 # ╔═╡ 7ef9db2d-89dd-4b6f-9646-cc6e4c9ed4c3
-	A = [2 3 5; 4 5 6]
+A = [2 3 5; 4 5 6]
 
 # ╔═╡ 378a4897-9736-4dff-b965-a2f5b6ca7c0e
 B = [10 3 7; 2 4 8]
@@ -490,6 +496,61 @@ md"""
 2. Erstelle zwei oder mehr Named-Tuple und spiele mit der Funktion `merge` rum. Was passiert, wenn die Namen übereinstimmen, aber die Werte nicht.
 """
 
+# ╔═╡ 7adb3cbb-ea05-43f9-94ee-38f99863f8f8
+md"""### Mengen
+
+
+In einer Menge kann es jedes Element nur ein Mal geben, d.h. die Elemente sind einzigartig. Einen Menge kann durch den Konstruktor eine Menge erzeugt werden.
+"""
+
+# ╔═╡ 291ea98a-a3c0-4326-8d14-ee1c106a5de8
+m = Set() # leere Menge
+
+# ╔═╡ 835ba65f-1891-4e4b-9de4-dd40d59649c7
+isempty(m)
+
+# ╔═╡ 42a3195b-e350-4269-993a-446556a11397
+push!(m,1)
+
+# ╔═╡ 2ea39680-c858-43e0-9679-2cc6ae6426a8
+isempty(m)
+
+# ╔═╡ d6fbc218-be8b-4f67-8f35-893804c482b4
+push!(m,1) # ein weitere Element 1 kann nicht hinzugefügt werden, da es bereits in der Menge enhalten ist
+
+# ╔═╡ ef3220b1-abe3-4961-a28e-9e36ad85dc01
+delete!(m,1)
+
+# ╔═╡ 9c654798-b87d-47de-8ca1-6e44937d7d57
+m1 = Set([1,2,2])
+
+# ╔═╡ 79f7ec2c-77af-4569-9159-dfd490862697
+length(m1)
+
+# ╔═╡ b710b7c4-37d7-4b63-b0c4-82e5f69b5ed4
+m2=Set([3,4])
+
+# ╔═╡ e44a3e75-3de4-46ce-b6cd-f87f925a57f7
+intersect(m1,m2)
+
+# ╔═╡ 795b4f8c-b148-4351-b0bd-dbf7fc17a8fa
+m1 ∩ m2 # \cap
+
+# ╔═╡ 21547e7c-cfb9-4a78-8ee5-f16777bf9410
+union(m1,m2)
+
+# ╔═╡ 80b580fe-f374-43b4-bac1-f8b5c1c62995
+m1 ∪ m1 #\cup
+
+# ╔═╡ 23015954-b2c9-4200-b849-7af9ce013655
+1 in m1, 1 ∈ m2
+
+# ╔═╡ 2f1dfdb9-79ff-4687-b685-58d568945d3b
+m1 ⊆ m2 # ist m1 eine Teilmenge 
+
+# ╔═╡ 961708cd-3889-4289-bf8b-7c9f26f93d32
+issubset(Set(3),m2)
+
 # ╔═╡ 38236c4c-dad2-471c-b098-0716eaad9f77
 md"""
 ## Schleifen
@@ -566,6 +627,11 @@ Beispiel:
 # ╔═╡ 4079c83b-5f4c-4e75-a3c8-1f16ae7f09c5
 for name in ["Frank","Tobias","Karla","Ewa"]
 	println(name)
+end
+
+# ╔═╡ 1ffcab90-d482-4ae8-818e-1cbfbfa015eb
+for zahl in m1 # iteriere über Menge 
+	print("$zahl ")
 end
 
 # ╔═╡ 4962b3a1-c990-4cb8-94ab-0c229d324dc3
@@ -645,7 +711,7 @@ PlutoUI = "~0.7.54"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.10.0"
+julia_version = "1.10.6"
 manifest_format = "2.0"
 project_hash = "95b24dffa4850c23dc55df3313cac2e4ab466d46"
 
@@ -837,7 +903,7 @@ weakdeps = ["Dates", "LinearAlgebra"]
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "1.0.5+1"
+version = "1.1.1+0"
 
 [[deps.ComputationalResources]]
 git-tree-sha1 = "52cb3ec90e8a8bea0e62e275ba577ad0f74821f7"
@@ -1597,7 +1663,7 @@ version = "1.3.5+1"
 [[deps.OpenBLAS_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
-version = "0.3.23+2"
+version = "0.3.23+4"
 
 [[deps.OpenEXR]]
 deps = ["Colors", "FileIO", "OpenEXR_jll"]
@@ -2290,7 +2356,7 @@ version = "0.15.1+0"
 [[deps.libblastrampoline_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
-version = "5.8.0+1"
+version = "5.11.0+0"
 
 [[deps.libfdk_aac_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -2346,7 +2412,7 @@ version = "1.4.1+1"
 """
 
 # ╔═╡ Cell order:
-# ╟─dd8698ee-affb-11ee-084e-1ffdbb6f6a08
+# ╠═dd8698ee-affb-11ee-084e-1ffdbb6f6a08
 # ╟─65fb214d-3782-4de9-b8dd-34efb047f6c9
 # ╟─4bffdb22-06fc-465f-9257-ab2974230512
 # ╟─7ddad624-511d-4907-9d5c-84d1bd90731c
@@ -2362,6 +2428,7 @@ version = "1.4.1+1"
 # ╠═49e0160c-b6c1-402e-b909-baaa9e4a3a80
 # ╟─6d80fd45-7311-4cb0-ad55-80e631f05909
 # ╠═77311223-fea8-44ae-b3ef-616e954272dd
+# ╟─626d6b76-9cdf-4866-9cbc-961f89ac6146
 # ╟─ac149eee-8553-47ab-bff9-9631810b1a04
 # ╠═20472e7d-0d12-41c4-953c-2c8d9a293c98
 # ╟─658be04e-c557-4f2b-82af-fae89a392163
@@ -2386,7 +2453,6 @@ version = "1.4.1+1"
 # ╠═7f2ec829-d0c5-48f0-9028-ba9b85bbb410
 # ╟─392a15b4-31b4-4ea4-9ed0-dae40cbf59bd
 # ╟─67b6a6f4-5f1c-46ce-8968-1ae5768f75e0
-# ╠═3887c502-bec6-4b9c-8373-0dbe9ffff889
 # ╟─259b58d4-026b-4ace-8bf2-ea810d2932f1
 # ╟─125c13ae-cbbd-489a-ab8a-f40364be1a84
 # ╠═ee16caec-c2c7-4e3b-b09e-d7bb622d073c
@@ -2406,6 +2472,7 @@ version = "1.4.1+1"
 # ╠═aec21670-3f10-4573-925d-d1a77b73c43e
 # ╟─0b18aa82-6d31-4023-b5ad-64df9303e6ef
 # ╟─8a06860b-a85f-446f-82d1-142594af5581
+# ╠═ce02226d-22c7-4029-835c-94ad08f7cb31
 # ╠═7ef9db2d-89dd-4b6f-9646-cc6e4c9ed4c3
 # ╠═378a4897-9736-4dff-b965-a2f5b6ca7c0e
 # ╟─51252320-8757-4882-acf8-9402914957e7
@@ -2479,6 +2546,23 @@ version = "1.4.1+1"
 # ╟─d770789a-1c3e-44b1-bd39-657c8060276d
 # ╠═273738b2-3781-4374-b619-d69bc481cf89
 # ╟─e28bda3f-f1fa-4dab-9449-8c7b37eface6
+# ╟─7adb3cbb-ea05-43f9-94ee-38f99863f8f8
+# ╠═291ea98a-a3c0-4326-8d14-ee1c106a5de8
+# ╠═835ba65f-1891-4e4b-9de4-dd40d59649c7
+# ╠═42a3195b-e350-4269-993a-446556a11397
+# ╠═2ea39680-c858-43e0-9679-2cc6ae6426a8
+# ╠═d6fbc218-be8b-4f67-8f35-893804c482b4
+# ╠═ef3220b1-abe3-4961-a28e-9e36ad85dc01
+# ╠═9c654798-b87d-47de-8ca1-6e44937d7d57
+# ╠═79f7ec2c-77af-4569-9159-dfd490862697
+# ╠═b710b7c4-37d7-4b63-b0c4-82e5f69b5ed4
+# ╠═e44a3e75-3de4-46ce-b6cd-f87f925a57f7
+# ╠═795b4f8c-b148-4351-b0bd-dbf7fc17a8fa
+# ╠═21547e7c-cfb9-4a78-8ee5-f16777bf9410
+# ╠═80b580fe-f374-43b4-bac1-f8b5c1c62995
+# ╠═23015954-b2c9-4200-b849-7af9ce013655
+# ╠═2f1dfdb9-79ff-4687-b685-58d568945d3b
+# ╠═961708cd-3889-4289-bf8b-7c9f26f93d32
 # ╟─38236c4c-dad2-471c-b098-0716eaad9f77
 # ╟─ad00afb5-63b1-4975-ac29-e1463ba2f15c
 # ╟─98f08e1e-e5da-47de-aaf4-6f02a02cb251
@@ -2488,6 +2572,7 @@ version = "1.4.1+1"
 # ╠═2edbb136-ebb8-448f-a76e-ca7a98200ecc
 # ╟─1cb77434-2530-44c2-8ea1-59c5b90a3f00
 # ╠═4079c83b-5f4c-4e75-a3c8-1f16ae7f09c5
+# ╠═1ffcab90-d482-4ae8-818e-1cbfbfa015eb
 # ╟─4962b3a1-c990-4cb8-94ab-0c229d324dc3
 # ╠═1c6bc7f7-36cc-4568-ad4d-ea5cba648a7a
 # ╟─2ac468d7-da8c-42ae-9259-21e898ed9a79
