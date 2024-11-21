@@ -551,6 +551,41 @@ m1 ⊆ m2 # ist m1 eine Teilmenge
 # ╔═╡ 961708cd-3889-4289-bf8b-7c9f26f93d32
 issubset(Set(3),m2)
 
+# ╔═╡ fd6b4a7c-6bc8-4cb2-9c36-2190678f9ad8
+md"""### Sequenzen (Ranges)
+
+Sequenzen (Ranges) sind ein spezieller Kontainer-Typ, der
+
+a. nur Zahlen enthalten kann und
+
+b. unveränderbar ist, d.h. nach seiner Erstellung nicht mehr modifziert werden kann.
+"""
+
+# ╔═╡ b06f108f-84c5-4a57-b2d4-3dd32b18f39a
+r1 = 1:10 # einfach
+
+# ╔═╡ f04945b6-e57a-4781-9ea2-2093ca154d58
+collect(r1)
+
+# ╔═╡ 30d7794a-e020-4853-95a5-b55dae8fdb5f
+r2 = 1:2:10
+
+# ╔═╡ be1eb45e-ff60-401d-91aa-d28b60996bce
+collect(r2)
+
+# ╔═╡ c50bd5cb-e6bd-449f-8354-b4be99af60fa
+begin
+	r3 = range(0,10,5); 
+	# schaut Euch auch die anderen Möglichkeiten hier in der Dokumentation an
+	collect(r3), length(r3)
+end
+
+# ╔═╡ 24ffe410-2558-4f08-b770-5ed317859e39
+begin
+	r4 = 10:-1:0
+	collect(r4)
+end
+
 # ╔═╡ 38236c4c-dad2-471c-b098-0716eaad9f77
 md"""
 ## Schleifen
@@ -632,6 +667,14 @@ end
 # ╔═╡ 1ffcab90-d482-4ae8-818e-1cbfbfa015eb
 for zahl in m1 # iteriere über Menge 
 	print("$zahl ")
+end
+
+# ╔═╡ 6369ae98-35b7-4d69-93c4-55e8f2f1c57f
+begin
+	for zahl in r4
+		print("$zahl ")
+	end
+	print("lift off")
 end
 
 # ╔═╡ 4962b3a1-c990-4cb8-94ab-0c229d324dc3
@@ -2563,6 +2606,13 @@ version = "1.4.1+1"
 # ╠═23015954-b2c9-4200-b849-7af9ce013655
 # ╠═2f1dfdb9-79ff-4687-b685-58d568945d3b
 # ╠═961708cd-3889-4289-bf8b-7c9f26f93d32
+# ╟─fd6b4a7c-6bc8-4cb2-9c36-2190678f9ad8
+# ╠═b06f108f-84c5-4a57-b2d4-3dd32b18f39a
+# ╠═f04945b6-e57a-4781-9ea2-2093ca154d58
+# ╠═30d7794a-e020-4853-95a5-b55dae8fdb5f
+# ╠═be1eb45e-ff60-401d-91aa-d28b60996bce
+# ╠═c50bd5cb-e6bd-449f-8354-b4be99af60fa
+# ╠═24ffe410-2558-4f08-b770-5ed317859e39
 # ╟─38236c4c-dad2-471c-b098-0716eaad9f77
 # ╟─ad00afb5-63b1-4975-ac29-e1463ba2f15c
 # ╟─98f08e1e-e5da-47de-aaf4-6f02a02cb251
@@ -2573,6 +2623,7 @@ version = "1.4.1+1"
 # ╟─1cb77434-2530-44c2-8ea1-59c5b90a3f00
 # ╠═4079c83b-5f4c-4e75-a3c8-1f16ae7f09c5
 # ╠═1ffcab90-d482-4ae8-818e-1cbfbfa015eb
+# ╠═6369ae98-35b7-4d69-93c4-55e8f2f1c57f
 # ╟─4962b3a1-c990-4cb8-94ab-0c229d324dc3
 # ╠═1c6bc7f7-36cc-4568-ad4d-ea5cba648a7a
 # ╟─2ac468d7-da8c-42ae-9259-21e898ed9a79
