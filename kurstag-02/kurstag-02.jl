@@ -1,19 +1,17 @@
 ### A Pluto.jl notebook ###
-# v0.20.3
+# v0.19.36
 
 using Markdown
 using InteractiveUtils
 
 # This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
 macro bind(def, element)
-    #! format: off
     quote
         local iv = try Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value catch; b -> missing; end
         local el = $(esc(element))
         global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : iv(el)
         el
     end
-    #! format: on
 end
 
 # ╔═╡ 608469ba-9f6c-11ee-3740-fff2920aac1c
@@ -736,16 +734,36 @@ md"__Beispiel:__"
 # ╔═╡ 853a7ad7-7cfe-4c85-8ca7-5811629d05b2
 begin
 	bedingung1 = true
-	bedingung2 = false
+	bedingung2 = true
 	
 	if(bedingung1)
-		"Bedinung 1 erfüllt"
+		println("Bedinung 1 erfüllt")
 	elseif(bedingung2)
-		"Bedingung 2 erfüllt"
+		println("Bedingung 2 erfüllt")
 	else
-		"Fall: keine Bedinung erfüllt -> Sonstige Anweisung"
+		println("Fall: keine Bedinung erfüllt -> Sonstige Anweisung")
 	end
 end
+
+# ╔═╡ edad0a12-5631-42d4-94d9-496c57b06f82
+md"Nur die Anweisung nach der ersten erfüllten Bedingung wird durchlaufen."
+
+# ╔═╡ 8e2d2fbd-faad-4a8c-af80-a657bc8dd7cc
+begin
+	bedingung3 = false
+	rueckgabewert = 
+	if bedingung3
+		"Hallo Frank" 
+	else 
+		"Hallo Tobias"
+	end
+end
+
+# ╔═╡ 5035efd7-0190-4fb5-a246-f4d95cba5f79
+md"""
+!!! note "Bemerkung"
+	`if` ist ein Ausdruck (Expression) und gibt damit einen Wert zurück. Dies ist im Gegensatz zu anderen Programmiersprachen, wie z.B. Java, in denen `if` ein Statment ist.
+"""
 
 # ╔═╡ f785397e-e40d-417f-b39e-884a7589625a
 md"""
@@ -769,7 +787,14 @@ md"""
 """
 
 # ╔═╡ 92ea05a4-37b8-4f86-a812-ebdd05e2c937
-md"__Beispiel__"
+md"__Beispiele__"
+
+# ╔═╡ e79da772-748c-44f7-a224-4bad928fe635
+
+begin
+	bedingung4 = false
+	bedingung4 ? "Hallo Frank" : "Hallo Tobias"
+end
 
 # ╔═╡ 514bf743-dbe1-4886-9071-c7a282d6edcf
 @bind is_box_checked CheckBox()
@@ -2085,10 +2110,14 @@ version = "17.4.0+2"
 # ╟─2c9f1562-5adf-4773-9482-b3ad8fa67f7a
 # ╟─50584aaa-fa9e-46d9-858b-d11b7d2692a4
 # ╠═853a7ad7-7cfe-4c85-8ca7-5811629d05b2
+# ╟─edad0a12-5631-42d4-94d9-496c57b06f82
+# ╠═8e2d2fbd-faad-4a8c-af80-a657bc8dd7cc
+# ╟─5035efd7-0190-4fb5-a246-f4d95cba5f79
 # ╟─f785397e-e40d-417f-b39e-884a7589625a
 # ╟─0d6ba76d-b790-4a45-b5c4-de33d468e23c
 # ╟─c1d50d98-06b0-4a67-b5be-cb056ffb2704
 # ╟─92ea05a4-37b8-4f86-a812-ebdd05e2c937
+# ╠═e79da772-748c-44f7-a224-4bad928fe635
 # ╠═514bf743-dbe1-4886-9071-c7a282d6edcf
 # ╠═dfe6eecd-4864-4316-821e-86e465f55456
 # ╟─f372431f-08c0-4206-88a0-4ec10f012e9a
