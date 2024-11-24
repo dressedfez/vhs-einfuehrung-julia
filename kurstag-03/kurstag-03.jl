@@ -50,7 +50,7 @@ md"""
 """
 
 # ╔═╡ 1bd57323-0d30-4853-b6a0-c225570441a7
-andere_zahlen=[1,1.0,1//1,π]
+andere_zahlen=[1,1.0,1//1,π, "Pi","🥧"]
 
 # ╔═╡ febe956a-5d6a-4c82-82ff-39167a624a70
 typeof(andere_zahlen)
@@ -223,11 +223,17 @@ md"""
 2. Zeige am Beispiel, dass das Skalarprodukt (dot) zweier Vektoren, die senkrecht aufeinander stehen null ist (das Kreuzprodukt zweier Vektoren stehen senkrecht auf diesen).
 """
 
+# ╔═╡ 00afa9f3-d7b9-492c-a0ee-c3946e9dc842
+md"##### Lösungen zu 1:"
+
+# ╔═╡ 32f8b5ee-bef4-4cfb-9dad-e9b4cf93ec66
+a × a
+
+# ╔═╡ f3802ee2-fe0e-4177-afe6-94c81c38fffc
+(a×b)⋅b
+
 # ╔═╡ 8a06860b-a85f-446f-82d1-142594af5581
 md"#### Matrizen"
-
-# ╔═╡ ce02226d-22c7-4029-835c-94ad08f7cb31
-
 
 # ╔═╡ 7ef9db2d-89dd-4b6f-9646-cc6e4c9ed4c3
 A = [2 3 5; 4 5 6]
@@ -282,7 +288,7 @@ Das Produkt M*N zweier Matrixzen M und N ist nur definiert, wenn die Anzahl der 
 M = rand(3,2)
 
 # ╔═╡ 0974f396-5578-4453-b094-4d3b96058dd6
-N = rand(1:20,2,4)
+N = rand(2,4)
 
 # ╔═╡ b3f905f3-67a9-4d51-8a3e-289b893b59d7
 M*N
@@ -303,7 +309,7 @@ N*UM
 md"wenn Matrizen quadratisch sind, d.h. Anzahl von Zeilen und Spalten gleich so ändert die Multiplikation mit der Einheitsmatrix die Matrix __nicht__"
 
 # ╔═╡ 11d53620-eef9-4294-8462-57269ffb2f5f
-C = rand(1:10,3,3)
+C = rand(1:20,3,3)
 
 # ╔═╡ 0b48c2ab-90ce-4e2c-9336-821b7a1aeb34
 I_3 = Matrix(I,3,3)
@@ -341,6 +347,15 @@ Anlegen eines Dict (Schlüssel-Werte-Paar)
 
 # ╔═╡ c42d2bfc-2d1c-456f-b09a-d68c56973f7b
 names_age = Dict("Frank"=> 49, "Anna" => 45, "Egon" => 92)
+
+# ╔═╡ 2b707f5a-f258-4b52-a9ce-8050f6e70b71
+names_age["Klaus"]
+
+# ╔═╡ f42b5d23-c122-4401-b32d-2878cb2f4ea4
+names_age["Anna"]
+
+# ╔═╡ c26961b7-5daf-4570-b10f-918b0ed11581
+names_age
 
 # ╔═╡ 7e23f17c-9b87-4fca-bc60-38515443124a
 md"""
@@ -401,6 +416,15 @@ length(names_age)
 
 # ╔═╡ af5c06b8-fcfe-442d-8d16-49ed808d9d8d
 md"gibt die Anzahl der Schlüssel-Wert-Paare zurück."
+
+# ╔═╡ 04e2bfd7-ee1b-4f27-a1a6-3f30e921a0e9
+md"Interessant ist noch alle Schlüssel und/oder alle Werte eines Dicts zu extrahieren, um damit weiter zu arbeiten."
+
+# ╔═╡ a38375a6-8c3b-45a1-a85e-cd31c7cb82ab
+keys(names_age)
+
+# ╔═╡ 1d4ec249-44cc-4b87-8b37-c75ad2bd982a
+values(names_age)
 
 # ╔═╡ 53b4636b-e021-4e33-a65a-628ac31b48da
 md"""
@@ -480,6 +504,9 @@ md"""
 # ╔═╡ 8bb5c9e7-08ad-4694-ba43-1cb79c2dd1d5
 t3 = (name="Frank",age=49)
 
+# ╔═╡ 5d7610ff-c5ad-4a2c-9cb9-ba4efcbffb7e
+t4=(street_same="Annenstraße",house_number=10)
+
 # ╔═╡ bae5735c-c529-4ba1-a4bf-14c227adcc38
 typeof(t3)
 
@@ -488,6 +515,9 @@ md"Auslesen eines Named-Tuples"
 
 # ╔═╡ 273738b2-3781-4374-b619-d69bc481cf89
 "$(t3.name) ist $(t3[:age]) Jahre alt."
+
+# ╔═╡ f095bff5-0c7a-4763-bdd7-7eb9f85718eb
+t4.street_same
 
 # ╔═╡ e28bda3f-f1fa-4dab-9449-8c7b37eface6
 md"""
@@ -2455,7 +2485,7 @@ version = "1.4.1+1"
 """
 
 # ╔═╡ Cell order:
-# ╠═dd8698ee-affb-11ee-084e-1ffdbb6f6a08
+# ╟─dd8698ee-affb-11ee-084e-1ffdbb6f6a08
 # ╟─65fb214d-3782-4de9-b8dd-34efb047f6c9
 # ╟─4bffdb22-06fc-465f-9257-ab2974230512
 # ╟─7ddad624-511d-4907-9d5c-84d1bd90731c
@@ -2514,8 +2544,10 @@ version = "1.4.1+1"
 # ╠═6102c977-34cc-4036-bf71-28515bdaf395
 # ╠═aec21670-3f10-4573-925d-d1a77b73c43e
 # ╟─0b18aa82-6d31-4023-b5ad-64df9303e6ef
+# ╟─00afa9f3-d7b9-492c-a0ee-c3946e9dc842
+# ╠═32f8b5ee-bef4-4cfb-9dad-e9b4cf93ec66
+# ╠═f3802ee2-fe0e-4177-afe6-94c81c38fffc
 # ╟─8a06860b-a85f-446f-82d1-142594af5581
-# ╠═ce02226d-22c7-4029-835c-94ad08f7cb31
 # ╠═7ef9db2d-89dd-4b6f-9646-cc6e4c9ed4c3
 # ╠═378a4897-9736-4dff-b965-a2f5b6ca7c0e
 # ╟─51252320-8757-4882-acf8-9402914957e7
@@ -2547,6 +2579,9 @@ version = "1.4.1+1"
 # ╟─b20cf4c6-1391-4e6d-b348-971176a1915c
 # ╟─bfbe7b02-1b6f-4c07-9143-d12c7db73e64
 # ╠═c42d2bfc-2d1c-456f-b09a-d68c56973f7b
+# ╠═2b707f5a-f258-4b52-a9ce-8050f6e70b71
+# ╠═f42b5d23-c122-4401-b32d-2878cb2f4ea4
+# ╠═c26961b7-5daf-4570-b10f-918b0ed11581
 # ╟─7e23f17c-9b87-4fca-bc60-38515443124a
 # ╟─b734cfe0-5ad1-4f5c-bb50-25430d9df3a9
 # ╠═291bbe09-a638-4a05-9681-b1db737c6ffe
@@ -2564,6 +2599,9 @@ version = "1.4.1+1"
 # ╟─e0c197a2-b798-49c6-98d0-4396fc2695df
 # ╠═c921a63c-5e9f-48c9-9e4f-62997eb0dfa9
 # ╟─af5c06b8-fcfe-442d-8d16-49ed808d9d8d
+# ╟─04e2bfd7-ee1b-4f27-a1a6-3f30e921a0e9
+# ╠═a38375a6-8c3b-45a1-a85e-cd31c7cb82ab
+# ╠═1d4ec249-44cc-4b87-8b37-c75ad2bd982a
 # ╟─53b4636b-e021-4e33-a65a-628ac31b48da
 # ╟─563d8d0b-aa48-4002-b578-e54d4aa8b283
 # ╟─31ecf613-811f-41a5-9d93-255d8a611b41
@@ -2585,9 +2623,11 @@ version = "1.4.1+1"
 # ╠═4ae9a1ac-2272-46b1-9619-5ae95aaa6715
 # ╟─582f0ee1-febc-4774-8ff2-ac68ae81ada4
 # ╠═8bb5c9e7-08ad-4694-ba43-1cb79c2dd1d5
+# ╠═5d7610ff-c5ad-4a2c-9cb9-ba4efcbffb7e
 # ╠═bae5735c-c529-4ba1-a4bf-14c227adcc38
 # ╟─d770789a-1c3e-44b1-bd39-657c8060276d
 # ╠═273738b2-3781-4374-b619-d69bc481cf89
+# ╠═f095bff5-0c7a-4763-bdd7-7eb9f85718eb
 # ╟─e28bda3f-f1fa-4dab-9449-8c7b37eface6
 # ╟─7adb3cbb-ea05-43f9-94ee-38f99863f8f8
 # ╠═291ea98a-a3c0-4326-8d14-ee1c106a5de8
