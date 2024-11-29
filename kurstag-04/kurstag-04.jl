@@ -80,10 +80,7 @@ end
 md"Warum hat die Funktion zwei Methoden?"
 
 # ╔═╡ de34b9f5-42ac-4056-84f9-4a69c9111995
-# ╠═╡ disabled = true
-#=╠═╡
 methods(create_funny_matrizes)
-  ╠═╡ =#
 
 # ╔═╡ ea278e05-bf70-4a51-a62a-1df26ce75e26
 md"""
@@ -240,6 +237,98 @@ F_1 = F_2 = 1
 ```
 """
 
+# ╔═╡ 1f9b4b44-ddc7-4406-9e2d-0bb0b0d1074a
+md"Lösung 1:"
+
+# ╔═╡ 215aae07-b9ad-4e66-9429-d1aae1157c6b
+minMax(data)= minimum(data), maximum(data)	
+
+# ╔═╡ d4a20c15-35dd-4520-9f7c-a57d9a520044
+minMax([1,9,2,4,5])
+
+# ╔═╡ b213bdb0-cb10-449c-8a5b-32f76fc2cb99
+md"Lösung 2:"
+
+# ╔═╡ 6caf40c3-fb6f-43e7-b838-8b80b63be12d
+function isPalindrom(word::String)
+	word = uppercase(word)
+	word==reverse(word)
+end
+
+# ╔═╡ 7871f124-c4c3-4b52-8f03-ce4b27e021de
+isPalindrom("Anna")
+
+# ╔═╡ 17ae6ea3-91ff-4b0b-a91e-07277eeeb043
+begriff = "Anna"
+
+# ╔═╡ e274597a-2bd2-4457-b121-81a7b91aa08e
+if isPalindrom(begriff)
+	println(" $begriff ist ein Palidrom")		
+else 
+	println("$begriff is kein Palidrom")
+end
+
+# ╔═╡ 81ce68fb-3ddb-48d2-b512-8b25177eb10c
+md"Lösung 3:"
+
+# ╔═╡ 2c01ed73-85b1-41f3-9160-36992c95025a
+function solution_quadratic_equation(a,b,c)
+   @assert a !=0
+	p = b/a
+	q = c/a
+	s = sqrt(complex(p^2/4 - q))
+    (-p/2 + s, -p/2 - s)
+end
+
+# ╔═╡ a7be5c03-ffc6-4423-82a4-5fc0c8aa3797
+solution_quadratic_equation(-1,1,1)
+
+# ╔═╡ e5082f2c-14f1-4424-ab2a-e8dd35defcf9
+md"Lösung 4:"
+
+# ╔═╡ 81f115dc-40ce-4ba3-981f-5672fa6d005e
+"""
+Zählt alle Vokale in einem gegeben String
+
+Argument:
+- s::String betrachteter String
+
+Returns:
+ - Gibt die Anzahl der Vokale im übergebenen String zurück
+"""
+function count_vowels(s::String)
+	counter=0
+	for c in s
+		if c ∈ ['a','e','i','o','u']
+			counter+=1
+		end
+	end
+	counter
+end
+
+# ╔═╡ aeae585c-d0a3-4a85-bb15-48ecf0fefa9e
+count_vowels("Hallo Volkshochschulkurs")
+
+# ╔═╡ d4a06545-8344-4f44-b311-4074d092035d
+md"Lösung 5:"
+
+# ╔═╡ cdbc00c8-5876-4d5f-abd7-8a71c4b1c17f
+function f(n)
+	if n==0
+		return 0
+	elseif n==1
+		return 1
+	else
+		return f(n-1)+f(n-2)
+	end
+end
+
+# ╔═╡ c4cd1fc5-41de-43c4-bdd4-7d1ca3efff59
+n_liste=0:10;
+
+# ╔═╡ eeb0a930-6cd4-4e71-a737-1c2cde7a4395
+f.(n_liste)
+
 # ╔═╡ c62b7a98-4697-432c-9ee5-f742b0b49c3f
 md"""## Individuelle Datentypen"""
 
@@ -278,6 +367,35 @@ end
 
 # ╔═╡ e932e742-9d91-476b-b9e0-689ef0b13347
 md"Instanzen der Datentypen erzeugt man, wie in folgemden Beispiel gezeigt:"
+
+# ╔═╡ c92328f5-d38f-4695-9635-83b972dafd86
+instance = Dog("Benno",5)
+
+# ╔═╡ 6cccde01-c01e-483f-8e74-3f046267f375
+instance.name
+
+# ╔═╡ 15958b1c-4d67-464a-8c71-6efd1399d080
+md"Datentypen, die mit `struct` definiert wurden, kann man nicht ändern"
+
+# ╔═╡ 31d28348-d45d-414f-bd51-570622710564
+instance.name = "Frank"
+
+# ╔═╡ f8cf4522-aead-4759-9c12-fd2f777f0cc9
+md"veränderbare Datentypen kann man wie folgt definieren:"
+
+# ╔═╡ 06abd980-1014-41c7-8756-095815da5840
+mutable struct  City
+	 name::String
+end
+
+# ╔═╡ 325c3efe-d2fa-4a53-a3dd-b69a7853c65e
+city = City("Dresden")
+
+# ╔═╡ 624200e6-3768-437d-8db6-7a7ae47bcfc2
+city.name = "Frankfurt"
+
+# ╔═╡ 4f94e816-f7b2-4fa1-a4aa-0a54a9e0e602
+city
 
 # ╔═╡ 152938a5-0b34-4065-b57f-c7c3aca20733
 md"""
@@ -351,9 +469,6 @@ struct Hund <: Tier # ein Hund **ist** ein Tier (Hund war schon oben definiert)
 	alter::Int
 end
 
-# ╔═╡ c92328f5-d38f-4695-9635-83b972dafd86
-benno = Hund("Benno",5)
-
 # ╔═╡ ed912043-2c57-4a2f-956b-53da4f74d450
 md"Die Beziehung zwischen den Typen kann man mit den verschiedenen Befehlen untersuchen:"
 
@@ -381,11 +496,14 @@ Int <: Lebewesen
 # ╔═╡ db1d8af7-1fcc-447d-9d2b-229309b30d11
 md"Folgendermaßen kann man direkt prüfen, ob eine __Instanz__ eines gegebenen Typs mit einem anderen Typ in einer Vererbungsbeziehung steht:"
 
+# ╔═╡ ea93e66b-d399-4f51-bd2d-dea7412006b9
+axi = Hund("Axi",2)
+
 # ╔═╡ 38cd5cd9-2c09-4535-91ea-5a0eec757960
-benno isa Lebewesen
+axi isa Lebewesen
 
 # ╔═╡ 008c0b76-0a20-441f-ac36-23df3d507b3b
-benno isa Int
+axi isa Int
 
 # ╔═╡ 7e894af8-e380-4ba6-9ce1-b14adec11ccf
 md"""
@@ -394,6 +512,22 @@ md"""
 1. Erstelle eine Klasse Bankkonto, die die Eigenschaften kontonummer, inhaber und kontostand hat. Implementiere Methoden, um Geld einzuzahlen, abzuheben und den Kontostand anzuzeigen.
 1. Definiere einen abstrakten Typ GeometrischeForm mit Untertypen Kreis und Rechteck. Implementiere Methoden, um den Flächeninhalt und den Umfang jeder geometrischen Form zu berechnen. Implemetiere eine Methode `beschreibe`, die eine Geometrische Form annimmt und den Flächeninhalt sowie den Namen der geometrischen Figur ausgibt.
 """
+
+# ╔═╡ db880dd1-04d0-46d8-8f9a-a9e0f3b8a5bc
+md"Lösung 1:"
+
+# ╔═╡ af201f75-ae49-4cc8-bc3f-cdf32db1f3d0
+struct Auto
+	marke::String
+	modell::String
+	baujahr::Int
+end
+
+# ╔═╡ 3d7172f2-e09a-440c-8320-1e0e2a9f39b2
+Base.show(io::IO, obj::Auto) = print(io, "Auto(marke=$(obj.marke), modell=$(obj.modell)) aus dem Jahr $(obj.baujahr)")
+
+# ╔═╡ ba42f768-fe68-41c6-85f4-ab9cfd2d4699
+bmw3 = Auto("BMW","3",2015)
 
 # ╔═╡ 4a90ea54-990c-4e21-8408-2511d51bfd1b
 md"""## Multiple Dispatch
@@ -456,12 +590,6 @@ begin
 	molly = Katze("Molly")
 end
 
-# ╔═╡ 5440ce80-7aee-46e7-a684-d60d6177d4f0
-beschreibe(benno)
-
-# ╔═╡ 468348f0-b76c-4c88-936e-f11611871973
-beschreibe(molly)
-
 # ╔═╡ bbd2707e-01e7-4d5e-969e-1bbfe606c826
 begin
 	struct Mensch <: Lebewesen
@@ -470,11 +598,20 @@ begin
 	egon = Mensch("Egon")
 end
 
+# ╔═╡ 2e46e2b6-e50e-4e1f-91d5-b312d1cbd2a9
+beschreibe(mensch::Mensch) = println("Ich, $(mensch.name) bin ein Mensch und laufe auf zwei Beinen.")
+
+# ╔═╡ 5440ce80-7aee-46e7-a684-d60d6177d4f0
+beschreibe(axi)
+
+# ╔═╡ 468348f0-b76c-4c88-936e-f11611871973
+beschreibe(molly)
+
 # ╔═╡ 1747e51f-b41c-4e58-ae35-4c36731c59fb
 beschreibe(egon)
 
 # ╔═╡ 8fd3673c-2c51-49ca-bd6a-52b7a5fe7287
-#methods(beschreibe) # bitte auskommentieren
+methods(beschreibe) # bitte auskommentieren
 
 # ╔═╡ 7bf7428f-74fd-45fd-a82f-82392f7426ad
 md"""#### Beispiel
@@ -562,6 +699,9 @@ calculate(x::Float64, y) = x+y
 # ╔═╡ a521c5ed-3c87-40cb-b623-b5c59a34cb6b
 calculate(x, y::Float64)= x*y
 
+# ╔═╡ 4a6c28a9-063d-4779-b603-33c3c16678df
+#calculate(x::Float64, y::Float64) = x/y # Mehrdeutigkeit von oben wir durch diese Funktion aufgehoben
+
 # ╔═╡ 0d147bfb-6c9e-4123-a08e-fdb29e1e4675
 md"Warum funktioneren die beiden Aufrufe, aber der dritte nicht?"
 
@@ -572,7 +712,7 @@ calculate(1.0,1)
 calculate(1,1.0)
 
 # ╔═╡ e7d661bf-7734-42e4-83a5-7b577b2fdd3a
-#calculate(1.0,1.0) # auskommentieren führt zu Problemen, warum?
+#calculate(1.0,2.0) # auskommentieren führt zu Problemen, warum?
 
 # ╔═╡ 28daea99-6b9e-45ac-b71f-7f877ba5852e
 md"""
@@ -1744,12 +1884,38 @@ version = "1.4.1+1"
 # ╠═c05cc5a7-e639-4b32-8a8b-3e0ff86693cd
 # ╠═3858d61c-819e-45bd-9255-7285da3f92cc
 # ╟─ee59219c-52c0-4dce-9b7d-a5773feb4363
+# ╟─1f9b4b44-ddc7-4406-9e2d-0bb0b0d1074a
+# ╠═215aae07-b9ad-4e66-9429-d1aae1157c6b
+# ╠═d4a20c15-35dd-4520-9f7c-a57d9a520044
+# ╟─b213bdb0-cb10-449c-8a5b-32f76fc2cb99
+# ╠═6caf40c3-fb6f-43e7-b838-8b80b63be12d
+# ╠═7871f124-c4c3-4b52-8f03-ce4b27e021de
+# ╠═17ae6ea3-91ff-4b0b-a91e-07277eeeb043
+# ╠═e274597a-2bd2-4457-b121-81a7b91aa08e
+# ╟─81ce68fb-3ddb-48d2-b512-8b25177eb10c
+# ╠═2c01ed73-85b1-41f3-9160-36992c95025a
+# ╟─a7be5c03-ffc6-4423-82a4-5fc0c8aa3797
+# ╟─e5082f2c-14f1-4424-ab2a-e8dd35defcf9
+# ╠═81f115dc-40ce-4ba3-981f-5672fa6d005e
+# ╠═aeae585c-d0a3-4a85-bb15-48ecf0fefa9e
+# ╟─d4a06545-8344-4f44-b311-4074d092035d
+# ╠═cdbc00c8-5876-4d5f-abd7-8a71c4b1c17f
+# ╠═c4cd1fc5-41de-43c4-bdd4-7d1ca3efff59
+# ╠═eeb0a930-6cd4-4e71-a737-1c2cde7a4395
 # ╟─c62b7a98-4697-432c-9ee5-f742b0b49c3f
 # ╟─2c10bace-2e14-4889-84b4-757350904ac7
 # ╟─acd031ea-7c64-48fd-b29b-96d3bce1972d
 # ╠═39fe7968-8f5d-4c48-a36b-3dba5dce6f69
 # ╟─e932e742-9d91-476b-b9e0-689ef0b13347
 # ╠═c92328f5-d38f-4695-9635-83b972dafd86
+# ╠═6cccde01-c01e-483f-8e74-3f046267f375
+# ╟─15958b1c-4d67-464a-8c71-6efd1399d080
+# ╠═31d28348-d45d-414f-bd51-570622710564
+# ╟─f8cf4522-aead-4759-9c12-fd2f777f0cc9
+# ╠═06abd980-1014-41c7-8756-095815da5840
+# ╠═325c3efe-d2fa-4a53-a3dd-b69a7853c65e
+# ╠═624200e6-3768-437d-8db6-7a7ae47bcfc2
+# ╠═4f94e816-f7b2-4fa1-a4aa-0a54a9e0e602
 # ╟─152938a5-0b34-4065-b57f-c7c3aca20733
 # ╟─1258a5f5-d68c-432a-84a5-b1c8f3a974ca
 # ╟─8f371ce4-d19b-4d14-be63-a2fb0abf0490
@@ -1768,9 +1934,14 @@ version = "1.4.1+1"
 # ╠═39b4e8de-3288-471c-93f0-0c72c7c27cf4
 # ╠═c6457e91-5237-42a6-bfe8-433ab67a74f3
 # ╟─db1d8af7-1fcc-447d-9d2b-229309b30d11
+# ╠═ea93e66b-d399-4f51-bd2d-dea7412006b9
 # ╠═38cd5cd9-2c09-4535-91ea-5a0eec757960
 # ╠═008c0b76-0a20-441f-ac36-23df3d507b3b
 # ╟─7e894af8-e380-4ba6-9ce1-b14adec11ccf
+# ╟─db880dd1-04d0-46d8-8f9a-a9e0f3b8a5bc
+# ╠═af201f75-ae49-4cc8-bc3f-cdf32db1f3d0
+# ╠═3d7172f2-e09a-440c-8320-1e0e2a9f39b2
+# ╠═ba42f768-fe68-41c6-85f4-ab9cfd2d4699
 # ╟─4a90ea54-990c-4e21-8408-2511d51bfd1b
 # ╟─8661b042-9c11-44bf-8f81-8a4a9a0617a7
 # ╟─ae5e8f3c-a557-4ad5-9496-a4ccc248b214
@@ -1782,6 +1953,7 @@ version = "1.4.1+1"
 # ╠═468348f0-b76c-4c88-936e-f11611871973
 # ╠═bbd2707e-01e7-4d5e-969e-1bbfe606c826
 # ╠═1747e51f-b41c-4e58-ae35-4c36731c59fb
+# ╠═2e46e2b6-e50e-4e1f-91d5-b312d1cbd2a9
 # ╠═8fd3673c-2c51-49ca-bd6a-52b7a5fe7287
 # ╟─7bf7428f-74fd-45fd-a82f-82392f7426ad
 # ╠═b0056396-ccce-4231-880b-da66679f0bad
@@ -1801,6 +1973,7 @@ version = "1.4.1+1"
 # ╟─bc1769f4-f588-4188-9fd2-0cde5db0e3d7
 # ╠═5dd78c1e-cd73-4ef7-a173-6e5cbd5f048f
 # ╠═a521c5ed-3c87-40cb-b623-b5c59a34cb6b
+# ╠═4a6c28a9-063d-4779-b603-33c3c16678df
 # ╟─0d147bfb-6c9e-4123-a08e-fdb29e1e4675
 # ╠═235b50cc-5edc-43e4-b4ea-71c2efc0a226
 # ╠═8003ce5d-9203-4192-a315-ce2070a0e98a
