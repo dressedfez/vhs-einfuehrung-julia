@@ -30,6 +30,81 @@ md"""
 #maximale Anzahl der Iterationen für die Mandelbrot-Menge
 max_iter=255
 
+# ╔═╡ 656503f1-c04b-43fe-be89-a815ad3985ca
+md"""
+## Kurze Einführung in komplexe Zahlen
+
+Komplexe Zahlen sind ählich zu Vektoren in der Ebene. Zwei komplexe Zahlen $z_1 = a_1+i b_1$ und $z_2 = a_2+i b_2$ kann man:
+- addieren:
+$z_1 + z_2 = a_1+a_2+ i ( b_1+b_2)$
+- multiplizieren:  
+$z_1 \cdot z_2 = a_1 a_2-b_1b_2 + i(a_1 b_2+ a_2 b_1)$ und
+- teilen: 
+$\frac{z_1}{z_2} = \frac{a_1 a_2+b_1 b_2+i(a_2 b_1-a_1 b_2)}{a_2^2+b_2^2}$
+
+
+Julia unterstützt komplexe Zahlen von Hause aus:
+"""
+
+# ╔═╡ ceb141e9-3752-4594-9bbd-84fbe45024b2
+z_1 = 2 + im*3
+
+# ╔═╡ b9c1f354-6895-4dce-9619-8e0084fc485c
+z_2 = 4+im*5
+
+# ╔═╡ 7af2b6ab-18ba-43c7-bf0a-e14f2fc1118a
+md"Addieren:"
+
+# ╔═╡ e29830b5-a97d-4458-a9b8-4aed4a29fd79
+z_1+z_2
+
+# ╔═╡ d969d167-eb30-4055-8470-f47fa24f923f
+md"Multiplizieren:"
+
+# ╔═╡ 2626500f-8a0a-4a3c-ad3e-05ee3c82819c
+z_1*z_2
+
+# ╔═╡ dc744e64-fe8f-4418-ab3f-a1174ca580a0
+md"Teilen:"
+
+# ╔═╡ 25b68408-a9aa-4add-b2d6-042cf7f494b9
+z_1/z_2
+
+# ╔═╡ 330ac712-a087-401b-8197-61b62dcc6872
+md"""
+wichtig bei komplexen Zahlen ist die Operation, der Konjugation, die das Vorzeichen des imaginären Anteils umdreht, d.h. die komplexe Zahl wird an der x-Achse gespiegelt. Julia stellt dafür die Funktion `conj` zur Verfügung:
+"""
+
+# ╔═╡ c2161ae0-c43a-4d6a-9ebe-64c2947547ba
+conj(z_1)
+
+# ╔═╡ fc2e3861-f312-42f5-885e-379086715b6f
+md"""
+Der Betrag einer komplexen Zahl ist die länge des Pfeiles, der die komplexe Zahl in der komplexen Ebene darstellt. Der Betrag kann über den Satz des Pythagoras bestimmt werden:
+"""
+
+# ╔═╡ f8c512db-bc6e-436d-a158-11709fce498c
+a_3, b_3 = 1,1
+
+# ╔═╡ ed31192e-57e3-42ae-b4ef-44bbdaecbdad
+z_3=a_3+im*b_3
+
+# ╔═╡ f698e3c1-649f-4344-884c-d03242f177a5
+md"Satz des Pythagoras"
+
+# ╔═╡ 934c71fe-2ac3-4d81-a52a-b46afce589f7
+sqrt(a_3^2+b_3^2) == abs(z_3)
+
+# ╔═╡ 0da0fe9d-4bca-42c3-bd69-1ee02f03c914
+md"Julia stellt zur Bestimmung des Betrages die Funktion `abs` zur Verfügung"
+
+# ╔═╡ 3bdc3d78-7330-42d2-8586-fe90233a2100
+md"""
+#### Vorbereitungsarbeiten
+
+Mandelbrot- und Julia-Mengen sind Teilmengen der komplexen Zahlenebene $\mathbb{C}$. Damit wir in der komplexen Zahleneben arbeiten können, ist es hilfreich diese im Computer zur Verfügung zu haben. 
+"""
+
 # ╔═╡ 4db3431c-d524-42af-98fa-b96e81f7478d
 md"""
 ## Mandelbrot-Menge
@@ -49,17 +124,13 @@ html"""
 	width="200" alt="Benoît Mandelbrot">
 """
 
-# ╔═╡ 3bdc3d78-7330-42d2-8586-fe90233a2100
+# ╔═╡ 6d973ad6-0cd7-4d68-a91d-86b437e0d9d2
 md"""
-#### Vorbereitungsarbeiten
-
-Mandelbrot- und Julia-Mengen sind Teilmengen der komplexen Zahlenebene $\mathbb{C}$. Damit wir in der komplexen Zahleneben arbeiten können, ist es hilfreich diese im Computer zur Verfügung zu haben. 
-
-Dazu definieren wir die folgenden Funktion:
+Folgende Funktion schreiben wir, um  die komplexe Zahlenebene herzustellen (in einem beschränkten Bereich)
 """
 
 # ╔═╡ 182bd5cc-095e-4347-a82e-4fd8a22eeb21
-function create_vector(pos::Number,len::Number,number_of_elements=600)
+function create_vector(pos::Number,len::Number,number_of_elements=300)
 	-len/2+pos:len/number_of_elements:pos+len/2
 end
 
@@ -69,11 +140,15 @@ function complex_plane(
 	y_cor::Number
 	,width::Number
 	,height::Number
-	,n_x=500
-	,n_y=500)
+	,n_x=300
+	,n_y=300)
+	# erstellte zwei Vektoren, um Ebene aufzuspannen
 	x=create_vector(x_cor,width,n_x)
 	y=create_vector(y_cor,height,n_y)
+
+	# addiere punktweise das transponierte x und i*y
 	z = x'.+im.*y
+	
 end
 
 # ╔═╡ 5696dca6-1e4b-4183-bce4-803babc764b1
@@ -88,7 +163,7 @@ $z_{n+1}=z_n^2+c$
 
 wobei $c \in \mathbb{C}$ und $z_0=0$
 
-$\mathbb{M}=\left\{c \in \mathbb{C}| |z_n|^2<2 \mbox{ für } n \rightarrow\infty \right\}$
+$\mathbb{M}=\left\{c \in \mathbb{C}| |z_n|^2<4 \mbox{ für } n \rightarrow\infty \right\}$
 """
 
 # ╔═╡ e202d43e-9fb3-4e5a-857b-056cc9b587b7
@@ -101,7 +176,7 @@ function mandelbrot_map(c::T,max_iter=255::Int):: Int where T<:Number
 	z=complex(0,0)
 	for index = 1:max_iter
 		z = z*z+c
-		if abs(z)>2 
+		if abs2(z)>4 
 			return index
 		end
 	end
@@ -195,7 +270,7 @@ max_iter: maximale Anzahl der Iteration der Julia-Mengen-Abbildung
 function julia_map(z,c::T,max_iter::Int)::Int where T <:Number
 	for index = 1:max_iter
 		z = z*z+c
-		if abs(z)>2 
+		if abs2(z)>4 
 			return index 
 		end
 	end
@@ -227,8 +302,8 @@ Gray{N0f8}.(res_j/max_iter)
 
 # ╔═╡ 3320abd2-e7c0-49d2-973c-43dce6f48612
 begin
-	height=3;
-	width=4;
+	height=2;
+	width=3;
 	n_x=n_y=500;
 	x=-width/2:width/n_x:width/2;
 	y=-height/2:height/n_y:height/2;
@@ -242,7 +317,7 @@ end
 @bind b Slider(-2:0.01:2,show_value=true, default=0.52)
 
 # ╔═╡ ed1cea0b-2c26-497b-9046-64017b5e5437
-contourf(x,y,(x,y)->julia_map(x+im*y,a+b*im,2000))
+contourf(x,y,(x,y)->julia_map(x+im*y,a+b*im,90),color=:turbo)
 
 # ╔═╡ ac12209c-81c5-4b8d-971e-4f18c3071bdb
 md"""
@@ -280,7 +355,7 @@ PlutoUI = "~0.7.57"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.10.4"
+julia_version = "1.10.6"
 manifest_format = "2.0"
 project_hash = "ebfc1522ead792073223174c3623c7e93f009607"
 
@@ -1952,7 +2027,7 @@ version = "0.15.1+0"
 [[deps.libblastrampoline_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
-version = "5.8.0+1"
+version = "5.11.0+0"
 
 [[deps.libfdk_aac_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -2011,10 +2086,28 @@ version = "1.4.1+1"
 # ╠═5a129079-650f-41e0-8107-75ca17372801
 # ╟─0fcc2066-d627-11ee-2be5-97759e97dc98
 # ╠═12158eaa-ed07-49b6-b700-e785d084b249
+# ╟─656503f1-c04b-43fe-be89-a815ad3985ca
+# ╠═ceb141e9-3752-4594-9bbd-84fbe45024b2
+# ╠═b9c1f354-6895-4dce-9619-8e0084fc485c
+# ╟─7af2b6ab-18ba-43c7-bf0a-e14f2fc1118a
+# ╠═e29830b5-a97d-4458-a9b8-4aed4a29fd79
+# ╟─d969d167-eb30-4055-8470-f47fa24f923f
+# ╠═2626500f-8a0a-4a3c-ad3e-05ee3c82819c
+# ╟─dc744e64-fe8f-4418-ab3f-a1174ca580a0
+# ╠═25b68408-a9aa-4add-b2d6-042cf7f494b9
+# ╟─330ac712-a087-401b-8197-61b62dcc6872
+# ╠═c2161ae0-c43a-4d6a-9ebe-64c2947547ba
+# ╟─fc2e3861-f312-42f5-885e-379086715b6f
+# ╠═f8c512db-bc6e-436d-a158-11709fce498c
+# ╠═ed31192e-57e3-42ae-b4ef-44bbdaecbdad
+# ╟─f698e3c1-649f-4344-884c-d03242f177a5
+# ╠═934c71fe-2ac3-4d81-a52a-b46afce589f7
+# ╟─0da0fe9d-4bca-42c3-bd69-1ee02f03c914
+# ╟─3bdc3d78-7330-42d2-8586-fe90233a2100
 # ╟─4db3431c-d524-42af-98fa-b96e81f7478d
 # ╟─8d61f57a-09fb-432d-abc5-6c0a596fae97
 # ╟─bd4ddbf5-69bb-4935-aa5f-982874a90057
-# ╟─3bdc3d78-7330-42d2-8586-fe90233a2100
+# ╟─6d973ad6-0cd7-4d68-a91d-86b437e0d9d2
 # ╠═182bd5cc-095e-4347-a82e-4fd8a22eeb21
 # ╠═ea61c4ba-6ba0-4ea9-aaf7-0bb9c40736ae
 # ╠═5696dca6-1e4b-4183-bce4-803babc764b1
