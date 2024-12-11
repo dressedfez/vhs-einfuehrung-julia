@@ -116,7 +116,7 @@ personen[1,:].name, personen[1,:name],personen[1,1]
 # extrahieren über Symbol (Kopf der Spalte) und extrahieren über Index
 
 # ╔═╡ bae1503b-b422-4d28-b494-7cd79b1bb09b
-personen[1,[1,2]]
+personen[1,[2,5]]
 
 # ╔═╡ 09177aff-858e-411f-9d2e-6b6e148b88b0
 personen[1,[:name,:nachname]]

@@ -1,0 +1,4 @@
+id,name,nachname,alter,geschlecht,address_id,street_name,house_number,post_code
+3,Thomas,Gulde,44,m,1,Bautzener Strasse,20,1223
+1,Frank,Zimmer,45,m,1,Bautzener Strasse,20,1223
+2,Karl,Schmidt,37,m,2,Berliner Strasse,21,1323
