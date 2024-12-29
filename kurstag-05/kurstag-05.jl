@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.36
+# v0.19.37
 
 using Markdown
 using InteractiveUtils
@@ -11,16 +11,18 @@ begin
 end
 
 # ╔═╡ 7daa494d-a90d-403a-aa9d-f155a2bf58a3
-using DataFrames, CSV, XLSX, Statistics
-
-# ╔═╡ dfe1d6ca-ec79-47aa-b537-246e5a56831a
-using StatsPlots
+using DataFrames, CSV, XLSX, Statistics, StatsPlots
 
 # ╔═╡ 57ef82f6-f96e-11ee-26d3-8bd25dbb8218
 md"""
 # Einführung in Julia - Kurstag 5
 
 __Data Science, CSV, Dataframes__
+
+Für dieses Thema sind folgende Webseite sehr interessant:
+- [Julia Data Science](https://juliadatascience.io/)
+- [YouTube-Playlist: Julia for Data Science by Huda Nassar](https://youtube.com/playlist?list=PLP8iPy9hna6QuDTt11Xxonnfal91JhqjO&si=sPltt47Tjahyabn_)
+
 """
 
 # ╔═╡ 2eaf770f-8222-435d-b203-65acaed2e437
@@ -28,17 +30,31 @@ md"""
 ## Erstellen von Dataframes
 """
 
+# ╔═╡ 3fc1f838-5ebd-4797-87ba-3afbd99950bf
+md"""
+Ein Dataframe kann über den Konstruktor DataFrame() erzeugt werden, wobei man 
+eine Liste der Elemente (Zeilen) übergibt.
+"""
+
 # ╔═╡ 2369928d-2485-433e-aa70-4e06fbb7e65c
-personen = DataFrame([(id = 1, name="Frank",nachname="Zimmer",alter=45, geschlecht="m", address_id = 1)])
+personen = 
+	DataFrame([
+		(id = 1, name="Frank",nachname="Zimmer",alter=45, geschlecht="m", address_id = 1),
+		(id = 2, name="Harry",nachname="Potter",alter=35, geschlecht="m", address_id = 3)
+	])
+
+# ╔═╡ db7ff26d-20d8-434a-a177-3d7dd1894d88
+md"eine andere Möglichkeit via Konstruktor ist:"
 
 # ╔═╡ 7e77695f-0a60-4433-9d63-9e552d6b4c0a
-md"mit dem folgenden Kommando kann man die Tabelle (Dataframe) erweitern:"
+md"""mit dem Kommando `push!()` kann man die Tabelle (Dataframe) erweitern, wobei
+die Zeile, die hinzugefügt wird, am Ende angehängt wird:"""
 
 # ╔═╡ 4fb09215-40af-462f-a388-b11f4be88bee
 push!(personen,(id =2 ,name="Karl",nachname="Schmidt",alter=37, geschlecht="m", address_id = 2))
 
 # ╔═╡ f07cd6cb-0d10-41b0-9a04-a585dcfc2d5f
-md"möchte man es am Anfang einfügen, so nutzt man:"
+md"möchte man es am Anfang einfügen, so nutzt man `pushfirst!()`:"
 
 # ╔═╡ e0363eb7-f914-435e-a183-525e17be8953
 begin
@@ -111,15 +127,30 @@ md"""
 	Mit dem Doppelpunkt wird die komplette Zeile extrahiert. Es können aber auch nur einzelne Elemente oder verschieden Spalten extrahiert werden.
 """
 
+# ╔═╡ 362cf81a-12b1-4a43-97c9-2d9df45500f9
+md"""
+#### Adressierungsmöglichkeiten
+
+Julia erlaubt in einem DateFrame die Daten auf verschiedene Wege zu extrahieren (oder abzufragen).
+"""
+
 # ╔═╡ 21a4eb19-485b-45bf-9d1f-c5fad18ed5ac
-personen[1,:].name, personen[1,:name],personen[1,1] 
-# extrahieren über Symbol (Kopf der Spalte) und extrahieren über Index
+begin
+	personen[1,:].name, # Dot/Punkt Notation
+	personen[1,:name],  # Symbol Notation
+	personen[1,1]       # direkte Adressierung der Spalte (Index-Adressierung) (hier 1)
+end
+
+# ╔═╡ 1c18371b-efef-4f68-a026-fd7fc728e62f
+md"""
+man kann auch mehrere Spalten gleichzeitig aus dem DataFrame extrahieren:
+"""
 
 # ╔═╡ bae1503b-b422-4d28-b494-7cd79b1bb09b
-personen[1,[2,5]]
+personen[1,[2,5]] # Extrahieren via Index-Methode
 
 # ╔═╡ 09177aff-858e-411f-9d2e-6b6e148b88b0
-personen[1,[:name,:nachname]]
+personen[1,[:name,:nachname]] # Extrahieren via Symbol-Methode
 
 # ╔═╡ ceff63c2-a01a-471c-8fc9-2296c013db9e
 md"Das Aufbauen von Dataframes/Datensammlungen auf diese Weise ist sehr arbeitsintensiv. Wir wollen uns daher die Daten für diesen Kurs aus dem Internet besorgen."
@@ -130,11 +161,16 @@ md"""
 """
 
 # ╔═╡ ada5fcae-130d-4d71-bae9-cb5833b4e2b1
+md"""
+Datenanalyse kann man in die folgende drei Hauptaufgaben zerlegen. Diese lassen sich natürlich noch weiter unterteilen.
+"""
 
+# ╔═╡ 5c2b8153-8832-428b-8dce-34658de9b70f
+LocalResource("./Datenanalyseschritte.png", :width=>750)	
 
 # ╔═╡ 08ef0212-fdb5-4ce4-8e33-0f611d3caf75
 md"""
-### Herunterladen von Daten
+### Herunterladen von Daten (Sammeln)
 """
 
 # ╔═╡ d3b16152-404f-478c-8107-c2192cbde0f3
@@ -154,7 +190,7 @@ df_dresden = CSV.read("corona_fallzahlen_angepasst.csv",DataFrame)
 
 # ╔═╡ cbe2aa0a-88d9-4e56-acd4-3e88f0ff8b25
 md"""
-### Bereinigung und Aufräumen von Daten
+### Bereinigung und Aufräumen von Daten (Aufräumen)
 
 Damit wir die Daten besser ansprechen können mittels Julia-Boardmittel, benenne ich die Spaltenbezeichnungen um.
 """
@@ -174,9 +210,14 @@ df_dresden_renamed = rename(df_dresden,
 )
 	
 
+# ╔═╡ b30cf15e-d0b1-4bb7-8817-ed0ce17f2bc7
+md"""### Analysieren"""
+
 # ╔═╡ d8c13411-0ccc-4788-8c81-f31b384c1811
 md"""
-### Überblick erhalten
+#### Überblick erhalten
+
+Hierfür ist insbesondere die Funktion `describe`, die man auf ein DataFrame anwendet nützlich.
 """
 
 # ╔═╡ 93d447b9-79d9-493b-9a3e-f85ca769ec6d
@@ -312,7 +353,7 @@ XLSX = "~0.10.4"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.10.6"
+julia_version = "1.10.7"
 manifest_format = "2.0"
 project_hash = "08774b772e7a27d47d1ec7a1bd2bd1b23a7420d8"
 
@@ -1900,7 +1941,9 @@ version = "1.4.1+1"
 # ╟─57ef82f6-f96e-11ee-26d3-8bd25dbb8218
 # ╠═7daa494d-a90d-403a-aa9d-f155a2bf58a3
 # ╟─2eaf770f-8222-435d-b203-65acaed2e437
+# ╟─3fc1f838-5ebd-4797-87ba-3afbd99950bf
 # ╠═2369928d-2485-433e-aa70-4e06fbb7e65c
+# ╟─db7ff26d-20d8-434a-a177-3d7dd1894d88
 # ╟─7e77695f-0a60-4433-9d63-9e552d6b4c0a
 # ╠═4fb09215-40af-462f-a388-b11f4be88bee
 # ╟─f07cd6cb-0d10-41b0-9a04-a585dcfc2d5f
@@ -1921,12 +1964,15 @@ version = "1.4.1+1"
 # ╟─2023b830-22d2-4260-b7c3-00525cb77222
 # ╠═4217f4d4-9e64-43af-8aac-13cb7ed66c80
 # ╟─16c40f94-1b0f-4740-a925-f6bf7a02b835
+# ╟─362cf81a-12b1-4a43-97c9-2d9df45500f9
 # ╠═21a4eb19-485b-45bf-9d1f-c5fad18ed5ac
+# ╟─1c18371b-efef-4f68-a026-fd7fc728e62f
 # ╠═bae1503b-b422-4d28-b494-7cd79b1bb09b
 # ╠═09177aff-858e-411f-9d2e-6b6e148b88b0
 # ╟─ceff63c2-a01a-471c-8fc9-2296c013db9e
 # ╟─eacfd043-2763-4e5e-88d5-985adf9344a3
-# ╠═ada5fcae-130d-4d71-bae9-cb5833b4e2b1
+# ╟─ada5fcae-130d-4d71-bae9-cb5833b4e2b1
+# ╟─5c2b8153-8832-428b-8dce-34658de9b70f
 # ╟─08ef0212-fdb5-4ce4-8e33-0f611d3caf75
 # ╟─d3b16152-404f-478c-8107-c2192cbde0f3
 # ╠═ec6eb7c9-42d9-4d53-bc62-a3149211125e
@@ -1934,12 +1980,12 @@ version = "1.4.1+1"
 # ╠═2ed87dbf-0b89-4042-ab1c-fb677f6a0eab
 # ╟─cbe2aa0a-88d9-4e56-acd4-3e88f0ff8b25
 # ╠═fea90249-8141-4091-8551-87efc5a13d2c
+# ╟─b30cf15e-d0b1-4bb7-8817-ed0ce17f2bc7
 # ╟─d8c13411-0ccc-4788-8c81-f31b384c1811
 # ╠═93d447b9-79d9-493b-9a3e-f85ca769ec6d
 # ╟─f464d425-8b54-4980-8b42-0d222128ae44
 # ╟─4778be95-c7d2-46de-8712-a8ee5169b308
 # ╟─830419ba-363f-48fc-9c73-849e989d4311
-# ╠═dfe1d6ca-ec79-47aa-b537-246e5a56831a
 # ╠═492f871f-b9fa-4861-83bd-ca814a5311ad
 # ╟─9115ce1e-dc9d-4f36-ade7-970cda5ee900
 # ╠═81482ea2-a6b8-42fd-8352-e0b23c19ab27
