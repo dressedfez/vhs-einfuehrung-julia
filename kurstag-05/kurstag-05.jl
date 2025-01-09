@@ -11,7 +11,7 @@ begin
 end
 
 # ╔═╡ 7daa494d-a90d-403a-aa9d-f155a2bf58a3
-using DataFrames, CSV, XLSX, Statistics, StatsPlots
+using DataFrames, CSV, XLSX, Statistics, StatsPlots, GLM
 
 # ╔═╡ 57ef82f6-f96e-11ee-26d3-8bd25dbb8218
 md"""
@@ -90,6 +90,9 @@ begin
 	messungen_table = XLSX.readtable("Chemie_Messungen.xlsx","Messungen")
 	messungen_df = DataFrame(messungen_table)
 end
+
+# ╔═╡ 78306cf9-a2cc-4db3-9e3b-c89134d9af1a
+describe(messungen_df)
 
 # ╔═╡ 51e9e215-260c-4263-a2b2-36c6f93b294d
 md"Transformation von Daten"
@@ -182,7 +185,7 @@ md"""
 url = "http://daten.dresden.de/duva2ckan/files/de-sn-dresden-corona_-_covid-19_-_fallzahlen_md1_dresden_2020ff/content"
 
 # ╔═╡ c99df4c8-f2d4-46d3-8ef9-36a831366df4
-corona_dresden=download(url,"corona_fallzahlen.csv")
+#corona_dresden=download(url,"corona_fallzahlen.csv")
 
 # ╔═╡ 2ed87dbf-0b89-4042-ab1c-fb677f6a0eab
 # in der Kopfzeile habe ich per Hand die Encoding Probleme entfernt
@@ -231,7 +234,7 @@ md"Wir können sehen, dass der Datensatz keine fehlenden Daten hat (nmissing = 0
 
 # ╔═╡ 830419ba-363f-48fc-9c73-849e989d4311
 md"""
-### Prüfung auf interne Konsistenz
+#### Prüfung auf interne Konsistenz
 """
 
 # ╔═╡ 492f871f-b9fa-4861-83bd-ca814a5311ad
@@ -243,7 +246,7 @@ Wir prüfen mal die Kumulierung der Sterbefälle:
 """
 
 # ╔═╡ 81482ea2-a6b8-42fd-8352-e0b23c19ab27
-cumsum(1:3) # Beispiel
+collect(1:3), cumsum(1:3) # Beispiel
 
 # ╔═╡ 6d616fe8-1c95-4e33-9f4b-7c1202a1d687
 kumulierte_sterbfaelle_mit_julia = cumsum(df_dresden_renamed[:,:Sterbefaelle])
@@ -263,7 +266,7 @@ Die Kummulierung wurde scheinbar in dem Datensatz korrekt durchgeführt.
 
 # ╔═╡ 4613f79c-4afa-4cba-b5a0-efa160cc4d4d
 md"""
-### Analysieren der Daten
+#### Analysieren der Daten
 
 In diesem Zusammenhang ist es wichtig Fragen zu formulieren, die man mit den vorliegenden Daten beantworten oder zumindest analyisieren kann.
 
@@ -321,12 +324,181 @@ end
 # ╔═╡ e63cd5c8-4ce8-4547-bcf3-101e17988cf2
 plot(plots...,layout = (length(plots), 1), size = (700, 400 * length(plots)))
 
+# ╔═╡ 608cfdad-f3d3-49b1-9c3e-8d9263e4c7e3
+md"""
+#### Übung
+
+1. Wie viele Krankheitsfälle gab es insgesamt (Sterbefälle + Krankheitsfälle; wir vernachlässigen, dass Personen mehrmals krank werden können)? Füge eine entsprechende Spalte hinzu.
+2. Wie viele Personen, die ins Krankenhaus gewiesen wurden, haben überlebt?
+"""
+
+# ╔═╡ 5b3d5437-9dcb-4937-a4be-4f53371e8365
+md"**Lösung zu 1:**"
+
+# ╔═╡ 782866c2-8030-4253-a04a-c5bcdbe56652
+df_dresden_gesamt = df_dresden_renamed.Sterbefaelle+df_dresden_renamed.GeneseneGeschaetzt
+
+# ╔═╡ 57c0e864-ce5b-4af3-8234-cba241c29513
+typeof(df_dresden_gesamt)
+
+# ╔═╡ f2e19f0c-b61e-4484-a5c6-d2d584bb08fc
+df_dresden_erweitert = 
+	select(
+		df_dresden_renamed,
+		# welche Spalten wollen wir nach Selektion haben
+		:Datum, :Sterbefaelle,:GeneseneGeschaetzt, 
+		# wende Transformation auf Zeilen für bestimmte Spalten an
+		[:Sterbefaelle,:GeneseneGeschaetzt] => ByRow((x,y) -> x+y) => :Gesamt
+	)
+
+# ╔═╡ 2dd7aa44-1221-4118-9ca0-f3f46c103477
+begin
+	@df df_dresden_erweitert plot(:Datum,:Sterbefaelle, seriestype=scatter, label="Sterbefälle")
+	@df df_dresden_erweitert plot!(:Datum,:GeneseneGeschaetzt/100, seriestype=scatter, label="Genesene (geschätzt) / 100")
+	@df df_dresden_erweitert plot!(:Datum,:Gesamt/100, seriestype=scatter, label="Summe / 100")
+	xlabel!("Datum")
+	ylabel!("Fälle")
+end
+
+# ╔═╡ d7308095-35a4-45c2-b554-d86bcd67c487
+md"""
+## Datenanalyse: Laborwerte
+### Datensammeln und Überlick verschaffen
+
+Wir betrachten fiktive Laborwerte, die vermutlich nichts mit der Wirklichkeit zu tun haben und wollen diese Werte analysieren und daraus Schlußfolgerungen ziehen.
+
+Die Daten lesen wir auf aus der Datei [Chemie_Messungen.xlsx](./Chemie_Messungen.xlsx), die parallel zu diesem Notebook liegt.
+
+Hier Daten für eine Substanz (hier Salz (NaCl)):
+"""
+
+# ╔═╡ 0a8aaed1-2a32-42f1-a313-360ce9147f0b
+sub_data_nacl = filter(row -> row.Substanz == "NaCl", messungen_df)
+
+# ╔═╡ 80a34d75-2b73-4370-9a37-cf521bc6f98b
+md"""
+Wir wollen uns einen Überblick über das Verhalten der Konzentration der verschiedenen
+Substanzen im Lauf der Konzentration verschaffen. 
+
+Dieses Überblick verschaffen ist **wichtig** für die Analyse.
+"""
+
+# ╔═╡ 66d4c0a4-ca2c-4f83-9580-97c6d81359b7
+begin
+	plot()
+	for substance in unique(messungen_df.Substanz)
+	    sub_data = filter(row -> row.Substanz == substance, messungen_df)
+	    plot!(sub_data.:"Zeitpunkt (min)", sub_data.:"Konzentration (mg/L)", 	    
+		label=substance)
+	end
+	
+	xlabel!("Zeit (min)")
+	ylabel!("Konzentration (mg/L)")
+	title!("Konzentrationsverlauf der Substanzen")
+end
+
+# ╔═╡ 4bd4493e-9048-4c1f-b1a6-040a60d42e59
+md"""
+### Bereinigen der Daten
+
+Wie man obiger Grafik sowie der Ausgabe der `describe`-Funktion entnehmen kann, fehlen uns Konzentrationsmesswerte. Es wäre **sinnvoll** diese hier einfach zu vernachlässigen.
+"""
+
+# ╔═╡ 48c92d1b-76e0-4201-9b66-ab896a502b2e
+messungen_df_without_missing = dropmissing(messungen_df)
+
+# ╔═╡ 42b6398f-9b9c-45bb-b75b-378fd68eeb81
+begin
+	plot()
+	for substance in unique(messungen_df_without_missing.Substanz)
+	    sub_data = filter(row -> row.Substanz == substance, messungen_df_without_missing)
+	    plot!(sub_data.:"Zeitpunkt (min)", sub_data.:"Konzentration (mg/L)", 	    
+		label=substance)
+	end
+	
+	xlabel!("Zeit (min)")
+	ylabel!("Konzentration (mg/L)")
+	title!("Konzentrationsverlauf der Substanzen")
+end
+
+# ╔═╡ d732e83a-145b-4804-afbe-673ee425d014
+md"""
+#### Analysieren der Daten
+
+Die grafische Darstellung legt nah, dass wir hier einen linearen Verlauf der Konzentrationen während der Zeit haben (vermutlich nicht wirklich wahrscheinlich).
+
+Wir können also versuchen eine Gerade an die Werte zu fitten. Dazu nutzen wir das Paket ([GLM.jl](https://github.com/JuliaStats/GLM.jl)).
+
+Hierzu extrahieren wir zunächst mal einen Satz von Messwerten für eine Substanz.
+"""
+
+# ╔═╡ 8b74c428-edac-41f7-a0f1-ae3e5a5a349a
+sub_data = filter(row -> row.Substanz == "NaCl", messungen_df_without_missing)
+
+# ╔═╡ b4ebcc1b-aee4-4372-98bf-0248092e0c92
+begin
+	# Ensure columns are properly typed
+	sub_data[!, "Zeitpunkt_min"] = convert.(Float64, sub_data[!, "Zeitpunkt (min)"])
+	sub_data[!, "Konzentration_mg_L"] = convert.(Float64, sub_data[!, "Konzentration (mg/L)"])
+	nothing
+end
+
+# ╔═╡ 1d95c0f9-a22f-46ab-8c83-152c1bc67e73
+md"""
+mittels dieser Messwerte kann man jetzt weiterarbeiten und den Fit durchführen:
+"""
+
+# ╔═╡ 972992df-4722-40db-9b46-ef1ab2a41929
+# Fitten eines linearen Modells: Konzentration ~ Zeitpunkt
+lm_model = lm(@formula(Konzentration_mg_L ~ Zeitpunkt_min), sub_data)
+
+# ╔═╡ c5686dd5-9262-4965-b430-9c8ffc1d5e6a
+md"mittels der Funktion `predict` aus GLM kann man die Fit-Funktionwerte bestimmen" 
+
+# ╔═╡ 6ecb1354-b441-4a47-b429-405889d7604b
+predictions = predict(lm_model)
+
+# ╔═╡ 7e1439ea-8713-4df9-b8ca-4b3a73fb74ff
+begin
+	plot()
+	plot!(sub_data.:"Zeitpunkt (min)", 
+		  sub_data.:"Konzentration (mg/L)",
+		  label="NaCl"
+	)
+
+	plot!(sub_data.:"Zeitpunkt (min)",
+		  predictions, 
+		  label = "linearer Fit",
+		  lw = 2
+	)
+	
+	xlabel!("Zeit (min)")
+	ylabel!("Konzentration (mg/L)")
+	title!("Konzentrationsverlauf von NaCl und linearer Fit")
+end
+
+# ╔═╡ fe7fc638-5ca4-4bcf-ae68-123494e90bd7
+coef_table = coeftable(lm_model)
+
+# ╔═╡ e01e8d86-0153-403b-ae3e-892aca51b688
+intercept = coef(lm_model)[1]
+
+# ╔═╡ e1e8c81d-74cd-45fa-a337-8c85e02e1bd9
+slope = coef(lm_model)[2]
+
+# ╔═╡ 3d5142a6-daf7-4239-8d83-81b446e9ea0b
+md"""
+#### Übung
+1. Was wollen wir ?
+"""
+
 # ╔═╡ bbbcbd10-a1bb-4999-a6dd-a01ba3146976
 md"""
-# Referenzen
+## Referenzen
 - [Julia Data Science](https://juliadatascience.io/)
 - [Corona-Fallzahlen für Dresden](https://daten.dresden.de/duva2ckan/files/de-sn-dresden-corona_-_covid-19_-_fallzahlen_md1_dresden_2020ff.html)
 - [Excel-Dateien mit XLSX.jl](https://felipenoris.github.io/XLSX.jl/stable/)
+- [GLM.jl](https://github.com/JuliaStats/GLM.jl)
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -334,6 +506,7 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+GLM = "38e38edf-8417-5370-95a0-9cbb8c7f171a"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
@@ -343,6 +516,7 @@ XLSX = "fdbf4ff8-1666-58a4-91e7-1b58723a45e0"
 [compat]
 CSV = "~0.10.15"
 DataFrames = "~1.7.0"
+GLM = "~1.9.0"
 Plots = "~1.40.9"
 PlutoUI = "~0.7.60"
 StatsPlots = "~0.15.7"
@@ -355,7 +529,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.10.7"
 manifest_format = "2.0"
-project_hash = "08774b772e7a27d47d1ec7a1bd2bd1b23a7420d8"
+project_hash = "a4c0e1079584b150bce2cb7b8d82c35223fb4e51"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -725,6 +899,12 @@ deps = ["Artifacts", "JLLWrappers", "Libdl", "Libglvnd_jll", "Xorg_libXcursor_jl
 git-tree-sha1 = "532f9126ad901533af1d4f5c198867227a7bb077"
 uuid = "0656b61e-2033-5cc2-a64a-77c0f6c09b89"
 version = "3.4.0+1"
+
+[[deps.GLM]]
+deps = ["Distributions", "LinearAlgebra", "Printf", "Reexport", "SparseArrays", "SpecialFunctions", "Statistics", "StatsAPI", "StatsBase", "StatsFuns", "StatsModels"]
+git-tree-sha1 = "273bd1cd30768a2fddfa3fd63bbc746ed7249e5f"
+uuid = "38e38edf-8417-5370-95a0-9cbb8c7f171a"
+version = "1.9.0"
 
 [[deps.GR]]
 deps = ["Artifacts", "Base64", "DelimitedFiles", "Downloads", "GR_jll", "HTTP", "JSON", "Libdl", "LinearAlgebra", "Preferences", "Printf", "Qt6Wayland_jll", "Random", "Serialization", "Sockets", "TOML", "Tar", "Test", "p7zip_jll"]
@@ -1392,6 +1572,11 @@ uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 deps = ["Distributed", "Mmap", "Random", "Serialization"]
 uuid = "1a1011a3-84de-559e-8e89-a11a2f7dc383"
 
+[[deps.ShiftedArrays]]
+git-tree-sha1 = "503688b59397b3307443af35cd953a13e8005c16"
+uuid = "1277b4bf-5013-50f5-be3d-901d8477a67a"
+version = "2.0.0"
+
 [[deps.Showoff]]
 deps = ["Dates", "Grisu"]
 git-tree-sha1 = "91eddf657aca81df9ae6ceb20b959ae5653ad1de"
@@ -1479,6 +1664,12 @@ version = "1.3.2"
     [deps.StatsFuns.weakdeps]
     ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
     InverseFunctions = "3587e190-3f89-42d0-90ee-14403ec27112"
+
+[[deps.StatsModels]]
+deps = ["DataAPI", "DataStructures", "LinearAlgebra", "Printf", "REPL", "ShiftedArrays", "SparseArrays", "StatsAPI", "StatsBase", "StatsFuns", "Tables"]
+git-tree-sha1 = "9022bcaa2fc1d484f1326eaa4db8db543ca8c66d"
+uuid = "3eaba693-59b7-5ba5-a881-562e759f1c8d"
+version = "0.7.4"
 
 [[deps.StatsPlots]]
 deps = ["AbstractFFTs", "Clustering", "DataStructures", "Distributions", "Interpolations", "KernelDensity", "LinearAlgebra", "MultivariateStats", "NaNMath", "Observables", "Plots", "RecipesBase", "RecipesPipeline", "Reexport", "StatsBase", "TableOperations", "Tables", "Widgets"]
@@ -1955,6 +2146,7 @@ version = "1.4.1+1"
 # ╠═29778f29-d03c-4df9-bc1e-1ff87c7e23e6
 # ╟─ece65a6d-069e-4a65-8fdf-f6f9daa69394
 # ╠═c261a4bc-5875-4cf6-a476-7b2e9ed2b644
+# ╠═78306cf9-a2cc-4db3-9e3b-c89134d9af1a
 # ╟─51e9e215-260c-4263-a2b2-36c6f93b294d
 # ╠═01055bf8-d4e8-409e-8fb3-1d211e62f005
 # ╠═52842925-2b1d-4526-80d7-2d6b9d3d4177
@@ -1999,6 +2191,31 @@ version = "1.4.1+1"
 # ╠═416b2b42-a8ff-40ce-83f9-020d607a78ad
 # ╠═b23c65b5-75bb-4ab4-98be-7d13bfd3cf2a
 # ╠═e63cd5c8-4ce8-4547-bcf3-101e17988cf2
+# ╟─608cfdad-f3d3-49b1-9c3e-8d9263e4c7e3
+# ╟─5b3d5437-9dcb-4937-a4be-4f53371e8365
+# ╠═782866c2-8030-4253-a04a-c5bcdbe56652
+# ╠═57c0e864-ce5b-4af3-8234-cba241c29513
+# ╠═f2e19f0c-b61e-4484-a5c6-d2d584bb08fc
+# ╠═2dd7aa44-1221-4118-9ca0-f3f46c103477
+# ╟─d7308095-35a4-45c2-b554-d86bcd67c487
+# ╠═0a8aaed1-2a32-42f1-a313-360ce9147f0b
+# ╟─80a34d75-2b73-4370-9a37-cf521bc6f98b
+# ╠═66d4c0a4-ca2c-4f83-9580-97c6d81359b7
+# ╟─4bd4493e-9048-4c1f-b1a6-040a60d42e59
+# ╠═48c92d1b-76e0-4201-9b66-ab896a502b2e
+# ╠═42b6398f-9b9c-45bb-b75b-378fd68eeb81
+# ╟─d732e83a-145b-4804-afbe-673ee425d014
+# ╠═8b74c428-edac-41f7-a0f1-ae3e5a5a349a
+# ╠═b4ebcc1b-aee4-4372-98bf-0248092e0c92
+# ╟─1d95c0f9-a22f-46ab-8c83-152c1bc67e73
+# ╠═972992df-4722-40db-9b46-ef1ab2a41929
+# ╟─c5686dd5-9262-4965-b430-9c8ffc1d5e6a
+# ╠═6ecb1354-b441-4a47-b429-405889d7604b
+# ╠═7e1439ea-8713-4df9-b8ca-4b3a73fb74ff
+# ╠═fe7fc638-5ca4-4bcf-ae68-123494e90bd7
+# ╠═e01e8d86-0153-403b-ae3e-892aca51b688
+# ╠═e1e8c81d-74cd-45fa-a337-8c85e02e1bd9
+# ╟─3d5142a6-daf7-4239-8d83-81b446e9ea0b
 # ╟─bbbcbd10-a1bb-4999-a6dd-a01ba3146976
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
