@@ -91,6 +91,9 @@ begin
 	messungen_df = DataFrame(messungen_table)
 end
 
+# ╔═╡ 109fd0eb-d077-4704-99e4-f65a6c568bd5
+typeof(messungen_table)
+
 # ╔═╡ 78306cf9-a2cc-4db3-9e3b-c89134d9af1a
 describe(messungen_df)
 
@@ -104,7 +107,7 @@ function celsius_to_fahrenheit(celsius)
 end
 
 # ╔═╡ 52842925-2b1d-4526-80d7-2d6b9d3d4177
-transform!(messungen_df, "Temperatur (°C)" => celsius_to_fahrenheit => "Temperaturatur (°F)")
+transform!(messungen_df, "Temperatur (°C)" => celsius_to_fahrenheit => "Temperatur (°F)")
 
 # ╔═╡ 73386332-016f-441a-ace8-16a5311aac0f
 XLSX.writetable("Erweiterte_Messungen.xlsx", messungen_df, overwrite=true)
@@ -141,7 +144,8 @@ Julia erlaubt in einem DateFrame die Daten auf verschiedene Wege zu extrahieren 
 begin
 	personen[1,:].name, # Dot/Punkt Notation
 	personen[1,:name],  # Symbol Notation
-	personen[1,1]       # direkte Adressierung der Spalte (Index-Adressierung) (hier 1)
+	personen[1,2],      # direkte Adressierung der Spalte (Index-Adressierung) (hier 1)
+	personen[1,"name"]  # String für Spaltenname geht auch
 end
 
 # ╔═╡ 1c18371b-efef-4f68-a026-fd7fc728e62f
@@ -183,6 +187,9 @@ md"""
 
 # ╔═╡ ec6eb7c9-42d9-4d53-bc62-a3149211125e
 url = "http://daten.dresden.de/duva2ckan/files/de-sn-dresden-corona_-_covid-19_-_fallzahlen_md1_dresden_2020ff/content"
+
+# ╔═╡ a7f9ca35-9ae2-46ad-8078-991d5b4a2d76
+md"herunterladen der Datei"
 
 # ╔═╡ c99df4c8-f2d4-46d3-8ef9-36a831366df4
 #corona_dresden=download(url,"corona_fallzahlen.csv")
@@ -256,12 +263,12 @@ begin
 	@df df_dresden_renamed plot(:Datum,:SterbefaelleKumuliert, seriestype=scatter, label="aus CSV-Spalte")
 	@df df_dresden_renamed plot!(:Datum,kumulierte_sterbfaelle_mit_julia, seriestype=scatter, label="mit Julia bestimmt")
 	xlabel!("Datum")
-	ylabel!("Kummulierte Sterbefälle")
+	ylabel!("Kumulierte Sterbefälle")
 end
 
 # ╔═╡ f5e80aa3-20bf-446b-85a7-4b96e6f73467
 md"""
-Die Kummulierung wurde scheinbar in dem Datensatz korrekt durchgeführt.
+Die Kumulierung wurde scheinbar in dem Datensatz korrekt durchgeführt.
 """
 
 # ╔═╡ 4613f79c-4afa-4cba-b5a0-efa160cc4d4d
@@ -292,6 +299,11 @@ summary_df = combine(
 # ╔═╡ 34282e9c-dd59-40fd-ae8d-97011c21a3f6
 # gehe durch alle möglichen Jahre und finde nur die unterschiedlichen
 jahre = unique(summary_df.Jahr) 
+
+# ╔═╡ 98b01ab0-6be1-47da-82a6-cf3b3aead5e7
+function filter_jahr_ausfuehrlich(zeile, jahr)
+	return zeile.Jahr == jahr
+end
 
 # ╔═╡ 416b2b42-a8ff-40ce-83f9-020d607a78ad
 filter_jahr(zeile, jahr) = zeile.Jahr == jahr
@@ -351,6 +363,25 @@ df_dresden_erweitert =
 		[:Sterbefaelle,:GeneseneGeschaetzt] => ByRow((x,y) -> x+y) => :Gesamt
 	)
 
+# ╔═╡ 83a40490-4962-4c9c-a199-b946ae33f105
+md"alternative Lösung 1:"
+
+# ╔═╡ dfc81ddd-364b-4781-ac76-9a97e6e8cd48
+begin
+	a1 = df_dresden_renamed[:, [:Datum,:Sterbefaelle,:GeneseneGeschaetzt]]
+	transform!(a1, [:Sterbefaelle,:GeneseneGeschaetzt] => (.+) => :Gesamt)
+end
+
+# ╔═╡ 7346e93c-6af8-452a-9ef1-53797ccfa516
+md"alternative Lösung 2:"
+
+# ╔═╡ 684430c4-35da-41c3-a6b9-d58b772d2d67
+begin
+	a2 = df_dresden_renamed[:, [:Datum,:Sterbefaelle,:GeneseneGeschaetzt]]
+	a2[:,:Gesamt] = a2[:,:Sterbefaelle] .+ a2[:,:GeneseneGeschaetzt]
+	a2
+end
+
 # ╔═╡ 2dd7aa44-1221-4118-9ca0-f3f46c103477
 begin
 	@df df_dresden_erweitert plot(:Datum,:Sterbefaelle, seriestype=scatter, label="Sterbefälle")
@@ -359,6 +390,26 @@ begin
 	xlabel!("Datum")
 	ylabel!("Fälle")
 end
+
+# ╔═╡ 8af47241-4ce4-4b01-a2e4-71f7b7d21e67
+md"""**Lösung zu 2:**
+
+Folgende Rechnung ist nur ein grobes Model und ist nicht wissenschaftlich geprüft. Der Ziel der Rechnung ist den Umgang mit Julia-DataFrames zu lernen.
+"""
+
+
+
+# ╔═╡ ee59052f-b4f4-41ce-9186-4fa555d26e02
+begin
+	des_df = df_dresden_renamed[:, [:Datum,:EinweisungKrankenhaus,:Sterbefaelle]]
+	alle_im_krankenhaus_eigenwiese_nichtvertorbene_personen = sum(des_df[:,:EinweisungKrankenhaus]) - sum(des_df[:,:Sterbefaelle])
+	alle_im_krankenhaus_eingewiesenen_personen = sum(des_df[:,:EinweisungKrankenhaus])
+	prozentsatz_nicht_verstorbene_im_krankenhaus = (sum(des_df[:,:EinweisungKrankenhaus]) -sum(des_df[:,:Sterbefaelle]))/sum(des_df[:,:EinweisungKrankenhaus])
+	alle_im_krankenhaus_eigenwiese_nichtvertorbene_personen, alle_im_krankenhaus_eingewiesenen_personen, prozentsatz_nicht_verstorbene_im_krankenhaus
+end
+
+# ╔═╡ 8d7c8010-ff97-434f-a552-3ceb71e8f15c
+describe(des_df)
 
 # ╔═╡ d7308095-35a4-45c2-b554-d86bcd67c487
 md"""
@@ -487,10 +538,13 @@ intercept = coef(lm_model)[1]
 slope = coef(lm_model)[2]
 
 # ╔═╡ 3d5142a6-daf7-4239-8d83-81b446e9ea0b
+
 md"""
 #### Übung
-1. Was wollen wir ?
+
+Überlegt Euch was 😯
 """
+
 
 # ╔═╡ bbbcbd10-a1bb-4999-a6dd-a01ba3146976
 md"""
@@ -2146,6 +2200,7 @@ version = "1.4.1+1"
 # ╠═29778f29-d03c-4df9-bc1e-1ff87c7e23e6
 # ╟─ece65a6d-069e-4a65-8fdf-f6f9daa69394
 # ╠═c261a4bc-5875-4cf6-a476-7b2e9ed2b644
+# ╠═109fd0eb-d077-4704-99e4-f65a6c568bd5
 # ╠═78306cf9-a2cc-4db3-9e3b-c89134d9af1a
 # ╟─51e9e215-260c-4263-a2b2-36c6f93b294d
 # ╠═01055bf8-d4e8-409e-8fb3-1d211e62f005
@@ -2168,6 +2223,7 @@ version = "1.4.1+1"
 # ╟─08ef0212-fdb5-4ce4-8e33-0f611d3caf75
 # ╟─d3b16152-404f-478c-8107-c2192cbde0f3
 # ╠═ec6eb7c9-42d9-4d53-bc62-a3149211125e
+# ╟─a7f9ca35-9ae2-46ad-8078-991d5b4a2d76
 # ╠═c99df4c8-f2d4-46d3-8ef9-36a831366df4
 # ╠═2ed87dbf-0b89-4042-ab1c-fb677f6a0eab
 # ╟─cbe2aa0a-88d9-4e56-acd4-3e88f0ff8b25
@@ -2188,15 +2244,23 @@ version = "1.4.1+1"
 # ╠═15df6b72-f34d-4c63-afef-137f34dd61cf
 # ╠═66af96ff-a100-416a-af09-78bf5422f109
 # ╠═34282e9c-dd59-40fd-ae8d-97011c21a3f6
+# ╠═98b01ab0-6be1-47da-82a6-cf3b3aead5e7
 # ╠═416b2b42-a8ff-40ce-83f9-020d607a78ad
 # ╠═b23c65b5-75bb-4ab4-98be-7d13bfd3cf2a
 # ╠═e63cd5c8-4ce8-4547-bcf3-101e17988cf2
 # ╟─608cfdad-f3d3-49b1-9c3e-8d9263e4c7e3
 # ╟─5b3d5437-9dcb-4937-a4be-4f53371e8365
-# ╠═782866c2-8030-4253-a04a-c5bcdbe56652
+# ╟─782866c2-8030-4253-a04a-c5bcdbe56652
 # ╠═57c0e864-ce5b-4af3-8234-cba241c29513
 # ╠═f2e19f0c-b61e-4484-a5c6-d2d584bb08fc
+# ╟─83a40490-4962-4c9c-a199-b946ae33f105
+# ╠═dfc81ddd-364b-4781-ac76-9a97e6e8cd48
+# ╟─7346e93c-6af8-452a-9ef1-53797ccfa516
+# ╠═684430c4-35da-41c3-a6b9-d58b772d2d67
 # ╠═2dd7aa44-1221-4118-9ca0-f3f46c103477
+# ╟─8af47241-4ce4-4b01-a2e4-71f7b7d21e67
+# ╠═ee59052f-b4f4-41ce-9186-4fa555d26e02
+# ╠═8d7c8010-ff97-434f-a552-3ceb71e8f15c
 # ╟─d7308095-35a4-45c2-b554-d86bcd67c487
 # ╠═0a8aaed1-2a32-42f1-a313-360ce9147f0b
 # ╟─80a34d75-2b73-4370-9a37-cf521bc6f98b
