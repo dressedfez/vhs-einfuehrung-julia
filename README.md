@@ -1,11 +1,18 @@
 # Kurs: Einführung in Julia
 
+Unter diesem Link findet man den Stand des letzten Kurses:
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14632508.svg)](https://doi.org/10.5281/zenodo.14632508)
 
+> [!CAUTION] Achtung
+> Dieser Kurs wird gerade für das nächste Semester überarbeitet. 
 
 Der Kurs: Einführung in Julia hat den Umfang von 6 Kurstagen á 2 Stunden.
 
 Jeder Kurstag hat einen eigenes Verzeichnis mit allen notwendigen Dateien.
+
+>[!NOTE] Anmerkung
+> Es gibt unten mehr Einträge als Kurstage. Dies ermöglicht es den Teilnehmenden, an den letzten Tagen flexibel auszuwählen, welche Themen oder Inhalte behandelt werden sollen.
 
 Folgende Kurstage und Themen werden behandelt:
 
@@ -15,8 +22,9 @@ Folgende Kurstage und Themen werden behandelt:
 | 2           | <ul> <li>Standarddatentypen</li><li>Operationen mit Standarddatentypen</li> </ul>|
 | 3           | <ul> <li>Komplexere Datentypen</li><li>Dict, Array, Vector und Matrix</li> <li>Operation auf diesen Datentypen</li> </ul>|
 | 4           | <ul> <li>Funktionen</li><li>Definition eigener Datentypen</li> <li>Multiple Dispatch</li> </ul>|
-| 5           | <ul> <li>Dataframe</li><li>CSV</li> <li>Plot</li> </ul>|
-| 6           | <ul> <li>Differentialgleichungen</li><li>Iterative Prozesse</li><li>Computational Thinking</li> </ul>|
+| 5           | <ul> <li>Dataframe</li><li>CSV</li>  </ul>|
+| 6           | Erstellung Grafiken<ul> <li>Plots</li><li>Makie</li>  </ul>|
+| 7           | <ul> <li>Differentialgleichungen</li><li>Iterative Prozesse</li><li>Computational Thinking</li> </ul>|
 
 
 ````
