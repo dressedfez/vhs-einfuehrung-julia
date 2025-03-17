@@ -1,14 +1,18 @@
 # Kurs: Einführung in Julia
 
+Unter diesem Link findet man den Stand des letzten Kurses:
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14632508.svg)](https://doi.org/10.5281/zenodo.14632508)
 
+> [!CAUTION] Achtung
+> Dieser Kurs wird gerade für das nächste Semester überarbeitet. 
 
 Der Kurs: Einführung in Julia hat den Umfang von 6 Kurstagen á 2 Stunden.
 
 Jeder Kurstag hat einen eigenes Verzeichnis mit allen notwendigen Dateien.
 
->[!NOTE]
-> Es gibt unten mehr Einträge als Kurstage. Dies ermöglicht es den Teilnehmenden, an den letzten Tagen flexibel auszuwählen, welche Themen oder Inhalte sie behandelt werden sollen.
+>[!NOTE] Anmerkung
+> Es gibt unten mehr Einträge als Kurstage. Dies ermöglicht es den Teilnehmenden, an den letzten Tagen flexibel auszuwählen, welche Themen oder Inhalte behandelt werden sollen.
 
 Folgende Kurstage und Themen werden behandelt:
 
